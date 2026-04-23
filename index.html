@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>BTI — Beauty Type Indicator</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Noto+Serif+JP:wght@300;400;500;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0c0c0b;
+  --bg2:#141412;
+  --white:#f8f5ef;
+  --gold:#c4963f;
+  --gold-light:#e0b96a;
+  --gray:#7a7670;
+  --gray-light:#a8a49b;
+  --line:rgba(248,245,239,0.1);
+  --serif:'Cormorant Garamond',serif;
+  --jp:'Noto Serif JP',serif;
+  --sans:'DM Sans',sans-serif;
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);font-family:var(--sans)}
+
+/* SCREENS */
+.screen{position:fixed;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity 0.5s ease}
+.screen.active{opacity:1;pointer-events:all}
+
+/* BG TEXTURE */
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(196,150,63,0.06) 0%,transparent 60%);pointer-events:none;z-index:0}
+
+/* ===== LANDING ===== */
+#landing{justify-content:center;align-items:center;text-align:center;padding:40px 32px;z-index:1}
+.landing-tag{font-family:var(--sans);font-size:10px;letter-spacing:0.45em;text-transform:uppercase;color:var(--gold);margin-bottom:24px;display:flex;align-items:center;justify-content:center;gap:12px}
+.landing-tag::before,.landing-tag::after{content:"";width:24px;height:1px;background:var(--gold)}
+.landing-bti{font-family:var(--serif);font-size:clamp(80px,20vw,160px);font-weight:300;line-height:0.9;letter-spacing:-0.03em;color:var(--white);margin-bottom:8px;position:relative}
+.landing-bti::after{content:"BTI";position:absolute;top:3px;left:3px;color:var(--gold);opacity:0.12;pointer-events:none}
+.landing-en{font-family:var(--sans);font-size:clamp(9px,2vw,13px);letter-spacing:0.5em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:block}
+.landing-divider{width:48px;height:1px;background:var(--gold);margin:20px auto}
+.landing-jp{font-family:var(--jp);font-size:clamp(14px,3.5vw,18px);letter-spacing:0.2em;color:var(--gray-light);margin-bottom:8px}
+.landing-sub{font-family:var(--jp);font-size:clamp(11px,2.8vw,13px);letter-spacing:0.1em;color:var(--gray);margin-bottom:40px;line-height:1.8}
+.landing-stats{display:flex;justify-content:center;gap:0;border:1px solid var(--line);margin-bottom:40px;max-width:320px;margin-left:auto;margin-right:auto}
+.landing-stat{padding:16px 20px;flex:1;border-right:1px solid var(--line);text-align:center}
+.landing-stat:last-child{border-right:none}
+.landing-stat-label{font-family:var(--sans);font-size:8px;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:4px}
+.landing-stat-val{font-family:var(--serif);font-size:28px;font-weight:300;color:var(--white);display:block;line-height:1}
+.btn-start{display:inline-flex;align-items:center;gap:12px;padding:16px 36px;background:var(--gold);color:#0c0c0b;font-family:var(--sans);font-size:11px;letter-spacing:0.3em;text-transform:uppercase;font-weight:600;border:none;cursor:pointer;transition:all 0.3s}
+.btn-start:hover{background:var(--gold-light)}
+
+/* ===== QUIZ ===== */
+#quiz{z-index:1;overflow:hidden}
+
+/* Progress bar */
+.quiz-progress-wrap{position:absolute;top:0;left:0;right:0;z-index:10;padding:20px 24px 0}
+.quiz-progress-bar-bg{height:2px;background:rgba(248,245,239,0.08);position:relative;overflow:hidden}
+.quiz-progress-bar-fill{position:absolute;top:0;left:0;height:100%;background:var(--gold);width:0%;transition:width 0.6s cubic-bezier(0.4,0,0.2,1)}
+.quiz-progress-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.quiz-progress-count{font-family:var(--serif);font-size:13px;font-style:italic;color:var(--gold)}
+.quiz-progress-axis{font-family:var(--sans);font-size:8px;letter-spacing:0.25em;text-transform:uppercase;color:var(--gray)}
+
+/* Question cards */
+.quiz-cards{position:absolute;inset:0;top:80px}
+.quiz-card{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:24px 28px 120px;opacity:0;transform:translateX(60px);transition:all 0.45s cubic-bezier(0.4,0,0.2,1);pointer-events:none}
+.quiz-card.active{opacity:1;transform:translateX(0);pointer-events:all}
+.quiz-card.exit{opacity:0;transform:translateX(-60px)}
+
+.quiz-q-num{font-family:var(--serif);font-size:13px;font-style:italic;color:var(--gold);margin-bottom:20px;letter-spacing:0.1em}
+.quiz-q-text{font-family:var(--jp);font-size:clamp(18px,4.5vw,24px);font-weight:500;color:var(--white);line-height:1.6;letter-spacing:0.04em;margin-bottom:36px}
+
+.quiz-options{display:flex;flex-direction:column;gap:10px}
+.quiz-opt{background:transparent;border:1px solid var(--line);color:var(--white);padding:18px 20px;text-align:left;cursor:pointer;font-family:var(--jp);font-size:clamp(13px,3.2vw,15px);line-height:1.5;transition:all 0.25s;display:flex;align-items:center;gap:14px;-webkit-appearance:none;border-radius:0}
+.quiz-opt:active{transform:scale(0.98)}
+.quiz-opt-letter{font-family:var(--serif);font-size:18px;font-style:italic;color:var(--gold);min-width:18px;flex-shrink:0}
+.quiz-opt:hover,.quiz-opt.selected{background:rgba(196,150,63,0.08);border-color:rgba(196,150,63,0.4)}
+.quiz-opt.selected{border-color:var(--gold)}
+
+/* Bottom nav */
+.quiz-bottom{position:absolute;bottom:0;left:0;right:0;padding:20px 28px;background:linear-gradient(transparent,var(--bg) 40%)}
+.quiz-back-btn{background:none;border:none;color:var(--gray);font-family:var(--sans);font-size:10px;letter-spacing:0.25em;text-transform:uppercase;cursor:pointer;padding:8px 0}
+.quiz-back-btn:disabled{opacity:0.3;cursor:not-allowed}
+
+/* ===== LOADING ===== */
+#loading{justify-content:center;align-items:center;z-index:1;gap:24px}
+.loading-spinner{width:64px;height:64px}
+.loading-spinner svg{width:100%;height:100%;animation:spin 2s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-family:var(--jp);font-size:14px;letter-spacing:0.2em;color:var(--gray-light)}
+.loading-code{font-family:var(--serif);font-size:11px;letter-spacing:0.4em;color:var(--gray);text-transform:uppercase}
+
+/* ===== RESULT ===== */
+#result{overflow-y:auto;z-index:1;-webkit-overflow-scrolling:touch}
+.result-inner{padding:60px 28px 40px;max-width:600px;margin:0 auto;min-height:100%}
+
+.result-eyebrow{font-family:var(--sans);font-size:9px;letter-spacing:0.45em;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:16px}
+.result-code{font-family:var(--serif);font-size:clamp(72px,18vw,120px);font-weight:300;line-height:0.9;letter-spacing:-0.02em;color:var(--white);text-align:center;margin-bottom:16px;position:relative;display:block}
+.result-name{font-family:var(--jp);font-size:clamp(18px,4.5vw,24px);font-weight:600;letter-spacing:0.1em;text-align:center;margin-bottom:8px}
+.result-catch{font-family:var(--jp);font-size:clamp(12px,3vw,14px);letter-spacing:0.15em;color:var(--gold-light);text-align:center;font-style:italic;margin-bottom:32px}
+
+/* Axis bars */
+.result-axes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:32px}
+.result-axis{background:var(--bg2);border:1px solid var(--line);padding:14px 16px}
+.result-axis-label{font-family:var(--sans);font-size:8px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gray);margin-bottom:8px;display:block}
+.result-axis-val{font-family:var(--serif);font-size:22px;font-weight:300;color:var(--white);margin-bottom:8px;display:block}
+.result-axis-bar{height:2px;background:rgba(248,245,239,0.08);position:relative}
+.result-axis-bar-fill{position:absolute;top:0;left:0;height:100%;background:var(--gold);width:0%;transition:width 1.2s cubic-bezier(0.4,0,0.2,1)}
+
+/* Description */
+.result-desc-wrap{border:1px solid var(--line);padding:24px;margin-bottom:24px}
+.result-desc-label{font-family:var(--sans);font-size:8px;letter-spacing:0.35em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:block}
+.result-desc{font-family:var(--jp);font-size:13px;line-height:2.1;color:rgba(248,245,239,0.8)}
+
+/* LINE CTA */
+.result-cta-wrap{border:1px solid rgba(196,150,63,0.3);padding:28px 24px;text-align:center;background:rgba(196,150,63,0.03);margin-bottom:20px}
+.result-cta-eyebrow{font-family:var(--sans);font-size:8px;letter-spacing:0.4em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:block}
+.result-cta-title{font-family:var(--jp);font-size:clamp(15px,3.8vw,18px);font-weight:500;letter-spacing:0.08em;line-height:1.6;margin-bottom:12px}
+.result-cta-items{display:flex;flex-direction:column;gap:6px;margin-bottom:24px;text-align:left}
+.result-cta-item{font-family:var(--jp);font-size:12px;color:rgba(248,245,239,0.7);display:flex;align-items:center;gap:8px}
+.result-cta-item::before{content:"◆";color:var(--gold);font-size:8px;flex-shrink:0}
+.btn-line{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;padding:18px 24px;background:#06C755;color:#fff;border:none;cursor:pointer;font-family:var(--sans);font-size:11px;letter-spacing:0.25em;text-transform:uppercase;font-weight:600;text-decoration:none;transition:all 0.3s}
+.btn-line:hover{background:#05b34d;transform:translateY(-1px)}
+.btn-line-sub{font-family:var(--jp);font-size:10px;letter-spacing:0.1em;opacity:0.85;display:block;margin-top:3px;font-weight:400}
+
+/* Share */
+.result-share{text-align:center;padding-top:20px;border-top:1px solid var(--line)}
+.result-share-label{font-family:var(--sans);font-size:8px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gray);margin-bottom:14px;display:block}
+.share-btns{display:flex;justify-content:center;gap:12px}
+.share-btn{width:40px;height:40px;border:1px solid var(--line);background:transparent;color:var(--gray-light);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.3s}
+.share-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* Anim */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.result-inner>*{opacity:0;animation:fadeInUp 0.6s ease forwards}
+.result-inner>*:nth-child(1){animation-delay:0.1s}
+.result-inner>*:nth-child(2){animation-delay:0.2s}
+.result-inner>*:nth-child(3){animation-delay:0.3s}
+.result-inner>*:nth-child(4){animation-delay:0.4s}
+.result-inner>*:nth-child(5){animation-delay:0.5s}
+.result-inner>*:nth-child(6){animation-delay:0.6s}
+.result-inner>*:nth-child(7){animation-delay:0.7s}
+.result-inner>*:nth-child(8){animation-delay:0.8s}
+
+@media(max-width:400px){
+  .landing-bti{font-size:72px}
+  .quiz-card{padding:20px 20px 110px}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== LANDING ===== -->
+<div class="screen active" id="landing">
+  <div class="landing-tag">Stylist Personality Diagnostic</div>
+  <div class="landing-bti">BTI</div>
+  <span class="landing-en">Beauty Type Indicator</span>
+  <div class="landing-divider"></div>
+  <div class="landing-jp" style="font-size:clamp(22px,5.5vw,30px);color:var(--white);font-weight:500;letter-spacing:0.15em;margin-bottom:4px"><span style="color:var(--gold-light)">美容師</span>のための診断。</div>
+  <div style="font-family:var(--jp);margin-bottom:8px"><span style="font-family:var(--serif);font-size:clamp(56px,14vw,88px);font-weight:300;color:var(--gold);line-height:1">16</span><span style="font-family:var(--jp);font-size:clamp(18px,4.5vw,26px);font-weight:500;color:var(--white);letter-spacing:0.1em;margin-left:8px"> タイプ診断</span></div>
+  <div class="landing-sub" style="color:var(--gray-light)">30の質問から、あなたの「美容師としての素顔」を解き明かす。</div>
+  <div class="landing-stats">
+    <div class="landing-stat">
+      <span class="landing-stat-label">Questions</span>
+      <span class="landing-stat-val">30</span>
+    </div>
+    <div class="landing-stat">
+      <span class="landing-stat-label">Types</span>
+      <span class="landing-stat-val">16</span>
+    </div>
+    <div class="landing-stat">
+      <span class="landing-stat-label">所要時間</span>
+      <span class="landing-stat-val" style="font-size:22px;font-family:var(--jp);white-space:nowrap">約3分</span>
+    </div>
+  </div>
+  <button class="btn-start" onclick="startQuiz()">診断をはじめる →</button>
+</div>
+
+<!-- ===== QUIZ ===== -->
+<div class="screen" id="quiz">
+  <div class="quiz-progress-wrap">
+    <div class="quiz-progress-meta">
+      <span class="quiz-progress-count" id="qCount">1 / 30</span>
+      <span class="quiz-progress-axis" id="qAxis">Axis 01</span>
+    </div>
+    <div class="quiz-progress-bar-bg">
+      <div class="quiz-progress-bar-fill" id="qFill"></div>
+    </div>
+  </div>
+  <div class="quiz-cards" id="quizCards"></div>
+  <div class="quiz-bottom">
+    <button class="quiz-back-btn" id="backBtn" onclick="goBack()" disabled>← 前の質問</button>
+  </div>
+</div>
+
+<!-- ===== LOADING ===== -->
+<div class="screen" id="loading">
+  <div class="loading-code" id="loadingCode">ANALYZING</div>
+  <div class="loading-spinner">
+    <svg viewBox="0 0 64 64" fill="none">
+      <circle cx="32" cy="32" r="28" stroke="rgba(196,150,63,0.2)" stroke-width="1.5"/>
+      <circle cx="32" cy="32" r="28" stroke="#c4963f" stroke-width="1.5" stroke-dasharray="44 132" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <div class="loading-text" id="loadingText">16タイプから、あなたの型を照合中...</div>
+</div>
+
+<!-- ===== RESULT ===== -->
+<div class="screen" id="result">
+  <div class="result-inner" id="resultInner"></div>
+</div>
+
+<script>
+// ===== QUESTIONS =====
+const Q = [
+  {axis:'Axis 01 / Player ⇔ Builder',q:'月末、売上目標に届かない。まず何を考える?',opts:['A. 技術を磨いて指名を増やさなければ','B. 集客の仕組みから見直そう','C. 営業日を増やすか、稼働を上げるしかない'],sc:['P','B','N']},
+  {axis:'Axis 01 / Player ⇔ Builder',q:'一日で一番テンションが上がる瞬間は?',opts:['A. 自分の指名客が「次もお願い」と帰る時','B. 月末の売上集計で目標達成が確定した時','C. 営業終わりにスタッフと一杯やる時'],sc:['P','B','N']},
+  {axis:'Axis 01 / Player ⇔ Builder',q:'今すぐ1,000万円もらえたら、何に使う?',opts:['A. 高級車・ブランド品・時計','B. 自分の店・ブランドの開業資金','C. 投資・貯金して将来に備える'],sc:['P','B','B']},
+  {axis:'Axis 01 / Player ⇔ Builder',q:'尊敬する美容師はどんな人?',opts:['A. 指名売上トップクラスのカリスマ美容師','B. 組織を作って業界を変えた経営者','C. 独立して成功した経営者','D. 技術と人望で地域に愛されるスタイリスト'],sc:['P','B','N','P']},
+  {axis:'Axis 01 / Player ⇔ Builder',q:'スタッフが辞めると言い出した時、先に浮かぶのは?',opts:['A. 教育や技術力で将来が不安なのかな','B. 評価制度か労務の問題か整理しよう','C. 人間関係で何かあったのかな'],sc:['P','B','N']},
+  {axis:'Axis 02 / Solo ⇔ Crew',q:'指名客が急増中。本音は?',opts:['A. いい感じ、もっと伸ばしたい','B. 嬉しいけど体がしんどい、誰かに振りたい','C. 後輩に少し回して教育したい'],sc:['S','C','C']},
+  {axis:'Axis 02 / Solo ⇔ Crew',q:'営業中、雑談多めの先輩スタイリスト。',opts:['A. 楽しそうでいいなと思う','B. 場面によりけり','C. 仕事中にうるさいと思う'],sc:['C','N','S']},
+  {axis:'Axis 02 / Solo ⇔ Crew',q:'SNSの投稿、どちらを育てたい?',opts:['A. 自分個人のアカウント','B. サロン全体のアカウント','C. 正直、SNSはあまり興味がない'],sc:['S','C','N']},
+  {axis:'Axis 02 / Solo ⇔ Crew',q:'一日誰とも話せない日があったら?',opts:['A. 静かでよい、回復する','B. しんどい、誰かと話したい','C. たまになら悪くない'],sc:['S','C','N']},
+  {axis:'Axis 02 / Solo ⇔ Crew',q:'一緒に働く人数、理想は?',opts:['A. 自分含めて2〜3人、顔の見える範囲','B. 4〜7人くらい、ちょうどよい規模','C. 8人以上、大きなチームで動きたい'],sc:['S','N','C']},
+  {axis:'Axis 03 / Stable ⇔ Scale',q:'年収倍、休日半分。やる?',opts:['A. やる、稼げる時に稼ぎたい','B. やらない、休日の方が大事','C. 内容次第、バランスを見て判断'],sc:['Sc','St','N']},
+  {axis:'Axis 03 / Stable ⇔ Scale',q:'「歩合70%・固定給なし」のサロンに誘われた。',opts:['A. 自信があるからやる','B. 怖い、安定の方がいい','C. 条件次第で考える'],sc:['Sc','St','N']},
+  {axis:'Axis 03 / Stable ⇔ Scale',q:'同期が独立して儲けていると聞いた。',opts:['A. 悔しい、自分も追いかけたい','B. すごいな、で終わる','C. 自分の道があるからいい'],sc:['Sc','N','St']},
+  {axis:'Axis 03 / Stable ⇔ Scale',q:'「現状維持って悪いこと?」あなたの本音。',opts:['A. 退化と同じ、よくない','B. 維持できているなら立派','C. 今が幸せならそれでいい'],sc:['Sc','St','St']},
+  {axis:'Axis 03 / Stable ⇔ Scale',q:'5年後、こうなっていたい。',opts:['A. 技術が尊敬されている','B. 経営者として成功している','C. 信頼される仲間がいる','D. 好きなことで生きている'],sc:['St','Sc','N','N']},
+  {axis:'Axis 04 / Heart ⇔ Logic',q:'後輩が明らかに落ち込んでいる。あなたは?',opts:['A. まず話を聞いて寄り添う','B. 原因を分析して解決策を一緒に考える','C. 自分で立ち直るだろうと様子を見る'],sc:['H','L','N']},
+  {axis:'Axis 04 / Heart ⇔ Logic',q:'指名がつかない若手スタッフを見て思うこと。',opts:['A. 気持ちを支えてあげたい','B. 何が原因か数字で洗い出したい','C. 正直、自分のことで精一杯'],sc:['H','L','N']},
+  {axis:'Axis 04 / Heart ⇔ Logic',q:'自分が一番嬉しい瞬間は?',opts:['A. お客様に「ありがとう」と言われた時','B. 売上・指名数が目標を超えた時','C. 給料・歩合が上がった時'],sc:['H','L','L']},
+  {axis:'Axis 04 / Heart ⇔ Logic',q:'クレームが入った時、まず動くのは?',opts:['A. お客様の気持ちを汲んで謝る','B. 何が起きたか事実確認を急ぐ','C. 店長や上司に報告・相談する'],sc:['H','L','N']},
+  {axis:'Axis 04 / Heart ⇔ Logic',q:'チームミーティング、自分の発言タイプは?',opts:['A. 雰囲気や空気感の話が多い','B. 数字や具体策の話が多い','C. ほぼ発言しない、聞き役'],sc:['H','L','N']},
+  {axis:'Stylist Deep',q:'指名売上、正直今いくらくらい?',opts:['A. 月150万以上','B. 月100〜150万','C. 月60〜100万','D. 月60万以下'],sc:['S4','S3','S2','S1']},
+  {axis:'Stylist Deep',q:'お客様との関係、本音は?',opts:['A. 担当を超えた関係、友達感覚の人もいる','B. 適度な距離感が心地よい','C. 施術中だけの関係でいい'],sc:['H','N','L']},
+  {axis:'Stylist Deep',q:'自分の武器はどれ?',opts:['A. 技術力・再現性','B. 接客・会話力・居心地','C. 世界観・SNS・ビジュアル'],sc:['CRAFT','HEART','CREATE']},
+  {axis:'Stylist Deep',q:'組織に縛られることへの本音。',opts:['A. チームの方が安心、縛られても構わない','B. ある程度の自由があれば大丈夫','C. 正直しんどい、自分のペースで働きたい'],sc:['C','N','S']},
+  {axis:'Stylist Deep',q:'5年後の理想の働き方に近いのは?',opts:['A. 今のサロンでポジションを上げていく','B. 独立か業務委託で自分の裁量で働く','C. 別のサロンに移って新しい環境で挑戦'],sc:['STAY','FREE','MOVE']},
+  {axis:'Business View',q:'飲み会、幹事を頼まれたら?',opts:['A. 率先してやる、仕切るのが好き','B. 任されたらやる、でも本音はめんどくさい','C. サポートに回る方が得意','D. できれば誰かに任せたい'],sc:['B','N','N','S']},
+  {axis:'Business View',q:'お金と時間、どちらが大事?',opts:['A. お金、稼げれば時間は作れる','B. 時間、お金では買えないものがある','C. 今はお金、将来は時間'],sc:['Sc','St','N']},
+  {axis:'Business View',q:'尊敬する人は誰に近い?',opts:['A. 起業家・経営者(孫正義・堀江貴文系)','B. アーティスト・クリエイター','C. 職人・専門家(一つを極めた人)','D. リーダー・教育者(人を育てる人)'],sc:['B','CREATE','CRAFT','EDU']},
+  {axis:'Business View',q:'子供の頃、クラスでどんなポジション?',opts:['A. リーダー・学級委員タイプ','B. 参謀・副委員長タイプ','C. 自分の世界があった一匹狼','D. みんなを陰で支えるタイプ'],sc:['B','N2','S','C']},
+  {axis:'Business View',q:'人生で一番後悔したくないのは?',opts:['A. 挑戦しなかったこと','B. 大切な人との時間を疎かにしたこと','C. お金に苦労したこと','D. 自分らしく生きられなかったこと'],sc:['Sc','H','Sc','S']},
+];
+
+const TYPES = {
+  SOLO:{name:'一人サロンオーナー型',catch:'自分の城を静かに構える',desc:'技術と接客を一人で完結させ、自分のペースと裁量で経営するタイプ。スタッフを抱えるリスクより、完全な自由を重視する。小さくても揺るぎない自分の城を築いていく。'},
+  MICRO:{name:'小規模プレイングオーナー型',catch:'3〜5人を束ねる現場経営者',desc:'自分もハサミを握りながら小さなチームを動かす。顔の見える関係と数字の両立を重視するリアリスト。現場感覚を持ちながら経営もできる、美容業界で最も需要の高いタイプ。'},
+  MULTI:{name:'複数店舗オーナー型',catch:'現場も経営も二刀流',desc:'2〜5店舗を自力で展開するハイブリッド型。現場感覚を持ちながら組織も作れる。プレイヤーとビルダーの資質を兼ね備えた、拡大期の経営者に最も多いタイプ。'},
+  SCALE:{name:'多店舗展開オーナー型',catch:'組織を大きくする経営者',desc:'6店舗以上を目指し、仕組みと人材で事業を拡大する。戦略・採用・マネジメントが主戦場。数字で判断し、攻めの決断を恐れない。組織を大きくするエネルギーに満ちている。'},
+  FC:{name:'FCオーナー型',catch:'仕組みに乗って自分の店を持つ',desc:'確立されたブランドと仕組みに乗って経営するタイプ。ゼロから作るリスクより、証明されたモデルで確実に成果を出すことを重視する。独立志向はあるが、堅実さも兼ね備える。'},
+  NO2:{name:'参謀 NO.2型',catch:'トップを支える最強の右腕',desc:'経営者の思考を先読みし、組織の潤滑油となる。表に出るより裏で支えることに喜びを感じる、組織にとって不可欠な存在。いないと組織が回らない、縁の下の戦略家。'},
+  EXEC:{name:'幹部型',catch:'組織を動かす管理職',desc:'複数店舗を統括し、数字と人材の両面から組織を強くする。論理的な判断力と、チームへの影響力を持つ。経営者と現場の橋渡し役として、組織の成長を支える実力者。'},
+  MANAGER:{name:'店長型',catch:'現場を束ねるキャプテン',desc:'スタッフの状態を察知し、現場の空気を整えながらチームを動かす。数字も人も、バランスよく見られるリーダー。カリスマで引っ張るより、一人ひとりに寄り添うスタイル。'},
+  STAR:{name:'カリスマ美容師型',catch:'SNSと技術で業界を動かす',desc:'発信力と技術力を掛け合わせ、自分自身がブランドになる。指名売上と知名度を同時に伸ばす。SNSを武器に業界での存在感を高め、サロンの枠を超えて活躍するタイプ。'},
+  TOP:{name:'指名スタイリスト型',catch:'目の前の一人に深く向き合う',desc:'SNSより目の前のお客様との関係を大切にし、安定した高い指名率でサロンを支える。長期的な信頼関係を築くプロ。一度担当したお客様が何年も離れない、究極の接客力を持つ。'},
+  CONTRACT:{name:'業務委託型',catch:'会社の仕組みを使って安定して稼ぐ',desc:'サロンが集客・経費を負担し、売上の40〜50%が報酬。技術に集中できる安定した環境を好む。指名売上50〜70万が業態選択のボーダーラインで、リスクを管理しながら着実に稼ぐ。'},
+  FREELANCE:{name:'フリーランス型',catch:'腕一本で自由に稼ぐ実力者',desc:'売上80%還元または席代・薬剤代自己負担。集客はSNSと紹介のみ。高い指名力と技術力を武器に、完全な自由を手にした実力者。指名売上70万超の美容師に向いている働き方。'},
+  EDU:{name:'教育者型',catch:'体系立てて後輩を育てる',desc:'技術を論理的に分解し、再現性のある指導ができる。サロン全体の技術レベルを底上げする、組織の財産。自分が磨いた技術を次の世代に伝えることに、最大の喜びを感じるタイプ。'},
+  MENTOR:{name:'メンター型',catch:'人を育てる温かい先輩',desc:'後輩の悩みを受け止め、技術だけでなく人間的にも成長させる。育てた人材が長く続く、組織の安定を生む存在。あなたに育てられたスタッフは辞めにくく、長く業界に残る。'},
+  CREATOR:{name:'クリエイター型',catch:'作品とSNSで世界観を作る',desc:'撮影・SNS・ヘアデザインで独自の世界観を表現。技術よりも表現力が武器で、サロンのブランドを高める。商業的な成功以上に「自分らしい表現」を重視し、熱狂的なファンを持つ。'},
+  CRAFTER:{name:'技術探求者型',catch:'職人の道を極める',desc:'売上より技術の深化に情熱を注ぐ。セミナー・薬剤研究・コンテスト——技術面で全員から一目置かれる存在。一つの技術を追求し続けることに迷いがない、純粋な職人気質のタイプ。'},
+};
+
+// ===== STATE =====
+let current = 0;
+let answers = [];
+let scores = {P:0,B:0,S:0,C:0,Sc:0,St:0,H:0,L:0,S1:0,S2:0,S3:0,S4:0,CRAFT:0,CREATE:0,HEART:0,FREE:0,STAY:0,MOVE:0,N2:0,N:0,EDU:0};
+
+// ===== STATE =====
+let current = 0;
+let answers = [];
+let scores = {P:0,B:0,S:0,C:0,Sc:0,St:0,H:0,L:0,S1:0,S2:0,S3:0,S4:0,CRAFT:0,CREATE:0,HEART:0,FREE:0,STAY:0,MOVE:0,N2:0,N:0,EDU:0};
+let position = null;
+let salonWork = null;
+
+// ===== POSITION SCREEN =====
+function showPositionScreen() {
+  document.getElementById('quizCards').innerHTML = `
+    <div class="quiz-card active" id="card-pos">
+      <div class="quiz-q-num" style="color:var(--gold);font-size:11px;letter-spacing:0.3em;text-transform:uppercase">Before We Start</div>
+      <div class="quiz-q-text">今のあなたのポジションは?</div>
+      <div class="quiz-options">
+        ${['A. アシスタント・見習い','B. スタイリスト','C. 店長・副店長','D. マネージャー・幹部・NO.2','E. オーナー・経営者'].map((opt,i)=>`
+          <button class="quiz-opt" onclick="selectPosition('${'ABCDE'[i]}')">
+            <span class="quiz-opt-letter">${'ABCDE'[i]}.</span>
+            <span>${opt.substring(3)}</span>
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `;
+  document.getElementById('qCount').textContent = '準備';
+  document.getElementById('qAxis').textContent = 'Position Check';
+  document.getElementById('qFill').style.width = '0%';
+  document.getElementById('backBtn').disabled = true;
+}
+
+function selectPosition(pos) {
+  position = pos;
+  document.querySelectorAll('#card-pos .quiz-opt').forEach((el,i)=>{
+    if('ABCDE'[i]===pos) el.classList.add('selected');
+  });
+  setTimeout(() => {
+    if (pos === 'D' || pos === 'E') {
+      showSalonWorkScreen();
+    } else {
+      startMainQuiz();
+    }
+  }, 280);
+}
+
+function showSalonWorkScreen() {
+  document.getElementById('quizCards').innerHTML = `
+    <div class="quiz-card active" id="card-sw">
+      <div class="quiz-q-num" style="color:var(--gold);font-size:11px;letter-spacing:0.3em;text-transform:uppercase">Before We Start</div>
+      <div class="quiz-q-text">サロンワークはどれくらい入っている?</div>
+      <div class="quiz-options">
+        ${['A. がっつり入っている','B. 週の半分くらい','C. 週1〜2日程度','D. ほぼなし'].map((opt,i)=>`
+          <button class="quiz-opt" onclick="selectSalonWork('${'ABCD'[i]}')">
+            <span class="quiz-opt-letter">${'ABCD'[i]}.</span>
+            <span>${opt.substring(3)}</span>
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `;
+  document.getElementById('qAxis').textContent = 'Salon Work Check';
+}
+
+function selectSalonWork(sw) {
+  salonWork = sw;
+  document.querySelectorAll('#card-sw .quiz-opt').forEach((el,i)=>{
+    if('ABCD'[i]===sw) el.classList.add('selected');
+  });
+  setTimeout(() => startMainQuiz(), 280);
+}
+
+function startMainQuiz() {
+  current = 0;
+  answers = [];
+  scores = {P:0,B:0,S:0,C:0,Sc:0,St:0,H:0,L:0,S1:0,S2:0,S3:0,S4:0,CRAFT:0,CREATE:0,HEART:0,FREE:0,STAY:0,MOVE:0,N2:0,N:0,EDU:0};
+  initCards();
+  updateProgress();
+}
+function initCards() {
+  const container = document.getElementById('quizCards');
+  container.innerHTML = '';
+  Q.forEach((q, i) => {
+    const card = document.createElement('div');
+    card.className = 'quiz-card' + (i === 0 ? ' active' : '');
+    card.id = 'card-' + i;
+    card.innerHTML = `
+      <div class="quiz-q-num">Question ${String(i+1).padStart(2,'0')}.</div>
+      <div class="quiz-q-text">${q.q}</div>
+      <div class="quiz-options">
+        ${q.opts.map((opt, j) => `
+          <button class="quiz-opt" onclick="selectAnswer(${i}, ${j})">
+            <span class="quiz-opt-letter">${['A','B','C','D'][j]}.</span>
+            <span>${opt.substring(3)}</span>
+          </button>
+        `).join('')}
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+// ===== SCREEN SWITCH =====
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ===== START =====
+function startQuiz() {
+  position = null;
+  salonWork = null;
+  showScreen('quiz');
+  showPositionScreen();
+}
+
+// ===== SELECT =====
+function selectAnswer(qIdx, optIdx) {
+  if (qIdx !== current) return;
+  const q = Q[qIdx];
+  const sc = q.sc[optIdx];
+
+  // Animate selected
+  const opts = document.querySelectorAll(`#card-${qIdx} .quiz-opt`);
+  opts[optIdx].classList.add('selected');
+
+  // Score
+  answers[qIdx] = optIdx;
+  if (scores[sc] !== undefined) scores[sc]++;
+
+  setTimeout(() => {
+    current++;
+    if (current >= Q.length) {
+      finishQuiz();
+    } else {
+      const prevCard = document.getElementById('card-' + (current-1));
+      const nextCard = document.getElementById('card-' + current);
+      prevCard.classList.remove('active');
+      prevCard.classList.add('exit');
+      setTimeout(() => prevCard.classList.remove('exit'), 450);
+      nextCard.classList.add('active');
+      updateProgress();
+    }
+  }, 280);
+}
+
+// ===== BACK =====
+function goBack() {
+  if (current <= 0) return;
+  // Remove last score
+  const prevQ = Q[current-1];
+  const prevAns = answers[current-1];
+  if (prevAns !== undefined) {
+    const sc = prevQ.sc[prevAns];
+    if (scores[sc] !== undefined && scores[sc] > 0) scores[sc]--;
+    answers.pop();
+  }
+  const curCard = document.getElementById('card-' + current);
+  const prevCard = document.getElementById('card-' + (current-1));
+  curCard.classList.remove('active');
+  prevCard.classList.remove('exit');
+  prevCard.classList.add('active');
+  // Reset opts
+  prevCard.querySelectorAll('.quiz-opt').forEach(o => o.classList.remove('selected'));
+  current--;
+  updateProgress();
+}
+
+// ===== PROGRESS =====
+function updateProgress() {
+  document.getElementById('qCount').textContent = `${current+1} / ${Q.length}`;
+  document.getElementById('qAxis').textContent = Q[current]?.axis || '';
+  document.getElementById('qFill').style.width = ((current+1)/Q.length*100) + '%';
+  document.getElementById('backBtn').disabled = current === 0;
+}
+
+// ===== FINISH =====
+function finishQuiz() {
+  showScreen('loading');
+  const msgs = ['16タイプから、あなたの型を照合中...','4つの判定軸を分析中...','パーソナリティを解析中...','診断結果を生成中...'];
+  let mi = 0;
+  const codes = ['ANALYZING ·','ANALYZING ··','ANALYZING ···','PROCESSING'];
+  const iv = setInterval(() => {
+    mi++;
+    document.getElementById('loadingText').textContent = msgs[mi % msgs.length];
+    document.getElementById('loadingCode').textContent = codes[mi % codes.length];
+  }, 700);
+  setTimeout(() => {
+    clearInterval(iv);
+    showResult();
+  }, 3000);
+}
+
+// ===== DETERMINE TYPE =====
+function determineType() {
+  const pb = scores.P >= scores.B ? 'P' : 'B';
+  const sc = scores.S >= scores.C ? 'S' : 'C';
+  const ss = scores.Sc >= scores.St ? 'Sc' : 'St';
+  const hl = scores.H >= scores.L ? 'H' : 'L';
+  const isFree = scores.FREE > scores.STAY;
+  const s4 = scores.S4 || 0;
+  const isCreate = scores.CREATE >= scores.CRAFT;
+  const bStrong = scores.B >= 4;
+  const scStrong = scores.Sc >= 4;
+
+  // ポジション補正スコア
+  const posBoost = {
+    owner: (position==='E') ? 2 : 0,
+    manager: (position==='D') ? 2 : 0,
+    storeManager: (position==='C') ? 1 : 0,
+    stylist: (position==='B') ? 1 : 0,
+  };
+  // サロンワーク補正(D/E向け)
+  // がっつり=Player寄り、ほぼなし=Builder寄り
+  const swBoostP = salonWork==='A' ? 2 : salonWork==='B' ? 1 : 0;
+  const swBoostB = salonWork==='D' ? 2 : salonWork==='C' ? 1 : 0;
+  const adjP = scores.P + swBoostP;
+  const adjB = scores.B + posBoost.owner + posBoost.manager + swBoostB;
+  const adjPB = adjP >= adjB ? 'P' : 'B';
+
+  // オーナー・経営者(E)の場合 → 拡大志向に補正
+  if (position === 'E') {
+    if (scStrong || scores.Sc > scores.St) {
+      if (s4 >= 2) return 'SCALE';
+      if (scores.C >= scores.S) return 'MULTI';
+      return 'FC';
+    }
+    return 'SOLO';
+  }
+
+  // 幹部・NO.2(D)の場合
+  if (position === 'D') {
+    if (salonWork === 'A' || salonWork === 'B') {
+      // サロンワーク多め → プレイングマネージャー系
+      if (hl === 'H') return 'MANAGER';
+      return 'EXEC';
+    }
+    // サロンワーク少なめ → 参謀・幹部系
+    if (hl === 'H') return 'NO2';
+    return 'EXEC';
+  }
+
+  // 店長・副店長(C)の場合
+  if (position === 'C') {
+    if (ss === 'Sc') return 'MANAGER';
+    if (hl === 'H') return 'MENTOR';
+    return 'EDU';
+  }
+
+  // スタイリスト・アシスタント(A/B)
+  if (adjPB === 'B') {
+    if (ss === 'Sc') {
+      if (bStrong && scStrong) {
+        if (scores.C >= scores.S) return 'MULTI';
+        return 'FC';
+      }
+      if (scores.C >= scores.S) return 'MULTI';
+      return 'FC';
+    }
+    if (scores.C >= scores.S) {
+      if (hl === 'H') return 'NO2';
+      return 'EXEC';
+    }
+    if (hl === 'H') return 'MENTOR';
+    return 'EDU';
+  }
+
+  // Player系
+  if (isFree && s4 >= 2) return 'FREELANCE';
+  if (isFree) return 'CONTRACT';
+  if (ss === 'Sc') {
+    if (isCreate || sc === 'S') return 'STAR';
+    return 'TOP';
+  }
+  if (sc === 'C') {
+    if (hl === 'H') return 'MANAGER';
+    return 'CONTRACT';
+  }
+  if (isCreate) return 'CREATOR';
+  if (hl === 'L') return 'CRAFTER';
+  return 'TOP';
+}
+
+// ===== SHOW RESULT =====
+function showResult() {
+  const key = determineType();
+  const type = TYPES[key];
+
+  const pb = scores.P >= scores.B ? 'Player' : 'Builder';
+  const pbPct = Math.round(Math.max(scores.P,scores.B)/5*100);
+  const sc = scores.S >= scores.C ? 'Solo' : 'Crew';
+  const scPct = Math.round(Math.max(scores.S,scores.C)/5*100);
+  const ss = scores.Sc >= scores.St ? 'Scale' : 'Stable';
+  const ssPct = Math.round(Math.max(scores.Sc,scores.St)/5*100);
+  const hl = scores.H >= scores.L ? 'Heart' : 'Logic';
+  const hlPct = Math.round(Math.max(scores.H,scores.L)/5*100);
+
+  document.getElementById('resultInner').innerHTML = `
+    <div class="result-eyebrow">Your Type — BTI Result</div>
+    <span class="result-code">${key}</span>
+    <div class="result-name">${type.name}</div>
+    <div class="result-catch">— ${type.catch}</div>
+
+    <div class="result-axes">
+      <div class="result-axis">
+        <span class="result-axis-label">Axis 01</span>
+        <span class="result-axis-val">${pb} <small style="font-size:13px;color:var(--gray)">${pbPct}%</small></span>
+        <div class="result-axis-bar"><div class="result-axis-bar-fill" style="width:${pbPct}%"></div></div>
+      </div>
+      <div class="result-axis">
+        <span class="result-axis-label">Axis 02</span>
+        <span class="result-axis-val">${sc} <small style="font-size:13px;color:var(--gray)">${scPct}%</small></span>
+        <div class="result-axis-bar"><div class="result-axis-bar-fill" style="width:${scPct}%"></div></div>
+      </div>
+      <div class="result-axis">
+        <span class="result-axis-label">Axis 03</span>
+        <span class="result-axis-val">${ss} <small style="font-size:13px;color:var(--gray)">${ssPct}%</small></span>
+        <div class="result-axis-bar"><div class="result-axis-bar-fill" style="width:${ssPct}%"></div></div>
+      </div>
+      <div class="result-axis">
+        <span class="result-axis-label">Axis 04</span>
+        <span class="result-axis-val">${hl} <small style="font-size:13px;color:var(--gray)">${hlPct}%</small></span>
+        <div class="result-axis-bar"><div class="result-axis-bar-fill" style="width:${hlPct}%"></div></div>
+      </div>
+    </div>
+
+    <div class="result-desc-wrap">
+      <span class="result-desc-label">Overview</span>
+      <div class="result-desc">${type.desc}</div>
+    </div>
+
+    <div class="result-cta-wrap">
+      <span class="result-cta-eyebrow">Full Report — Free</span>
+      <div class="result-cta-title">あなたの強みと、<br>活かせる環境まで。</div>
+      <div class="result-cta-items">
+        <div class="result-cta-item">詳細パーソナリティ分析</div>
+        <div class="result-cta-item">適正年収レンジ診断</div>
+        <div class="result-cta-item">キャリアロードマップ</div>
+        <div class="result-cta-item">あなたのタイプに合うサロン紹介</div>
+      </div>
+      <a class="btn-line" href="https://line.me/R/ti/p/@210mmztg" target="_blank">
+        <span>
+          LINEで完全版を受け取る
+          <span class="btn-line-sub">友だち追加で詳細レポートが届きます</span>
+        </span>
+        <span>→</span>
+      </a>
+    </div>
+
+    <div class="result-share">
+      <span class="result-share-label">Share your result</span>
+      <div class="share-btns">
+        <button class="share-btn" onclick="shareX('${key}','${type.name}')" title="X">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </button>
+        <button class="share-btn" onclick="copyResult('${key}','${type.name}')" title="コピー">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div style="margin-top:24px;padding:16px;background:rgba(255,255,255,0.04);border:1px solid var(--line);font-family:var(--sans);font-size:11px;color:var(--gray);line-height:2">
+      <div style="color:var(--gold);font-size:9px;letter-spacing:0.3em;text-transform:uppercase;margin-bottom:8px">Debug — Score Data</div>
+      P:${scores.P} B:${scores.B} | S:${scores.S} C:${scores.C} | Sc:${scores.Sc} St:${scores.St} | H:${scores.H} L:${scores.L}<br>
+      FREE:${scores.FREE} STAY:${scores.STAY} | S4:${scores.S4} S3:${scores.S3} S2:${scores.S2} S1:${scores.S1}<br>
+      CRAFT:${scores.CRAFT} CREATE:${scores.CREATE} | N2:${scores.N2}
+    </div>
+  `;
+
+  showScreen('result');
+
+  // Animate bars after render
+  setTimeout(() => {
+    document.querySelectorAll('.result-axis-bar-fill').forEach(el => {
+      el.style.width = el.style.width;
+    });
+  }, 100);
+}
+
+function shareX(key, name) {
+  const text = `BTI診断結果\n\n私は【${name}】でした！\n\n美容師のための16タイプ診断 #BTI #美容師`;
+  window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text), '_blank');
+}
+
+function copyResult(key, name) {
+  navigator.clipboard.writeText(`BTI診断結果: 【${name}】\n美容師のための16タイプ診断`).then(() => {
+    alert('コピーしました！');
+  });
+}
+</script>
+</body>
+</html>
