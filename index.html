@@ -8,24 +8,15 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
-  --bg:#0c0c0b;
-  --bg2:#141412;
-  --white:#f8f5ef;
-  --gold:#c4963f;
-  --gold-light:#e0b96a;
-  --gray:#7a7670;
-  --gray-light:#a8a49b;
-  --line:rgba(248,245,239,0.1);
-  --serif:'Cormorant Garamond',serif;
-  --jp:'Noto Serif JP',serif;
-  --sans:'DM Sans',sans-serif;
+  --bg:#0c0c0b;--bg2:#141412;--white:#f8f5ef;--gold:#c4963f;--gold-light:#e0b96a;
+  --gray:#7a7670;--gray-light:#a8a49b;--line:rgba(248,245,239,0.1);
+  --serif:'Cormorant Garamond',serif;--jp:'Noto Serif JP',serif;--sans:'DM Sans',sans-serif;
 }
 html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);font-family:var(--sans)}
 .screen{position:fixed;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity 0.5s ease}
 .screen.active{opacity:1;pointer-events:all}
 body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(196,150,63,0.06) 0%,transparent 60%);pointer-events:none;z-index:0}
 
-/* LANDING */
 #landing{justify-content:center;align-items:center;text-align:center;padding:40px 32px;z-index:1;overflow-y:auto}
 .landing-tag{font-family:var(--sans);font-size:10px;letter-spacing:0.45em;text-transform:uppercase;color:var(--gold);margin-bottom:24px;display:flex;align-items:center;justify-content:center;gap:12px}
 .landing-tag::before,.landing-tag::after{content:"";width:24px;height:1px;background:var(--gold)}
@@ -34,7 +25,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 .landing-en{font-family:var(--sans);font-size:clamp(9px,2vw,13px);letter-spacing:0.5em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:block}
 .landing-divider{width:48px;height:1px;background:var(--gold);margin:20px auto}
 .landing-sub{font-family:var(--jp);font-size:clamp(11px,2.8vw,13px);letter-spacing:0.08em;color:var(--gray-light);margin-bottom:40px;line-height:2}
-.landing-stats{display:flex;justify-content:center;gap:0;border:1px solid var(--line);margin-bottom:40px;max-width:360px;margin-left:auto;margin-right:auto}
+.landing-stats{display:flex;justify-content:center;border:1px solid var(--line);margin-bottom:40px;max-width:360px;margin-left:auto;margin-right:auto}
 .landing-stat{padding:16px 20px;flex:1;border-right:1px solid var(--line);text-align:center}
 .landing-stat:last-child{border-right:none}
 .landing-stat-label{font-family:var(--sans);font-size:8px;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:4px}
@@ -42,7 +33,6 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 .btn-start{display:inline-flex;align-items:center;gap:12px;padding:16px 36px;background:var(--gold);color:#0c0c0b;font-family:var(--sans);font-size:11px;letter-spacing:0.3em;text-transform:uppercase;font-weight:600;border:none;cursor:pointer;transition:all 0.3s}
 .btn-start:hover{background:var(--gold-light)}
 
-/* QUIZ */
 #quiz{z-index:1;overflow:hidden}
 .quiz-progress-wrap{position:absolute;top:0;left:0;right:0;z-index:10;padding:20px 24px 0}
 .quiz-progress-bar-bg{height:2px;background:rgba(248,245,239,0.08);position:relative;overflow:hidden}
@@ -55,9 +45,9 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 .quiz-card.active{opacity:1;transform:translateX(0);pointer-events:all}
 .quiz-card.exit{opacity:0;transform:translateX(-60px)}
 .quiz-q-num{font-family:var(--serif);font-size:13px;font-style:italic;color:var(--gold);margin-bottom:20px;letter-spacing:0.1em}
-.quiz-q-text{font-family:var(--jp);font-size:clamp(18px,4.5vw,24px);font-weight:500;color:var(--white);line-height:1.6;letter-spacing:0.04em;margin-bottom:36px}
+.quiz-q-text{font-family:var(--jp);font-size:clamp(17px,4.2vw,22px);font-weight:500;color:var(--white);line-height:1.6;letter-spacing:0.04em;margin-bottom:28px}
 .quiz-options{display:flex;flex-direction:column;gap:10px}
-.quiz-opt{background:transparent;border:1px solid var(--line);color:var(--white);padding:18px 20px;text-align:left;cursor:pointer;font-family:var(--jp);font-size:clamp(13px,3.2vw,15px);line-height:1.5;transition:all 0.25s;display:flex;align-items:center;gap:14px;-webkit-appearance:none;border-radius:0}
+.quiz-opt{background:transparent;border:1px solid var(--line);color:var(--white);padding:16px 20px;text-align:left;cursor:pointer;font-family:var(--jp);font-size:clamp(13px,3.2vw,15px);line-height:1.5;transition:all 0.25s;display:flex;align-items:center;gap:14px;-webkit-appearance:none;border-radius:0}
 .quiz-opt:active{transform:scale(0.98)}
 .quiz-opt-letter{font-family:var(--serif);font-size:18px;font-style:italic;color:var(--gold);min-width:18px;flex-shrink:0}
 .quiz-opt:hover,.quiz-opt.selected{background:rgba(196,150,63,0.08);border-color:rgba(196,150,63,0.4)}
@@ -66,7 +56,6 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 .quiz-back-btn{background:none;border:none;color:var(--gray);font-family:var(--sans);font-size:10px;letter-spacing:0.25em;text-transform:uppercase;cursor:pointer;padding:8px 0}
 .quiz-back-btn:disabled{opacity:0.3;cursor:not-allowed}
 
-/* LOADING */
 #loading{justify-content:center;align-items:center;z-index:1;gap:24px}
 .loading-spinner{width:64px;height:64px}
 .loading-spinner svg{width:100%;height:100%;animation:spin 2s linear infinite}
@@ -74,12 +63,11 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 .loading-text{font-family:var(--jp);font-size:14px;letter-spacing:0.2em;color:var(--gray-light)}
 .loading-code{font-family:var(--serif);font-size:11px;letter-spacing:0.4em;color:var(--gray);text-transform:uppercase}
 
-/* RESULT */
 #result{overflow-y:auto;z-index:1;-webkit-overflow-scrolling:touch}
 .result-inner{padding:60px 28px 40px;max-width:600px;margin:0 auto;min-height:100%}
 .result-eyebrow{font-family:var(--sans);font-size:9px;letter-spacing:0.45em;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:16px}
-.result-code{font-family:var(--serif);font-size:clamp(72px,18vw,120px);font-weight:300;line-height:0.9;letter-spacing:-0.02em;color:var(--white);text-align:center;margin-bottom:16px;position:relative;display:block}
-.result-name{font-family:var(--jp);font-size:clamp(18px,4.5vw,24px);font-weight:600;letter-spacing:0.1em;text-align:center;margin-bottom:8px}
+.result-code{font-family:var(--serif);font-size:clamp(60px,15vw,110px);font-weight:300;line-height:0.9;letter-spacing:-0.02em;color:var(--white);text-align:center;margin-bottom:16px;display:block}
+.result-name{font-family:var(--jp);font-size:clamp(17px,4.2vw,22px);font-weight:600;letter-spacing:0.1em;text-align:center;margin-bottom:8px}
 .result-catch{font-family:var(--jp);font-size:clamp(12px,3vw,14px);letter-spacing:0.15em;color:var(--gold-light);text-align:center;font-style:italic;margin-bottom:32px}
 .result-axes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:32px}
 .result-axis{background:var(--bg2);border:1px solid var(--line);padding:14px 16px}
@@ -107,24 +95,15 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 
 @keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 .result-inner>*{opacity:0;animation:fadeInUp 0.6s ease forwards}
-.result-inner>*:nth-child(1){animation-delay:0.1s}
-.result-inner>*:nth-child(2){animation-delay:0.2s}
-.result-inner>*:nth-child(3){animation-delay:0.3s}
-.result-inner>*:nth-child(4){animation-delay:0.4s}
-.result-inner>*:nth-child(5){animation-delay:0.5s}
-.result-inner>*:nth-child(6){animation-delay:0.6s}
-.result-inner>*:nth-child(7){animation-delay:0.7s}
-.result-inner>*:nth-child(8){animation-delay:0.8s}
-
-@media(max-width:400px){
-  .landing-bti{font-size:72px}
-  .quiz-card{padding:20px 20px 110px}
-}
+.result-inner>*:nth-child(1){animation-delay:0.1s}.result-inner>*:nth-child(2){animation-delay:0.2s}
+.result-inner>*:nth-child(3){animation-delay:0.3s}.result-inner>*:nth-child(4){animation-delay:0.4s}
+.result-inner>*:nth-child(5){animation-delay:0.5s}.result-inner>*:nth-child(6){animation-delay:0.6s}
+.result-inner>*:nth-child(7){animation-delay:0.7s}.result-inner>*:nth-child(8){animation-delay:0.8s}
+@media(max-width:400px){.landing-bti{font-size:72px}.quiz-card{padding:20px 20px 110px}}
 </style>
 </head>
 <body>
 
-<!-- LANDING -->
 <div class="screen active" id="landing">
   <div class="landing-tag">Stylist Personality Diagnostic</div>
   <div class="landing-bti">BTI</div>
@@ -154,16 +133,13 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
   <button class="btn-start" onclick="startQuiz()">診断をはじめる →</button>
 </div>
 
-<!-- QUIZ -->
 <div class="screen" id="quiz">
   <div class="quiz-progress-wrap">
     <div class="quiz-progress-meta">
       <span class="quiz-progress-count" id="qCount">1 / 30</span>
-      <span class="quiz-progress-axis" id="qAxis">Axis 01</span>
+      <span class="quiz-progress-axis" id="qAxis"></span>
     </div>
-    <div class="quiz-progress-bar-bg">
-      <div class="quiz-progress-bar-fill" id="qFill"></div>
-    </div>
+    <div class="quiz-progress-bar-bg"><div class="quiz-progress-bar-fill" id="qFill"></div></div>
   </div>
   <div class="quiz-cards" id="quizCards"></div>
   <div class="quiz-bottom">
@@ -171,7 +147,6 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
   </div>
 </div>
 
-<!-- LOADING -->
 <div class="screen" id="loading">
   <div class="loading-code" id="loadingCode">ANALYZING</div>
   <div class="loading-spinner">
@@ -183,76 +158,90 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
   <div class="loading-text" id="loadingText">16タイプから、あなたの型を照合中...</div>
 </div>
 
-<!-- RESULT -->
 <div class="screen" id="result">
   <div class="result-inner" id="resultInner"></div>
 </div>
 
 <script>
+// ===== 30問 =====
 const Q = [
   // Axis 01
-  {axis:'Axis 01 / Player ⇔ Builder',q:'月末、売上目標に届かない。まず何を考える?',opts:['技術を磨いて指名を増やさなければ','集客の仕組みから見直そう','営業日を増やすか、稼働を上げるしかない'],sc:['P','B','N']},
-  {axis:'Axis 01 / Player ⇔ Builder',q:'一日で一番テンションが上がる瞬間は?',opts:['自分の指名客が「次もお願い」と帰る時','月末の売上集計で目標達成が確定した時','営業終わりにスタッフと一杯やる時'],sc:['P','B','N']},
-  {axis:'Axis 01 / Player ⇔ Builder',q:'今すぐ1,000万円もらえたら、何に使う?',opts:['高級車・ブランド品・時計','自分の店・ブランドの開業資金','投資・貯金して将来に備える'],sc:['P','B','B']},
-  {axis:'Axis 01 / Player ⇔ Builder',q:'尊敬する美容師はどんな人?',opts:['指名売上トップクラスのカリスマ美容師','組織を作って業界を変えた経営者','独立して成功した経営者','技術と人望で地域に愛されるスタイリスト'],sc:['P','B','N','P']},
-  {axis:'Axis 01 / Player ⇔ Builder',q:'スタッフが辞めると言い出した時、先に浮かぶのは?',opts:['教育や技術力で将来が不安なのかな','評価制度か労務の問題か整理しよう','人間関係で何かあったのかな'],sc:['P','B','N']},
+  {axis:'Axis 01 / Player ⇔ Builder',q:'月末、売上目標に届かなかった。最初にとった行動は？',opts:['自分の技術や接客を見直して次月に備えた','集客の導線や仕組みを洗い直した','営業日を増やすか稼働を上げた','正直、そこまで深く考えなかった'],sc:['P','B','P','N']},
+  {axis:'Axis 01 / Player ⇔ Builder',q:'1,000万円が手に入ったら、まず何に使う？',opts:['高級車・ブランド品・時計など自分へのご褒美','自分の店・ブランドの開業や拡大資金','投資・貯金して将来に備える','スタッフや環境への投資に使う'],sc:['P','B','B','B']},
+  {axis:'Axis 01 / Player ⇔ Builder',q:'尊敬する人物に近いのは？',opts:['指名売上トップクラスのカリスマ美容師','組織を作って業界を変えた経営者','独立して成功した経営者','技術と人望で地域に愛されるスタイリスト'],sc:['P','B','B','P']},
+  {axis:'Axis 01 / Player ⇔ Builder',q:'スタッフが辞めると言い出した時、最初に頭に浮かんだのは？',opts:['技術や教育面で不安があったのかな','評価制度や待遇に問題があったのかも','人間関係で何かあったのかな','自分に何かできることはあったか'],sc:['P','B','N','H']},
+  {axis:'Axis 01 / Player ⇔ Builder',q:'新しいことを始める時、あなたはどちらに近い？',opts:['とりあえずやってみる、走りながら考える','計画を立てて勝算が見えてから動く','誰かと一緒にやれる環境を先に作る','小さく試して反応を見てから判断する'],sc:['P','B','C','B']},
   // Axis 02
-  {axis:'Axis 02 / Solo ⇔ Crew',q:'指名客が急増中。本音は?',opts:['いい感じ、もっと伸ばしたい','嬉しいけど現状で満足、このくらいでいい','嬉しいけど体がしんどい、誰かに振りたい','後輩に少し回して教育したい'],sc:['S','N','C','C']},
-  {axis:'Axis 02 / Solo ⇔ Crew',q:'営業中、雑談多めの先輩スタイリスト。',opts:['楽しそうでいいなと思う','場面によりけり','仕事中にうるさいと思う'],sc:['C','N','S']},
-  {axis:'Axis 02 / Solo ⇔ Crew',q:'SNSの投稿、どちらを育てたい?',opts:['自分個人のアカウント','サロン全体のアカウント','正直、SNSはあまり興味がない'],sc:['S','C','N']},
-  {axis:'Axis 02 / Solo ⇔ Crew',q:'一日誰とも話せない日があったら?',opts:['静かでよい、回復する','しんどい、誰かと話したい','たまになら悪くない'],sc:['S','C','N']},
-  {axis:'Axis 02 / Solo ⇔ Crew',q:'一緒に働く人数、理想は?',opts:['自分含めて2〜3人、顔の見える範囲','4〜7人くらい、ちょうどよい規模','8人以上、大きなチームで動きたい'],sc:['S','N','C']},
+  {axis:'Axis 02 / Solo ⇔ Crew',q:'指名客が急増した時、本音は？',opts:['いい感じ、もっと伸ばしたい','嬉しいけど現状で満足、このくらいでいい','嬉しいけどしんどい、誰かに振りたい','後輩に回して教育のチャンスにしたい'],sc:['S','N','C','C']},
+  {axis:'Axis 02 / Solo ⇔ Crew',q:'営業中、雑談が多めの先輩スタイリストを見て思うことは？',opts:['楽しそう、自分もそういう雰囲気が好き','場面によりけり、状況次第','仕事中はもう少し集中してほしい','お客様が楽しそうならそれでいい'],sc:['C','N','S','N']},
+  {axis:'Axis 02 / Solo ⇔ Crew',q:'SNSを育てるなら、どちらを優先する？',opts:['自分個人のアカウント','サロン全体のアカウント','どちらも同じくらい','正直、SNSはあまり興味がない'],sc:['S','C','N','N']},
+  {axis:'Axis 02 / Solo ⇔ Crew',q:'一緒に働く人数、理想は？',opts:['自分含めて2〜3人、顔の見える範囲','4〜7人くらい、ちょうどよい規模','10人以上、大きなチームで動きたい','人数より関係性の質の方が大事'],sc:['S','N','C','N']},
+  {axis:'Axis 02 / Solo ⇔ Crew',q:'チームで動く時、自分が一番心地よいポジションは？',opts:['自分のペースで個人の仕事に集中する','リーダーとして全体をまとめる','サポートや裏方として支える','現場と経営の橋渡し役'],sc:['S','C','C','B']},
   // Axis 03
-  {axis:'Axis 03 / Stable ⇔ Scale',q:'年収倍、休日半分。やる?',opts:['やる、稼げる時に稼ぎたい','やらない、休日の方が大事','内容次第、バランスを見て判断'],sc:['Sc','St','N']},
-  {axis:'Axis 03 / Stable ⇔ Scale',q:'「歩合70%・固定給なし」のサロンに誘われた。',opts:['自信があるからやる','怖い、安定の方がいい','条件次第で考える'],sc:['Sc','St','N']},
-  {axis:'Axis 03 / Stable ⇔ Scale',q:'同期が独立して儲けていると聞いた。',opts:['悔しい、自分も追いかけたい','すごいな、で終わる','自分の道があるからいい'],sc:['Sc','N','St']},
-  {axis:'Axis 03 / Stable ⇔ Scale',q:'「現状維持って悪いこと?」あなたの本音。',opts:['退化と同じ、よくない','維持できているなら立派','今が幸せならそれでいい'],sc:['Sc','St','St']},
-  {axis:'Axis 03 / Stable ⇔ Scale',q:'5年後、こうなっていたい。',opts:['技術が尊敬されている','経営者として成功している','信頼される仲間がいる','好きなことで生きている'],sc:['St','Sc','N','N']},
+  {axis:'Axis 03 / Stable ⇔ Scale',q:'年収が倍になるが休日が半分になるオファー。どうする？',opts:['やる、稼げる時に稼いでおきたい','やらない、プライベートの時間は譲れない','内容と期間次第で検討する','今の状況によって変わる'],sc:['Sc','St','N','N']},
+  {axis:'Axis 03 / Stable ⇔ Scale',q:'同期が独立して急成長していると聞いた。本音は？',opts:['悔しい、自分も追いかけたい','すごいな、と思うが自分には関係ない','どんな仕組みで成長しているか気になる','自分の道があるからそれでいい'],sc:['Sc','N','B','St']},
+  {axis:'Axis 03 / Stable ⇔ Scale',q:'「現状維持」についての本音は？',opts:['退化と同じ、よくない','維持できているなら十分立派','今が幸せならそれでいい','状況によって正解は変わる'],sc:['Sc','St','St','N']},
+  {axis:'Axis 03 / Stable ⇔ Scale',q:'5年後、こうなっていたい。',opts:['技術で周囲から尊敬されている','経営者として事業を拡大している','信頼できる仲間と働いている','自分らしい働き方を実現している'],sc:['St','Sc','N','N']},
+  {axis:'Axis 03 / Stable ⇔ Scale',q:'お金と時間、どちらが今の自分には大事？',opts:['お金、稼げれば時間は作れる','時間、お金では買えないものがある','今はお金、将来は時間のバランスで考える','どちらも同じくらい大事'],sc:['Sc','St','N','N']},
   // Axis 04
-  {axis:'Axis 04 / Heart ⇔ Logic',q:'後輩が明らかに落ち込んでいる。あなたは?',opts:['まず話を聞いて寄り添う','原因を分析して解決策を一緒に考える','心配だけど、どう声をかければいいかわからない','自分で立ち直るだろうと様子を見る'],sc:['H','L','N','N']},
-  {axis:'Axis 04 / Heart ⇔ Logic',q:'指名がつかない若手スタッフを見て思うこと。',opts:['気持ちを支えてあげたい','何が原因か数字で洗い出したい','心配だけど声がかけられない','正直、自分のことで精一杯'],sc:['H','L','N','N']},
-  {axis:'Axis 04 / Heart ⇔ Logic',q:'自分が一番嬉しい瞬間は?',opts:['お客様に「ありがとう」と言われた時','売上・指名数が目標を超えた時','給料・歩合が上がった時'],sc:['H','L','L']},
-  {axis:'Axis 04 / Heart ⇔ Logic',q:'クレームが入った時、まず動くのは?',opts:['お客様の気持ちを汲んで謝る','何が起きたか事実確認を急ぐ','店長や上司に報告・相談する'],sc:['H','L','N']},
-  {axis:'Axis 04 / Heart ⇔ Logic',q:'チームミーティング、自分の発言タイプは?',opts:['雰囲気や空気感の話が多い','数字や具体策の話が多い','ほぼ発言しない、聞き役'],sc:['H','L','N']},
+  {axis:'Axis 04 / Heart ⇔ Logic',q:'後輩が明らかに落ち込んでいる。あなたは？',opts:['まず話を聞いて寄り添う','原因を分析して解決策を一緒に考える','心配だけど、どう声をかければいいかわからない','自分で立ち直るだろうと様子を見る'],sc:['H','L','N','N']},
+  {axis:'Axis 04 / Heart ⇔ Logic',q:'指名がつかない若手スタッフを見て思うことは？',opts:['気持ちを支えてあげたい','何が原因か数字や行動で洗い出したい','心配だけど声がかけられない','正直、自分のことで精一杯'],sc:['H','L','N','N']},
+  {axis:'Axis 04 / Heart ⇔ Logic',q:'自分が一番嬉しい瞬間は？',opts:['お客様に「ありがとう」と言われた時','売上・指名数が目標を超えた時','後輩やスタッフが成長した瞬間','給料・歩合・利益が上がった時'],sc:['H','L','H','L']},
+  {axis:'Axis 04 / Heart ⇔ Logic',q:'クレームが入った時、まず動くのは？',opts:['お客様の気持ちを汲んで誠実に謝る','何が起きたか事実確認を急ぐ','店長や上司に素早く報告・相談する','再発しないよう仕組みや原因を考える'],sc:['H','L','N','L']},
+  {axis:'Axis 04 / Heart ⇔ Logic',q:'チームミーティングでの自分の発言スタイルは？',opts:['雰囲気や空気感、感情的な話が多い','数字や具体的な改善策の話が多い','聞き役に回ることが多い','全体をまとめる・整理する役割が多い'],sc:['H','L','N','B']},
   // Stylist Deep
-  {axis:'Stylist Deep',q:'指名売上、正直今いくらくらい?',opts:['月150万以上','月100〜150万','月60〜100万','月60万以下'],sc:['S4','S3','S2','S1']},
-  {axis:'Stylist Deep',q:'お客様との関係、本音は?',opts:['担当を超えた関係、友達感覚の人もいる','適度な距離感が心地よい','施術中だけの関係でいい'],sc:['H','N','L']},
-  {axis:'Stylist Deep',q:'自分の武器はどれ?',opts:['技術力・再現性','接客・会話力・居心地','世界観・SNS・ビジュアル','武器といえるほどのものはまだない'],sc:['CRAFT','HEART','CREATE','N']},
-  {axis:'Stylist Deep',q:'組織に縛られることへの本音。',opts:['チームの方が安心、縛られても構わない','ある程度の自由があれば大丈夫','正直しんどい、自分のペースで働きたい'],sc:['C','N','S']},
-  {axis:'Stylist Deep',q:'5年後の理想の働き方に近いのは?',opts:['今のサロンでポジションを上げていく','独立か業務委託で自分の裁量で働く','別のサロンに移って新しい環境で挑戦'],sc:['STAY','FREE','MOVE']},
+  {axis:'Stylist Deep',q:'__Q21__',opts:['__A__','__B__','__C__','__D__'],sc:['S4','S3','S2','S1']},
+  {axis:'Stylist Deep',q:'お客様との関係、本音は？',opts:['担当を超えた関係、友達感覚の人もいる','適度な距離感が心地よい','施術中だけの関係でいい','お客様によって使い分けている'],sc:['H','N','L','N']},
+  {axis:'Stylist Deep',q:'自分の武器はどれ？',opts:['技術力・再現性・丁寧さ','接客・会話力・居心地の良さ','世界観・SNS・ビジュアルセンス','武器といえるほどのものはまだない'],sc:['CRAFT','HEART','CREATE','N']},
+  {axis:'Stylist Deep',q:'組織やルールに縛られることへの本音は？',opts:['チームの方が安心、ある程度縛られても構わない','ある程度の自由があれば大丈夫','正直しんどい、自分のペースで働きたい','ルールは必要だが、裁量も欲しい'],sc:['C','N','S','N']},
+  {axis:'Stylist Deep',q:'5年後の理想の働き方は？',opts:['今の組織でポジションを上げていく','独立か業務委託で自分の裁量で働く','別の環境に移って新しい挑戦をする','自分のサロンや事業を持っている'],sc:['STAY','FREE','MOVE','OWNER']},
   // Business View
-  {axis:'Business View',q:'飲み会、幹事を頼まれたら?',opts:['率先してやる、仕切るのが好き','任されたらやる、でも本音はめんどくさい','サポートに回る方が得意','できれば誰かに任せたい'],sc:['B','N','N','S']},
-  {axis:'Business View',q:'お金と時間、どちらが大事?',opts:['お金、稼げれば時間は作れる','時間、お金では買えないものがある','今はお金、将来は時間'],sc:['Sc','St','N']},
-  {axis:'Business View',q:'尊敬する人は誰に近い?',opts:['起業家・経営者(孫正義・堀江貴文系)','アーティスト・クリエイター','職人・専門家(一つを極めた人)','リーダー・教育者(人を育てる人)'],sc:['B','CREATE','CRAFT','EDU']},
-  {axis:'Business View',q:'子供の頃、クラスでどんなポジション?',opts:['リーダー・学級委員タイプ','参謀・副委員長タイプ','自分の世界があった一匹狼','みんなを陰で支えるタイプ'],sc:['B','N2','S','C']},
-  {axis:'Business View',q:'人生で一番後悔したくないのは?',opts:['挑戦しなかったこと','大切な人との時間を疎かにしたこと','お金に苦労したこと','自分らしく生きられなかったこと'],sc:['Sc','H','Sc','S']},
+  {axis:'Business View',q:'飲み会の幹事を頼まれたら？',opts:['率先してやる、仕切るのが好き','任されたらやる、でも本音はめんどくさい','サポートに回る方が得意','できれば誰かに任せたい'],sc:['B','N','N','S']},
+  {axis:'Business View',q:'尊敬する人物のタイプに近いのは？',opts:['起業家・経営者（孫正義・堀江貴文系）','アーティスト・クリエイター','職人・専門家（一つを極めた人）','リーダー・教育者（人を育てる人）'],sc:['B','CREATE','CRAFT','EDU']},
+  {axis:'Business View',q:'学生時代、クラスでのポジションは？',opts:['クラスの中心にいた、友達が多かった','特定の仲間と深く付き合うタイプ','趣味や個人競技に没頭していた','裏方で場を支えるのが好きだった'],sc:['B','N','S','C']},
+  {axis:'Business View',q:'人生で一番後悔したくないのは？',opts:['挑戦しなかったこと','大切な人との時間を疎かにしたこと','お金に苦労したこと','自分らしく生きられなかったこと'],sc:['Sc','H','Sc','S']},
+  {axis:'Business View',q:'仕事で大きな失敗をした時、あなたはどうする？',opts:['悔しいが、すぐ次の手を考えて動き出す','原因を徹底的に分析してから次に進む','信頼できる人に相談して一緒に立て直す','しばらく落ち込むが、時間が経てば立ち直る'],sc:['Sc','L','H','St']},
 ];
 
-const TYPES = {
-  SOLO:{name:'一人サロンオーナー型',catch:'自分の城を静かに構える',desc:'技術と接客を一人で完結させ、自分のペースと裁量で経営するタイプ。スタッフを抱えるリスクより、完全な自由を重視する。小さくても揺るぎない自分の城を築いていく。'},
-  MICRO:{name:'小規模プレイングオーナー型',catch:'3〜5人を束ねる現場経営者',desc:'自分もハサミを握りながら小さなチームを動かす。顔の見える関係と数字の両立を重視するリアリスト。現場感覚を持ちながら経営もできる、美容業界で最も需要の高いタイプ。'},
-  MULTI:{name:'複数店舗オーナー型',catch:'現場も経営も二刀流',desc:'2〜5店舗を自力で展開するハイブリッド型。現場感覚を持ちながら組織も作れる。プレイヤーとビルダーの資質を兼ね備えた、拡大期の経営者に最も多いタイプ。'},
-  SCALE:{name:'多店舗展開オーナー型',catch:'組織を大きくする経営者',desc:'6店舗以上を目指し、仕組みと人材で事業を拡大する。戦略・採用・マネジメントが主戦場。数字で判断し、攻めの決断を恐れない。組織を大きくするエネルギーに満ちている。'},
-  FC:{name:'FCオーナー型',catch:'仕組みに乗って自分の店を持つ',desc:'確立されたブランドと仕組みに乗って経営するタイプ。ゼロから作るリスクより、証明されたモデルで確実に成果を出すことを重視する。独立志向はあるが、堅実さも兼ね備える。'},
-  NO2:{name:'参謀 NO.2型',catch:'トップを支える最強の右腕',desc:'経営者の思考を先読みし、組織の潤滑油となる。表に出るより裏で支えることに喜びを感じる、組織にとって不可欠な存在。いないと組織が回らない、縁の下の戦略家。'},
-  EXEC:{name:'幹部型',catch:'組織を動かす管理職',desc:'複数店舗を統括し、数字と人材の両面から組織を強くする。論理的な判断力と、チームへの影響力を持つ。経営者と現場の橋渡し役として、組織の成長を支える実力者。'},
-  MANAGER:{name:'店長型',catch:'現場を束ねるキャプテン',desc:'スタッフの状態を察知し、現場の空気を整えながらチームを動かす。数字も人も、バランスよく見られるリーダー。カリスマで引っ張るより、一人ひとりに寄り添うスタイル。'},
-  STAR:{name:'カリスマ美容師型',catch:'SNSと技術で業界を動かす',desc:'発信力と技術力を掛け合わせ、自分自身がブランドになる。指名売上と知名度を同時に伸ばす。SNSを武器に業界での存在感を高め、サロンの枠を超えて活躍するタイプ。'},
-  TOP:{name:'指名スタイリスト型',catch:'目の前の一人に深く向き合う',desc:'SNSより目の前のお客様との関係を大切にし、安定した高い指名率でサロンを支える。長期的な信頼関係を築くプロ。一度担当したお客様が何年も離れない、究極の接客力を持つ。'},
-  CONTRACT:{name:'業務委託型',catch:'会社の仕組みを使って安定して稼ぐ',desc:'サロンが集客・経費を負担し、売上の40〜50%が報酬。技術に集中できる安定した環境を好む。指名売上50〜70万が業態選択のボーダーラインで、リスクを管理しながら着実に稼ぐ。'},
-  FREELANCE:{name:'フリーランス型',catch:'腕一本で自由に稼ぐ実力者',desc:'売上80%還元または席代・薬剤代自己負担。集客はSNSと紹介のみ。高い指名力と技術力を武器に、完全な自由を手にした実力者。指名売上70万超の美容師に向いている働き方。'},
-  EDU:{name:'教育者型',catch:'体系立てて後輩を育てる',desc:'技術を論理的に分解し、再現性のある指導ができる。サロン全体の技術レベルを底上げする、組織の財産。自分が磨いた技術を次の世代に伝えることに、最大の喜びを感じるタイプ。'},
-  MENTOR:{name:'メンター型',catch:'人を育てる温かい先輩',desc:'後輩の悩みを受け止め、技術だけでなく人間的にも成長させる。育てた人材が長く続く、組織の安定を生む存在。あなたに育てられたスタッフは辞めにくく、長く業界に残る。'},
-  CREATOR:{name:'クリエイター型',catch:'作品とSNSで世界観を作る',desc:'撮影・SNS・ヘアデザインで独自の世界観を表現。技術よりも表現力が武器で、サロンのブランドを高める。商業的な成功以上に「自分らしい表現」を重視し、熱狂的なファンを持つ。'},
-  CRAFTER:{name:'技術探求者型',catch:'職人の道を極める',desc:'売上より技術の深化に情熱を注ぐ。セミナー・薬剤研究・コンテスト——技術面で全員から一目置かれる存在。一つの技術を追求し続けることに迷いがない、純粋な職人気質のタイプ。'},
+// Q21はポジションによって切り替え
+const Q21_STYLIST = {
+  q:'指名売上、正直今いくらくらい？',
+  opts:['月200万以上','月100〜200万','月50〜100万','月50万以下'],
+  sc:['S4','S3','S2','S1']
+};
+const Q21_OWNER = {
+  q:'今のサロンの月商はどのくらい？',
+  opts:['月1,000万以上','月500〜1,000万','月200〜500万','月200万以下'],
+  sc:['S4','S3','S2','S1']
 };
 
-// ===== STATE (一箇所だけ) =====
+// ===== 16タイプ定義 =====
+const TYPES = {
+  SOLO:{name:'孤高の職人オーナー型',catch:'自分の城を静かに構える',desc:'技術と接客を一人で完結させ、自分のペースで経営するタイプ。スタッフを抱えるリスクより完全な自由を重視する。本当は数人のスタッフと働く気持ちもあるが、やはり一人の方が楽でリスクが少なく、目の前のお客様に向き合えると気づいている。小さくても揺るぎない、自分の城を築いていく。'},
+  MICRO:{name:'小規模プレイングオーナー型',catch:'ハサミを握りながら経営する',desc:'自分もハサミを握りながら小さなチームを動かす。いつかはハサミを置くタイミングを計りつつも、職人気質でしっかり利益を出したいタイプ。この規模は美容業界で最も倒産リスクが高く、スタッフの離職や数字管理など考えることは多い。それでも現場感覚を手放さないのがこのタイプの強さ。'},
+  MULTI:{name:'複数店舗オーナー型',catch:'2〜5店舗を自力で動かす',desc:'2〜5店舗を展開するハイブリッド型。2〜3店舗のうちは非常に危険な時期で、自分がハサミを置くと利益構造が難しくなる。それでも拡大したい気持ちとリスクの狭間で、スタッフ還元をどこまでやるかが常に課題。プレイヤーとビルダーの資質を兼ね備えた、拡大期の経営者。'},
+  SCALE:{name:'多店舗展開オーナー型',catch:'業界を動かす帝国構築タイプ',desc:'10店舗以上を目指し、仕組みと人材で事業を拡大する。真面目だけではここまで来られない——少し突拍子もない、変わった人じゃないと成し得ない領域。人に好かれる才能もかなりある。美容業界でも本当に少ない、本物の経営者タイプ。'},
+  FC:{name:'リスク軽減FCオーナー型',catch:'仕組みに乗って自分の店を持つ',desc:'確立されたブランドと仕組みに乗って経営するタイプ。ゼロから作るリスクより証明されたモデルで確実に成果を出すことを重視する。ただロイヤリティや本部との関係で数年後に問題が起きやすく、本部の失脚とともに自分の方向性も考え始めることが多い。独立志向はあるが、堅実さも兼ね備える。'},
+  NO2:{name:'最強参謀No.2型',catch:'トップを支える影の司令塔',desc:'経営者の思考を先読みし、組織の潤滑油となる。いい会社・伸びる会社はここがしっかりしている。表に出るより裏で支えることに喜びを感じる、組織にとって不可欠な存在。No.2の給料でその会社の価値がわかる。いないと組織が回らない、縁の下の戦略家。'},
+  EXEC:{name:'組織幹部型',catch:'数字と人材で組織を動かす',desc:'複数店舗を統括し、数字と人材の両面から組織を強くする。本当にマネジメントができる幹部は少なく、幹部が強い会社ほど必ず伸びる。集客・マネジメント・人の管理ができる人が適任。経営者と現場の橋渡し役として組織の成長を支える実力者。'},
+  MANAGER:{name:'現場店長型',catch:'現場を束ねるキャプテン',desc:'スタッフの状態を察知し、現場の空気を整えながらチームを動かす。店舗内で人気があり売上もトップが好ましい。毎日現場で共にするので人間力がより必要とされる。店長でお店の良し悪しは決まる——それほど重要なポジション。数字も人も、バランスよく見られるリーダー。'},
+  STAR:{name:'SNSカリスマ指名無双型',catch:'SNSと技術で業界を動かす',desc:'発信力と技術力を掛け合わせ、自分自身がブランドになる。インスタでバズると20代で月売上300〜400万が平気で出る時代。報酬も月100万超えの20代がここに該当する。SNSがずっと強ければ求人も売上も独立も全部うまくいく、現代美容師の最強モデル。'},
+  TOP:{name:'TOPスタイリスト型',catch:'根強い指名客を積み上げる',desc:'個人SNSはさほど強くなくても、地域や目の前のお客様の満足度が高く、積み上げてきた根強い指名客が多い。このタイプは組織にも必要だし独立しても成功する可能性が高い。一度担当したお客様が何年も離れない、究極の接客力と信頼を持つ。'},
+  CONTRACT:{name:'業務委託スタイリスト型',catch:'会社の仕組みを使って稼ぐ',desc:'実力がなくても稼ぎやすく、あればさらに稼げる。報酬は平均40万円以上が多く、休みも時間も制限が少ない。ただ技術のアップデートをされない方が多いのがリスク。若いうちに移籍してしっかり稼いでいる、リスクを管理しながら着実に稼ぐプレイヤー。'},
+  FREELANCE:{name:'1人独立スタイリスト型',catch:'腕一本で自由に稼ぐ実力者',desc:'指名売上70万円以上が必要になるが、内装費がかからず売上の約70%が報酬になる。ただ新規集客はないため、実力者が独立前に移籍するのはいいが、70万前後で行くとその先が危険。売上100万円以上をキープできる本物の実力者のための働き方。'},
+  EDU:{name:'教育者型',catch:'体系立てて後輩を育てる',desc:'技術を論理的に分解し、再現性のある指導ができる。お客様にもそこそこ人気があり、後輩教育に長けて人からも好かれ面倒見がよい。新しい教育はすぐ報酬に変わりにくいが、正しいレギュラーサロンには必ず必要な存在。サロン全体の技術レベルを底上げする、組織の財産。'},
+  MENTOR:{name:'メンター型',catch:'人を育てる温かい先輩',desc:'思いやりがあり優しい先輩。店長や幹部という役職はつかないが、店舗にいてくれると助かる存在。後輩の悩みを受け止め、技術だけでなく人間的にも成長させる。こういった人が長く勤めてくれるサロンは強い。育てた人材が長く続く、組織の安定を生む存在。'},
+  CREATOR:{name:'世界観クリエイター型',catch:'作品とSNSで独自の世界を作る',desc:'撮影やコンテスト作品作りに長けていて、こういったことが心の底から好き。売上も大事だがクリエイティブをしている時間が一番楽しい。もしかしたら本来美容師として一番必要なタイプかもしれない。技術よりも表現力が武器で、熱狂的なファンを持つ唯一無二の存在。'},
+  CRAFTER:{name:'技術一筋型',catch:'職人の道を極める求道者',desc:'売上より技術の深化に情熱を注ぐ。技術一筋はいいが、こだわりが強くお客様の支持がいまいちなことも。カットはうまいが指名はつかない頑固職人タイプ。セミナー・薬剤研究・コンテスト——技術面で全員から一目置かれる存在。接客よりも技術を追求し続ける純粋な職人。'},
+};
+
+// ===== STATE =====
 let current = 0;
 let answers = [];
-let scores = {P:0,B:0,S:0,C:0,Sc:0,St:0,H:0,L:0,S1:0,S2:0,S3:0,S4:0,CRAFT:0,CREATE:0,HEART:0,FREE:0,STAY:0,MOVE:0,N2:0,N:0,EDU:0};
+let scores = {P:0,B:0,S:0,C:0,Sc:0,St:0,H:0,L:0,S1:0,S2:0,S3:0,S4:0,CRAFT:0,CREATE:0,HEART:0,FREE:0,STAY:0,MOVE:0,OWNER:0,N:0,EDU:0};
 let position = null;
 let salonWork = null;
+let questionsArr = [];
 
 // ===== POSITION SCREEN =====
 function showPositionScreen() {
@@ -285,6 +274,7 @@ function selectPosition(pos) {
     if (pos === 'D' || pos === 'E') {
       showSalonWorkScreen();
     } else {
+      buildQuestions();
       startMainQuiz();
     }
   }, 280);
@@ -313,13 +303,26 @@ function selectSalonWork(sw) {
   document.querySelectorAll('#card-sw .quiz-opt').forEach((el,i)=>{
     if('ABCD'[i]===sw) el.classList.add('selected');
   });
-  setTimeout(() => startMainQuiz(), 280);
+  setTimeout(() => {
+    buildQuestions();
+    startMainQuiz();
+  }, 280);
+}
+
+function buildQuestions() {
+  questionsArr = Q.map((q, i) => {
+    if (i === 20) {
+      const q21 = position === 'E' ? Q21_OWNER : Q21_STYLIST;
+      return {...q, q: q21.q, opts: q21.opts, sc: q21.sc};
+    }
+    return q;
+  });
 }
 
 function startMainQuiz() {
   current = 0;
   answers = [];
-  scores = {P:0,B:0,S:0,C:0,Sc:0,St:0,H:0,L:0,S1:0,S2:0,S3:0,S4:0,CRAFT:0,CREATE:0,HEART:0,FREE:0,STAY:0,MOVE:0,N2:0,N:0,EDU:0};
+  scores = {P:0,B:0,S:0,C:0,Sc:0,St:0,H:0,L:0,S1:0,S2:0,S3:0,S4:0,CRAFT:0,CREATE:0,HEART:0,FREE:0,STAY:0,MOVE:0,OWNER:0,N:0,EDU:0};
   initCards();
   updateProgress();
 }
@@ -327,7 +330,7 @@ function startMainQuiz() {
 function initCards() {
   const container = document.getElementById('quizCards');
   container.innerHTML = '';
-  Q.forEach((q, i) => {
+  questionsArr.forEach((q, i) => {
     const card = document.createElement('div');
     card.className = 'quiz-card' + (i === 0 ? ' active' : '');
     card.id = 'card-' + i;
@@ -353,15 +356,14 @@ function showScreen(id) {
 }
 
 function startQuiz() {
-  position = null;
-  salonWork = null;
+  position = null; salonWork = null; questionsArr = [];
   showScreen('quiz');
   showPositionScreen();
 }
 
 function selectAnswer(qIdx, optIdx) {
   if (qIdx !== current) return;
-  const q = Q[qIdx];
+  const q = questionsArr[qIdx];
   const sc = q.sc[optIdx];
   const opts = document.querySelectorAll(`#card-${qIdx} .quiz-opt`);
   opts[optIdx].classList.add('selected');
@@ -369,7 +371,7 @@ function selectAnswer(qIdx, optIdx) {
   if (scores[sc] !== undefined) scores[sc]++;
   setTimeout(() => {
     current++;
-    if (current >= Q.length) {
+    if (current >= questionsArr.length) {
       finishQuiz();
     } else {
       const prevCard = document.getElementById('card-' + (current-1));
@@ -385,7 +387,7 @@ function selectAnswer(qIdx, optIdx) {
 
 function goBack() {
   if (current <= 0) return;
-  const prevQ = Q[current-1];
+  const prevQ = questionsArr[current-1];
   const prevAns = answers[current-1];
   if (prevAns !== undefined) {
     const sc = prevQ.sc[prevAns];
@@ -403,9 +405,9 @@ function goBack() {
 }
 
 function updateProgress() {
-  document.getElementById('qCount').textContent = `${current+1} / ${Q.length}`;
-  document.getElementById('qAxis').textContent = Q[current]?.axis || '';
-  document.getElementById('qFill').style.width = ((current+1)/Q.length*100) + '%';
+  document.getElementById('qCount').textContent = `${current+1} / ${questionsArr.length}`;
+  document.getElementById('qAxis').textContent = questionsArr[current]?.axis || '';
+  document.getElementById('qFill').style.width = ((current+1)/questionsArr.length*100) + '%';
   document.getElementById('backBtn').disabled = current === 0;
 }
 
@@ -422,66 +424,105 @@ function finishQuiz() {
   setTimeout(() => { clearInterval(iv); showResult(); }, 3000);
 }
 
-// ===== 判定ロジック (改善版) =====
+// ===== 判定ロジック =====
 function determineType() {
-  const isFree = scores.FREE > scores.STAY;
-  const isScale = scores.Sc > scores.St;
-  const isCrew = scores.C >= scores.S;
-  const isHeart = scores.H >= scores.L;
   const isBuilder = scores.B > scores.P;
+  const isCrew = scores.C > scores.S;
+  const isScale = scores.Sc > scores.St;
+  const isHeart = scores.H >= scores.L;
+  const isFree = scores.FREE > scores.STAY;
+  const wantsOwner = scores.OWNER >= 1;
   const isCreate = scores.CREATE >= scores.CRAFT;
+  const isEdu = scores.EDU >= 1;
 
-  // S1〜S4: ポジションD/Eかつサロンワーク少ない場合は指名売上スコアを補正しない
-  const ignoreSalesScore = (position === 'D' || position === 'E') && (salonWork === 'C' || salonWork === 'D');
-  const salesLevel = ignoreSalesScore ? 2 : // 補正なし→中程度扱い
-    scores.S4 >= 1 ? 4 :
-    scores.S3 >= 1 ? 3 :
-    scores.S2 >= 1 ? 2 : 1;
+  // 指名売上レベル
+  const salesLv = scores.S4>=1 ? 4 : scores.S3>=1 ? 3 : scores.S2>=1 ? 2 : 1;
+
+  // サロンワーク補正（D/E向け）
+  const swHeavy = salonWork === 'A' || salonWork === 'B';
+  const swLight = salonWork === 'C' || salonWork === 'D';
 
   // ===== オーナー・経営者(E) =====
   if (position === 'E') {
+    // よっぽどの場合のみ非オーナータイプ
+    if (!isBuilder && !isScale && isHeart && isCrew && scores.H >= 4) return 'MENTOR';
+    if (!isBuilder && !isScale && !isHeart && scores.L >= 4) return 'CRAFTER';
+    // オーナー系判定
     if (isScale && isCrew) return 'SCALE';
     if (isScale) return 'MULTI';
     if (isBuilder && isCrew) return 'MULTI';
     if (isBuilder) return 'FC';
+    // Solo×Stable寄り
     return 'SOLO';
   }
 
   // ===== 幹部・NO.2(D) =====
   if (position === 'D') {
-    if (salonWork === 'A' || salonWork === 'B') {
-      return isHeart ? 'MANAGER' : 'EXEC';
+    // オーナー志向が強い場合
+    if (wantsOwner && isScale && isBuilder) return 'MULTI';
+    if (wantsOwner && isBuilder) return 'FC';
+    // サロンワーク多め
+    if (swHeavy) {
+      if (isHeart) return 'MANAGER';
+      return 'EXEC';
     }
-    return isHeart ? 'NO2' : 'EXEC';
+    // サロンワーク少なめ
+    if (isHeart) return 'NO2';
+    return 'EXEC';
   }
 
   // ===== 店長・副店長(C) =====
   if (position === 'C') {
-    if (isScale) return 'MANAGER';
-    return isHeart ? 'MENTOR' : 'EDU';
+    if (wantsOwner && isBuilder && isScale) return 'MULTI';
+    if (wantsOwner && isBuilder) return 'MICRO';
+    if (isScale && isBuilder) return 'MANAGER';
+    if (isHeart && isCrew) return 'MENTOR';
+    if (!isHeart && isEdu) return 'EDU';
+    if (isHeart) return 'MENTOR';
+    return 'MANAGER';
   }
 
   // ===== スタイリスト(B) / アシスタント(A) =====
+
+  // Builder系（将来オーナー・組織系志向）
   if (isBuilder) {
-    if (isScale && isCrew) return 'MULTI';
-    if (isScale) return 'MULTI'; // Solo×Scale×BuilderもMULTI寄り
-    if (isCrew) return isHeart ? 'NO2' : 'EXEC';
-    return isHeart ? 'MENTOR' : 'EDU';
+    if (wantsOwner && isScale) return 'MULTI';
+    if (wantsOwner) return 'MICRO';
+    if (isScale && isCrew) return 'EXEC';
+    if (isScale) return 'MULTI';
+    if (isCrew && isHeart) return 'MENTOR';
+    if (isCrew) return 'NO2';
+    if (isEdu) return 'EDU';
+    return 'MENTOR';
   }
 
   // Player系
+  // フリーランス・業務委託志向
   if (isFree) {
-    if (salesLevel >= 4) return 'FREELANCE';
-    if (salesLevel >= 3) return 'FREELANCE';
+    if (salesLv >= 3) return 'FREELANCE';
     return 'CONTRACT';
   }
+
+  // オーナー志向あり
+  if (wantsOwner) {
+    if (isScale) return 'MULTI';
+    return 'MICRO';
+  }
+
+  // Scale志向
   if (isScale) {
-    if (isCreate || !isCrew) return 'STAR';
+    if (isCreate) return 'STAR';
+    if (!isCrew) return 'STAR';
     return 'TOP';
   }
+
+  // Crew志向
   if (isCrew) {
-    return isHeart ? 'MANAGER' : 'CONTRACT';
+    if (isHeart) return 'MANAGER';
+    return 'CONTRACT';
   }
+
+  // Solo志向
   if (isCreate) return 'CREATOR';
   if (!isHeart) return 'CRAFTER';
   return 'TOP';
@@ -541,10 +582,7 @@ function showResult() {
         <div class="result-cta-item">あなたのタイプに合うサロン紹介</div>
       </div>
       <a class="btn-line" href="https://line.me/R/ti/p/@210mmztg" target="_blank">
-        <span>
-          LINEで完全版を受け取る
-          <span class="btn-line-sub">友だち追加で詳細レポートが届きます</span>
-        </span>
+        <span>LINEで完全版を受け取る<span class="btn-line-sub">友だち追加で詳細レポートが届きます</span></span>
         <span>→</span>
       </a>
     </div>
@@ -560,13 +598,12 @@ function showResult() {
       </div>
     </div>
     <div style="margin-top:24px;padding:16px;background:rgba(255,255,255,0.04);border:1px solid var(--line);font-family:var(--sans);font-size:11px;color:var(--gray);line-height:2">
-      <div style="color:var(--gold);font-size:9px;letter-spacing:0.3em;text-transform:uppercase;margin-bottom:8px">Debug — Score Data</div>
+      <div style="color:var(--gold);font-size:9px;letter-spacing:0.3em;text-transform:uppercase;margin-bottom:8px">Debug</div>
       P:${scores.P} B:${scores.B} | S:${scores.S} C:${scores.C} | Sc:${scores.Sc} St:${scores.St} | H:${scores.H} L:${scores.L}<br>
-      FREE:${scores.FREE} STAY:${scores.STAY} | S4:${scores.S4} S3:${scores.S3} S2:${scores.S2} S1:${scores.S1}<br>
-      CRAFT:${scores.CRAFT} CREATE:${scores.CREATE} | N2:${scores.N2} | pos:${position} sw:${salonWork}
+      FREE:${scores.FREE} STAY:${scores.STAY} OWNER:${scores.OWNER} | S4:${scores.S4} S3:${scores.S3} S2:${scores.S2} S1:${scores.S1}<br>
+      CRAFT:${scores.CRAFT} CREATE:${scores.CREATE} EDU:${scores.EDU} | pos:${position} sw:${salonWork}
     </div>
   `;
-
   showScreen('result');
   setTimeout(() => {
     document.querySelectorAll('.result-axis-bar-fill').forEach(el => { el.style.width = el.style.width; });
