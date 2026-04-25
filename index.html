@@ -241,6 +241,7 @@ let answers = [];
 let scores = {P:0,B:0,S:0,C:0,Sc:0,St:0,H:0,L:0,S1:0,S2:0,S3:0,S4:0,CRAFT:0,CREATE:0,HEART:0,FREE:0,STAY:0,MOVE:0,OWNER:0,N:0,EDU:0};
 let position = null;
 let salonWork = null;
+let age = null;
 let questionsArr = [];
 
 // ===== POSITION SCREEN =====
@@ -274,8 +275,7 @@ function selectPosition(pos) {
     if (pos === 'D' || pos === 'E') {
       showSalonWorkScreen();
     } else {
-      buildQuestions();
-      startMainQuiz();
+      showAgeScreen();
     }
   }, 280);
 }
@@ -302,6 +302,32 @@ function selectSalonWork(sw) {
   salonWork = sw;
   document.querySelectorAll('#card-sw .quiz-opt').forEach((el,i)=>{
     if('ABCD'[i]===sw) el.classList.add('selected');
+  });
+  setTimeout(() => showAgeScreen(), 280);
+}
+
+function showAgeScreen() {
+  document.getElementById('quizCards').innerHTML = `
+    <div class="quiz-card active" id="card-age">
+      <div class="quiz-q-num" style="color:var(--gold);font-size:11px;letter-spacing:0.3em;text-transform:uppercase">Before We Start</div>
+      <div class="quiz-q-text">あなたの年齢は？</div>
+      <div class="quiz-options">
+        ${['24歳以下','25〜30歳','31〜35歳','36〜40歳','41歳以上'].map((opt,i)=>`
+          <button class="quiz-opt" onclick="selectAge('${'ABCDE'[i]}')">
+            <span class="quiz-opt-letter">${'ABCDE'[i]}.</span>
+            <span>${opt}</span>
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `;
+  document.getElementById('qAxis').textContent = 'Age Check';
+}
+
+function selectAge(a) {
+  age = a;
+  document.querySelectorAll('#card-age .quiz-opt').forEach((el,i)=>{
+    if('ABCDE'[i]===a) el.classList.add('selected');
   });
   setTimeout(() => {
     buildQuestions();
@@ -356,7 +382,7 @@ function showScreen(id) {
 }
 
 function startQuiz() {
-  position = null; salonWork = null; questionsArr = [];
+  position = null; salonWork = null; age = null; questionsArr = [];
   showScreen('quiz');
   showPositionScreen();
 }
@@ -435,8 +461,22 @@ function determineType() {
   const isCreate = scores.CREATE >= scores.CRAFT;
   const isEdu = scores.EDU >= 1;
 
-  // 指名売上レベル
-  const salesLv = scores.S4>=1 ? 4 : scores.S3>=1 ? 3 : scores.S2>=1 ? 2 : 1;
+  // 指名売上レベル（年齢補正あり）
+  // 同じ売上でも年齢によって意味が違う
+  // A=24以下, B=25-30, C=31-35, D=36-40, E=41以上
+  let salesLv = scores.S4>=1 ? 4 : scores.S3>=1 ? 3 : scores.S2>=1 ? 2 : 1;
+  // 年齢補正：若いほど同じ売上でも高評価、年齢高いほど厳しく評価
+  if (age === 'A') salesLv = Math.min(4, salesLv + 1); // 24歳以下は+1ボーナス
+  if (age === 'D') salesLv = Math.max(1, salesLv - 1); // 36-40歳は-1
+  if (age === 'E') salesLv = Math.max(1, salesLv - 1); // 41歳以上は-1
+  
+  // 年齢×ポジション補正
+  // 30歳以上で売上低め → EDU/MENTOR/CONTRACT寄りに補正
+  // ただしサロンワーク少ない幹部・オーナー（D/EでswがC/D）は除外
+  const ignoreSalesAge = (position === 'D' || position === 'E') && (salonWork === 'C' || salonWork === 'D');
+  const isOlderLowSales = !ignoreSalesAge && (age === 'C' || age === 'D' || age === 'E') && salesLv <= 2;
+  // 24歳以下で売上高め → STAR/FREELANCE適性あり
+  const isYoungHighSales = age === 'A' && salesLv >= 3;
 
   // サロンワーク補正（D/E向け）
   const swHeavy = salonWork === 'A' || salonWork === 'B';
@@ -497,11 +537,22 @@ function determineType() {
   }
 
   // Player系
+  // 年齢高め×売上低め → CONTRACT/EDU/MENTOR寄り
+  if (isOlderLowSales && !wantsOwner && !isBuilder) {
+    if (isHeart) return 'MENTOR';
+    if (isEdu) return 'EDU';
+    return 'CONTRACT';
+  }
+  
   // フリーランス・業務委託志向
   if (isFree) {
     if (salesLv >= 3) return 'FREELANCE';
     return 'CONTRACT';
   }
+  
+  // 若い×売上高め → STAR適性
+  if (isYoungHighSales && isCreate) return 'STAR';
+  if (isYoungHighSales && !isCrew) return 'STAR';
 
   // オーナー志向あり
   if (wantsOwner) {
@@ -601,7 +652,7 @@ function showResult() {
       <div style="color:var(--gold);font-size:9px;letter-spacing:0.3em;text-transform:uppercase;margin-bottom:8px">Debug</div>
       P:${scores.P} B:${scores.B} | S:${scores.S} C:${scores.C} | Sc:${scores.Sc} St:${scores.St} | H:${scores.H} L:${scores.L}<br>
       FREE:${scores.FREE} STAY:${scores.STAY} OWNER:${scores.OWNER} | S4:${scores.S4} S3:${scores.S3} S2:${scores.S2} S1:${scores.S1}<br>
-      CRAFT:${scores.CRAFT} CREATE:${scores.CREATE} EDU:${scores.EDU} | pos:${position} sw:${salonWork}
+      CRAFT:${scores.CRAFT} CREATE:${scores.CREATE} EDU:${scores.EDU} | pos:${position} sw:${salonWork} age:${age}
     </div>
   `;
   showScreen('result');
