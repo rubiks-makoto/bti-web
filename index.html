@@ -536,6 +536,21 @@ function determineType() {
     return 'MENTOR';
   }
 
+  // ===== 重要ルール =====
+  // 30歳以上×サロンワーク普通以上×指名売上50万以下
+  // → OWNER系・FREELANCE除外、現実的なタイプに誘導
+  const isRealisticBlock = 
+    (age === 'C' || age === 'D' || age === 'E') &&
+    (salonWork === 'A' || salonWork === 'B' || salonWork === null) &&
+    scores.S1 >= 1 && scores.S2 === 0 && scores.S3 === 0 && scores.S4 === 0;
+
+  if (isRealisticBlock) {
+    if (isHeart && isCrew) return 'MENTOR';
+    if (isEdu) return 'EDU';
+    if (isCrew) return 'MANAGER';
+    return 'CONTRACT';
+  }
+
   // Player系
   // 年齢高め×売上低め → CONTRACT/EDU/MENTOR寄り
   if (isOlderLowSales && !wantsOwner && !isBuilder) {
