@@ -675,6 +675,14 @@ function showResult() {
     </div>
   `;
   showScreen('result');
+  // Set LINE URL with type info
+  setTimeout(() => {
+    const lineBtn = document.getElementById('lineBtn');
+    if (lineBtn) {
+      const msg = 'BTI診断結果：【' + key + '】' + type.name + 'で診断されました！詳細レポートをお願いします。';
+      lineBtn.href = 'https://line.me/R/ti/p/@210mmztg?text=' + encodeURIComponent(msg);
+    }
+  }, 200);
   setTimeout(() => {
     document.querySelectorAll('.result-axis-bar-fill').forEach(el => { el.style.width = el.style.width; });
   }, 100);
