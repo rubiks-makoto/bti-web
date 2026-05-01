@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BTI 年収シミュレーター</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0a0a0f; --surface:#111118; --surface2:#18181f; --border:#2a2a38;
+  --accent:#c8a96e; --blue:#7b9cff; --green:#6ee7b7; --warn:#fcd34d;
+  --text:#e8e8f0; --muted:#888898;
+  --c-s:#c8a96e; --c-g:#7b9cff; --c-f:#6ee7b7;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{font-size:16px;}
+body{background:var(--bg);color:var(--text);font-family:'Zen Kaku Gothic New',sans-serif;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(200,169,110,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(200,169,110,0.03) 1px,transparent 1px);
+  background-size:60px 60px;pointer-events:none;z-index:0;}
+.wrap{max-width:640px;margin:0 auto;padding:36px 16px 80px;position:relative;z-index:1;}
+.header{text-align:center;margin-bottom:40px;animation:fadeUp .7s ease both;}
+.hlabel{font-size:11px;letter-spacing:4px;color:var(--accent);font-weight:700;margin-bottom:12px;}
+.header h1{font-family:'DM Serif Display',serif;font-size:clamp(34px,8vw,52px);background:linear-gradient(135deg,#fff 0%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;margin-bottom:10px;}
+.header p{color:var(--muted);font-size:14px;line-height:1.8;}
+.type-banner{background:linear-gradient(135deg,rgba(200,169,110,0.12),rgba(200,169,110,0.02));border:1px solid rgba(200,169,110,0.4);border-radius:16px;padding:20px;margin-bottom:20px;display:flex;align-items:center;gap:16px;animation:fadeUp .7s .05s ease both;}
+.tb-icon{width:52px;height:52px;border-radius:12px;background:rgba(200,169,110,0.15);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;letter-spacing:1px;color:var(--accent);flex-shrink:0;text-align:center;line-height:1.4;}
+.tb-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight:700;margin-bottom:4px;}
+.tb-name{font-size:17px;font-weight:900;color:var(--accent);line-height:1.3;}
+.tb-range{font-size:12px;color:var(--muted);margin-top:4px;}
+.type-hint{background:var(--surface);border:1px dashed var(--border);border-radius:14px;padding:16px 18px;margin-bottom:20px;color:var(--muted);font-size:13px;line-height:1.8;animation:fadeUp .7s .05s ease both;}
+.type-hint code{color:var(--accent);font-size:12px;background:rgba(200,169,110,0.1);padding:1px 6px;border-radius:3px;}
+.sec{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px 20px;margin-bottom:20px;animation:fadeUp .7s .1s ease both;}
+.sec-title{font-size:11px;letter-spacing:3px;color:var(--accent);font-weight:700;margin-bottom:22px;display:flex;align-items:center;gap:10px;}
+.sec-title::before{content:'';width:20px;height:1px;background:var(--accent);}
+.emp-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:24px;}
+.emp-tab{padding:14px 6px;background:var(--surface2);border:2px solid var(--border);border-radius:12px;color:var(--muted);font-family:'Zen Kaku Gothic New',sans-serif;font-size:14px;font-weight:700;cursor:pointer;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.emp-tab .tab-en{font-size:9px;letter-spacing:1px;opacity:.6;}
+.emp-tab[data-e="seishain"]:hover,.emp-tab[data-e="seishain"].active{border-color:var(--c-s);color:var(--c-s);background:rgba(200,169,110,0.08);}
+.emp-tab[data-e="gyomu"]:hover,.emp-tab[data-e="gyomu"].active{border-color:var(--c-g);color:var(--c-g);background:rgba(123,156,255,0.08);}
+.emp-tab[data-e="free"]:hover,.emp-tab[data-e="free"].active{border-color:var(--c-f);color:var(--c-f);background:rgba(110,231,183,0.08);}
+.inp-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.inp-group{display:flex;flex-direction:column;gap:8px;}
+.inp-label{font-size:12px;letter-spacing:1px;color:var(--muted);font-weight:700;}
+.inp-wrap{position:relative;}
+.inp-wrap input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px 52px 16px 18px;color:var(--text);font-family:'Zen Kaku Gothic New',sans-serif;font-size:24px;font-weight:900;transition:border-color .2s;-moz-appearance:textfield;}
+.inp-wrap input::-webkit-outer-spin-button,.inp-wrap input::-webkit-inner-spin-button{-webkit-appearance:none;}
+.inp-wrap input:focus{outline:none;border-color:var(--accent);}
+.inp-unit{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--muted);pointer-events:none;}
+.calc-btn{width:100%;margin-top:20px;padding:18px;background:linear-gradient(135deg,var(--accent),#e8c07a);border:none;border-radius:14px;color:#0a0a0f;font-family:'Zen Kaku Gothic New',sans-serif;font-size:16px;font-weight:900;letter-spacing:2px;cursor:pointer;transition:all .2s;}
+.calc-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(200,169,110,0.4);}
+.result{display:none;}
+.result.show{display:block;animation:fadeUp .5s ease both;}
+.cur-card{background:linear-gradient(135deg,rgba(200,169,110,0.12),rgba(200,169,110,0.02));border:1px solid rgba(200,169,110,0.35);border-radius:16px;padding:24px 20px;margin-bottom:16px;}
+.cur-label{font-size:10px;letter-spacing:3px;color:var(--accent);font-weight:700;margin-bottom:10px;}
+.cur-income{font-family:'DM Serif Display',serif;font-size:clamp(40px,10vw,60px);color:var(--accent);line-height:1;margin-bottom:6px;}
+.cur-income span{font-size:18px;font-weight:400;}
+.cur-sub{font-size:14px;color:var(--muted);}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 12px;text-align:center;}
+.stat-label{font-size:10px;letter-spacing:1px;color:var(--muted);font-weight:700;margin-bottom:6px;}
+.stat-val{font-size:20px;font-weight:900;line-height:1;}
+.stat-sub{font-size:10px;color:var(--muted);margin-top:4px;}
+.cmp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
+@media(max-width:480px){.cmp-grid{grid-template-columns:1fr;gap:10px;}}
+.cmp-card{background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:18px 14px;position:relative;}
+.cmp-card.is-s{border-color:rgba(200,169,110,0.5);background:rgba(200,169,110,0.04);}
+.cmp-card.is-g{border-color:rgba(123,156,255,0.5);background:rgba(123,156,255,0.04);}
+.cmp-card.is-f{border-color:rgba(110,231,183,0.5);background:rgba(110,231,183,0.04);}
+.cmp-badge{position:absolute;top:-9px;left:12px;font-size:9px;font-weight:900;letter-spacing:1px;padding:3px 8px;border-radius:4px;}
+.bdg-s{background:var(--c-s);color:#0a0a0f;}.bdg-g{background:var(--c-g);color:#0a0a0f;}.bdg-f{background:var(--c-f);color:#0a0a0f;}
+.cmp-name{font-size:11px;letter-spacing:1px;color:var(--muted);font-weight:700;margin-bottom:8px;margin-top:4px;}
+.cmp-val{font-size:26px;font-weight:900;line-height:1;margin-bottom:3px;}
+.cmp-ann{font-size:11px;color:var(--muted);margin-bottom:10px;}
+.cmp-diff{font-size:12px;font-weight:700;margin-bottom:10px;}
+.bar-bg{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:2px;transition:width 1s cubic-bezier(.4,0,.2,1);}
+.bar-s{background:var(--c-s);}.bar-g{background:var(--c-g);}.bar-f{background:var(--c-f);}
+.diff-hl{background:rgba(110,231,183,0.08);border:1px solid rgba(110,231,183,0.25);border-radius:14px;padding:20px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.diff-hl.neutral{background:rgba(200,169,110,0.06);border-color:rgba(200,169,110,0.2);}
+.diff-text{font-size:14px;color:var(--muted);line-height:1.7;}
+.diff-text strong{color:var(--text);}
+.diff-num{font-family:'DM Serif Display',serif;font-size:38px;color:var(--green);white-space:nowrap;}
+.diff-num.neutral{color:var(--accent);}
+.diff-annual{font-size:12px;color:var(--muted);text-align:right;}
+.diag-block{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px 20px;margin-bottom:16px;}
+.diag-title{font-size:11px;letter-spacing:3px;color:var(--accent);font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:10px;}
+.diag-title::before{content:'';width:20px;height:1px;background:var(--accent);}
+.target-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px;}
+.target-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px 12px;}
+.target-card.mid{border-color:rgba(200,169,110,0.45);background:rgba(200,169,110,0.07);}
+.target-card.high{border-color:rgba(110,231,183,0.35);background:rgba(110,231,183,0.05);}
+.target-tier{font-size:9px;letter-spacing:2px;font-weight:700;color:var(--muted);margin-bottom:6px;}
+.target-val{font-size:24px;font-weight:900;line-height:1;margin-bottom:4px;}
+.target-ann{font-size:11px;color:var(--muted);}
+.fit-row{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
+.fit-row:last-child{border-bottom:none;}
+.fit-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:6px;}
+.fit-text{font-size:13px;line-height:1.8;color:var(--muted);}
+.fit-text strong{color:var(--text);}
+.prog-wrap{margin-top:22px;}
+.prog-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.prog-label{font-size:12px;color:var(--muted);}
+.prog-pct{font-size:16px;font-weight:900;color:var(--accent);}
+.prog-track{height:10px;background:var(--border);border-radius:5px;position:relative;overflow:visible;}
+.prog-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--blue),var(--green));transition:width 1.2s cubic-bezier(.4,0,.2,1);}
+.prog-marker{position:absolute;top:-5px;width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--blue);transform:translateX(-50%);transition:left 1.2s cubic-bezier(.4,0,.2,1);box-shadow:0 0 10px rgba(123,156,255,0.5);}
+.prog-ticks{display:flex;justify-content:space-between;margin-top:8px;}
+.prog-tick{font-size:11px;color:var(--muted);}
+.prog-tick.mid-tick{color:var(--accent);font-weight:700;}
+.comment{background:var(--surface2);border-left:3px solid var(--accent);border-radius:0 14px 14px 0;padding:20px;font-size:14px;line-height:1.9;color:var(--muted);}
+.comment strong{color:var(--text);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="header">
+  <div class="hlabel">Beauty Type Indicator</div>
+  <h1>Income Simulator</h1>
+  <p>売上と働き方を入力して<br>あなたの収入ポテンシャルを確認しよう</p>
+</div>
+<div id="typeBanner"></div>
+<div class="sec">
+  <div class="sec-title">働き方と売上を入力</div>
+  <div class="emp-tabs">
+    <button class="emp-tab active" data-e="seishain" onclick="setEmploy(this)">正社員<span class="tab-en">EMPLOYEE</span></button>
+    <button class="emp-tab" data-e="gyomu" onclick="setEmploy(this)">業務委託<span class="tab-en">CONTRACT</span></button>
+    <button class="emp-tab" data-e="free" onclick="setEmploy(this)">フリーランス<span class="tab-en">FREELANCE</span></button>
+  </div>
+  <div class="inp-grid">
+    <div class="inp-group">
+      <div class="inp-label">指名売上（月）</div>
+      <div class="inp-wrap"><input type="number" id="inpShimei" placeholder="0" min="0" inputmode="numeric"><span class="inp-unit">万円</span></div>
+    </div>
+    <div class="inp-group" id="freeGroup">
+      <div class="inp-label">フリー売上（月）</div>
+      <div class="inp-wrap"><input type="number" id="inpFree" placeholder="0" min="0" inputmode="numeric"><span class="inp-unit">万円</span></div>
+    </div>
+  </div>
+  <button class="calc-btn" onclick="calculate()">CALCULATE — 診断する</button>
+</div>
+<div class="result" id="result">
+  <div class="cur-card">
+    <div class="cur-label">CURRENT INCOME — 現在の推定月収</div>
+    <div class="cur-income" id="curIncome">—</div>
+    <div class="cur-sub" id="curSub"></div>
+  </div>
+  <div class="cmp-grid" id="cmpGrid"></div>
+  <div id="diffHl"></div>
+  <div class="stats-row" id="statsRow"></div>
+  <div class="diag-block" id="diagBlock" style="display:none">
+    <div class="diag-title">BTI診断 — ポテンシャルと合った働き方</div>
+    <div class="target-grid" id="targetGrid"></div>
+    <div id="fitRows"></div>
+    <div class="prog-wrap">
+      <div class="prog-header">
+        <span class="prog-label" id="progLabel">潜在レンジ内での現在地</span>
+        <span class="prog-pct" id="progPct"></span>
+      </div>
+      <div class="prog-track">
+        <div class="prog-fill" id="progFill" style="width:0%"></div>
+        <div class="prog-marker" id="progMarker" style="left:0%"></div>
+      </div>
+      <div class="prog-ticks">
+        <span class="prog-tick" id="tickLow"></span>
+        <span class="prog-tick mid-tick">▲ 標準</span>
+        <span class="prog-tick" id="tickHigh"></span>
+      </div>
+    </div>
+  </div>
+  <div class="comment" id="comment"></div>
+</div>
+</div>
+<script>
+const TYPES={CONTRACT:{name:'業務委託スタイリスト型',pot:{low:50,mid:80,high:120},fit:[{col:'var(--c-g)',text:'<strong>業務委託</strong>が最も本領を発揮できる働き方。仕組みに乗って効率よく稼ぐのが強み。'},{col:'var(--c-f)',text:'指名が月100万を超えたら<strong>フリーランス</strong>も現実的な選択肢に。'},{col:'var(--muted)',text:'正社員は安定の代わりに伸びしろが緩やか。収入を増やしたいなら業務委託環境の見直しが先決。'}],advice:'CONTRACT型は環境で年収が大きく変わる。歩合設計・客単価・集客力の強い業務委託サロンを選ぶことが最大のレバレッジ。'},TOP:{name:'指名固めスタイリスト型',pot:{low:70,mid:110,high:160},fit:[{col:'var(--c-s)',text:'<strong>正社員・業務委託どちらでも</strong>活躍できる万能型。指名が固まるにつれ業務委託の旨みが大きくなる。'},{col:'var(--c-f)',text:'指名100万超なら<strong>フリーランス</strong>も視野に。独立後も顧客がついてくる可能性が高い。'},{col:'var(--warn)',text:'若いうちに管理者を任されると人疲れするケースも。自分のペースを守れる環境選びが重要。'}],advice:'人間力で指名を固めるTOP型はどの形態でも通用する。指名が積み上がるほど業務委託・フリーランスの手取り差が大きく広がる。'},STAR:{name:'SNSカリスマ指名型',pot:{low:80,mid:130,high:250},fit:[{col:'var(--c-f)',text:'SNSと技術の掛け算が機能すれば<strong>20代で年収1000万</strong>も現実の時代。発信環境が整った場所を選ぶことが最重要。'},{col:'var(--c-g)',text:'スタッフ関係に疲れやすいなら<strong>フリーランス</strong>で一人の世界に集中するのも正解。'},{col:'var(--muted)',text:'指名100万以上になると業務委託より独立・フリーランスが主な選択肢になる。'}],advice:'STAR型は環境次第で収入が数倍変わる。撮影機会・SNS支援・客単価設計が揃った環境にいるかどうかが分岐点。'},FREELANCE:{name:'ソロ独立スタイリスト型',pot:{low:60,mid:100,high:150},fit:[{col:'var(--c-f)',text:'<strong>フリーランス</strong>が最も本領発揮できる形態。席代・材料代を差し引いても売上の65%が手元に残る。'},{col:'var(--c-g)',text:'指名売上が月70万を下回る段階での移行は早い。先に<strong>業務委託で指名を積み上げてから</strong>が鉄則。'},{col:'var(--muted)',text:'一度フリーランスを経験すると正社員サロンには戻りにくい。覚悟を持って踏み出す選択。'}],advice:'GO today・SALOWINの普及でフリーランスは現実的な選択肢に。指名月100万が移行の目安。SNS発信か紹介の仕組みを持つことが長期安定のカギ。'},CREATOR:{name:'世界観クリエイター型',pot:{low:40,mid:80,high:200},fit:[{col:'var(--c-g)',text:'まず<strong>指名売上という土台</strong>を作ることが先決。土台なしでクリエイティブ全振りは燃料切れになる。'},{col:'var(--c-f)',text:'土台ができたら撮影・発信・コラボで<strong>自分のブランドを育てる</strong>フェーズへ。'},{col:'var(--warn)',text:'個人の世界観はサロンに囲い込まれないよう注意。フォロワー・実績は自分の資産として管理を。'}],advice:'CREATOR型でキャッシュに変えられる美容師は少ない。技術×発信×HEARTの掛け算が揃えば上限は最も高いタイプ。'},CRAFTER:{name:'純粋技術追求職人型',pot:{low:50,mid:90,high:140},fit:[{col:'var(--c-g)',text:'技術を正当評価してくれる<strong>技術訴求型サロン</strong>との相性が最も良い。'},{col:'var(--c-f)',text:'「いい人っぽい」演出ができると<strong>指名が一段跳ねる</strong>。接客の演出を意識するだけで変わる。'},{col:'var(--muted)',text:'技術とEDU力が揃えばセミナー講師・外部研修という収益柱が生まれる。'}],advice:'CRAFTER型は技術力が収入に直結しにくい構造がある。届ける仕組み（発信・単価設計）を整えることで才能が初めてお金になる。'},MANAGER:{name:'現場まとめ上げ店長型',pot:{low:30,mid:55,high:100},fit:[{col:'var(--c-s)',text:'<strong>正社員サロンの店長</strong>が最も力を発揮できる場所。役割と権限がセットで与えられる環境が必須。'},{col:'var(--c-g)',text:'指名月100万前後の店長は<strong>業務委託移行で手取りが大幅アップ</strong>する可能性あり。'},{col:'var(--warn)',text:'役職手当は月5万以下がほとんど。30代後半で店長のままだと将来設計の見直しが必要。'}],advice:'店長経験は独立・幹部どちらを目指すにも通過点として価値が高い。ただし報酬に見合う環境にいるかを定期的に確認すること。'},EDU:{name:'体系立て後輩育成型',pot:{low:28,mid:50,high:75},fit:[{col:'var(--c-s)',text:'<strong>正社員サロンの育成担当</strong>として最も価値を発揮できる。教育が報酬に反映される仕組みがあるかが前提。'},{col:'var(--c-f)',text:'管理者能力もあれば<strong>教育統括・人事育成部門</strong>というキャリアパスが開ける。'},{col:'var(--warn)',text:'美容業界で教育は報酬に繋がりにくい。年を重ねて業務委託に移るケースも多い。'}],advice:'EDU型の才能は報酬に出にくいが組織を長期的に強くする。育てた人が定着する環境・評価してくれる経営者のいるサロンを選ぶことが全て。'},MENTOR:{name:'人を育てる温かい先輩型',pot:{low:28,mid:50,high:85},fit:[{col:'var(--c-s)',text:'正社員・業務委託<strong>どちらでも活躍できる</strong>が、自分が消耗しない環境であることが大前提。'},{col:'var(--c-f)',text:'最近はスーパープレイヤー管理者より<strong>MENTOR型が活躍する</strong>場面が増加中。時代の追い風がある。'},{col:'var(--warn)',text:'与えすぎて燃え尽きるのがMENTOR型最大のリスク。自分が満たされているかを常に確認すること。'}],advice:'MENTOR型は売上よりも「いる場所の空気」で結果が大きく変わる。自分の温かさを活かせる環境かどうかが唯一の判断基準。'},NO2:{name:'最強ストラテジスト参謀型',pot:{low:40,mid:65,high:100},fit:[{col:'var(--c-s)',text:'従業員<strong>50人以上の規模</strong>でNo.2の価値が本格的に発揮される。小規模では店長と変わらない役割になりがち。'},{col:'var(--c-f)',text:'No.2経験後に独立すると<strong>最初から組織設計できる強み</strong>になる。'},{col:'var(--warn)',text:'社長は変わらないがNo.2は変わる会社が多い。今のトップとの信頼関係が全て。'}],advice:'No.2の報酬がその会社の実力を表す。報酬が見合っていないなら能力が余っているサイン。小規模No.2は業務委託も視野に。'},EXEC:{name:'組織執行役員型',pot:{low:50,mid:80,high:130},fit:[{col:'var(--c-s)',text:'<strong>複数店舗を統括する規模</strong>で初めて本領発揮。一店舗管理では能力が余り続ける。'},{col:'var(--c-g)',text:'プレイングマネージャーとして<strong>自分も売上を立てながら</strong>組織を動かせると収入が安定する。'},{col:'var(--warn)',text:'権限のない環境では「見えているだけの人」になる。動かせる権限があるかどうかが最重要。'}],advice:'EXEC型は規模が合わない組織にいると才能が腐る。急成長中のグループか複数店舗展開しているサロンへの移行を検討する価値がある。'},SOLO:{name:'孤高の職人オーナー型',pot:{low:50,mid:80,high:120},fit:[{col:'var(--c-f)',text:'一人でやりきる覚悟があれば<strong>固定費が低く自由度が高い</strong>働き方。限界値はあるが安定する人も多い。'},{col:'var(--c-g)',text:'独立前に<strong>月60〜70万の指名売上</strong>を確保しておくことが生存の最低ライン。'},{col:'var(--warn)',text:'拡大化できる人はほぼいない。報酬の上限も明確にある。人生の優先度として正しいか確認を。'}],advice:'SOLO型は何年も一人でサロンワークを続けるには向き不向きがある。単価を定期的に上げることが唯一の年収向上手段。'},MICRO:{name:'小規模プレイングオーナー型',pot:{low:60,mid:100,high:160},fit:[{col:'var(--c-s)',text:'夫婦経営・少人数チームが最も安定しやすい形。<strong>無理な拡大を狙わなければキャッシュは残る</strong>。'},{col:'var(--c-f)',text:'スタッフが残ってくれる環境を作れれば<strong>多店舗展開への扉</strong>が開く。'},{col:'var(--warn)',text:'一緒についてきたスタッフが長く居てくれる可能性は少ない。組織作りはこのフェーズ最大の難関。'}],advice:'MICRO型は業界で最もしんどい規模。「維持・縮小・拡大」の三択を曖昧にしないことが消耗を防ぐ唯一の手段。'},MULTI:{name:'多店舗展開オーナー型',pot:{low:80,mid:150,high:400},fit:[{col:'var(--c-f)',text:'スタッフ15人前後・3店舗が<strong>利益の出やすいゾーン</strong>。ここを安定させてから次の展開へ。'},{col:'var(--c-g)',text:'2〜3店舗は最も危険なフェーズ。<strong>No.2が育っているかどうか</strong>が次のステージの唯一の条件。'},{col:'var(--warn)',text:'スタイリストの離職が続けば一気に傾く。採用と定着の仕組み化が最優先課題。'}],advice:'MULTI型は最低限の人間力と仕組み化の両方が必要。3店舗以上になると「いい人だけ」では難しくなる。'},SCALE:{name:'多店舗拡大オーナー型',pot:{low:150,mid:300,high:1000},fit:[{col:'var(--c-f)',text:'10店舗以上になると修正が効きやすく<strong>No.2・幹部の質</strong>が組織全体の天井を決める。'},{col:'var(--c-g)',text:'求人（新卒・中途）が取れるかどうかが<strong>スケールの最大の変数</strong>。採用力が全て。'},{col:'var(--warn)',text:'カリスマ依存のままだとオーナーの体力が上限になる。仕組み化・言語化が急務。'}],advice:'SCALE型に到達したら次は「外に出す」フェーズ。FC展開・コンサル・SaaS化など社内の仕組みを収益化する視点を持つ。'},FC:{name:'フランチャイズリスク分散型',pot:{low:50,mid:90,high:150},fit:[{col:'var(--c-g)',text:'本部との関係が安定している間は<strong>集客・ブランド力を借りられる</strong>強みがある。'},{col:'var(--c-f)',text:'FC加盟中に<strong>独自の採用力と集客力</strong>を育てておくことが脱却後の生命線。'},{col:'var(--warn)',text:'ロイヤリティが高すぎると経営困難に。求人が最大のネック。脱退後の収支シミュレーションを今のうちに。'}],advice:'FC型の最終形はFCで学んでFCを卒業すること。ロイヤリティを払い続けながら独自の力を育てているかどうかが2〜3年後を決める。'}};
+const RATE={seishain:{shimei:.35,free:.10,base:25,label:'正社員',cls:'is-s',bar:'bar-s',bdg:'bdg-s',col:'var(--c-s)'},gyomu:{shimei:.50,free:.40,label:'業務委託',cls:'is-g',bar:'bar-g',bdg:'bdg-g',col:'var(--c-g)'},free:{shimei:.65,free:0,label:'フリーランス',cls:'is-f',bar:'bar-f',bdg:'bdg-f',col:'var(--c-f)'}};
+let employ='seishain',curType=null;
+(()=>{const t=(new URLSearchParams(location.search).get('type')||'').toUpperCase();if(TYPES[t])curType={id:t,...TYPES[t]};renderBanner();})();
+function renderBanner(){const el=document.getElementById('typeBanner');if(curType){el.innerHTML=`<div class="type-banner"><div class="tb-icon">${curType.id}</div><div><div class="tb-label">BTI TYPE</div><div class="tb-name">${curType.name}</div><div class="tb-range">潜在レンジ：月${curType.pot.low}〜${curType.pot.high}万 ／ 年収${curType.pot.low*12}〜${curType.pot.high*12}万</div></div></div>`;}else{el.innerHTML=`<div class="type-hint">URLに <code>?type=TOP</code> のようにBTIタイプを指定すると<br>潜在能力レンジと合った働き方アドバイスが表示されます。</div>`;}}
+function setEmploy(btn){document.querySelectorAll('.emp-tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');employ=btn.dataset.e;document.getElementById('freeGroup').style.display=employ==='free'?'none':'';if(employ==='free')document.getElementById('inpFree').value='';}
+function calcIncome(e,s,f){const r=RATE[e];const g=s*r.shimei+f*(r.free||0);return e==='seishain'?Math.max(r.base,g):g;}
+function calculate(){const shimei=parseFloat(document.getElementById('inpShimei').value)||0;const free=employ==='free'?0:(parseFloat(document.getElementById('inpFree').value)||0);const cur=calcIncome(employ,shimei,free);const vals={seishain:calcIncome('seishain',shimei,free),gyomu:calcIncome('gyomu',shimei,free),free:calcIncome('free',shimei,free)};const max=Math.max(...Object.values(vals));const bestKey=Object.keys(vals).reduce((a,b)=>vals[a]>vals[b]?a:b);const bestVal=vals[bestKey];document.getElementById('curIncome').innerHTML=`${cur.toFixed(1)}<span> 万円 / 月</span>`;document.getElementById('curSub').textContent=`年収換算：約 ${(cur*12).toFixed(0)} 万円`;const diff=bestVal-cur;const annualUp=diff*12;const fiveYear=annualUp*3;document.getElementById('statsRow').innerHTML=`<div class="stat-card"><div class="stat-label">最大月収差</div><div class="stat-val" style="color:var(--green)">+${diff.toFixed(1)}万</div><div class="stat-sub">月額増加額</div></div><div class="stat-card"><div class="stat-label">年収換算差</div><div class="stat-val" style="color:var(--blue)">+${annualUp.toFixed(0)}万</div><div class="stat-sub">年間増加額</div></div><div class="stat-card"><div class="stat-label">3年間の差額</div><div class="stat-val" style="color:var(--accent)">+${fiveYear.toFixed(0)}万</div><div class="stat-sub">3年累計差</div></div>`;document.getElementById('cmpGrid').innerHTML=Object.entries(vals).map(([k,v])=>{const r=RATE[k];const isCur=k===employ;const isBest=k===bestKey&&!isCur;const pct=max>0?v/max*100:0;const d=v-cur;const dSign=d>=0?'+':'';const dColor=d>0?'var(--green)':d<0?'var(--muted)':'var(--text)';const badge=isCur?`<div class="cmp-badge ${r.bdg}">現在</div>`:isBest?`<div class="cmp-badge ${r.bdg}">最大</div>`:'';const diffTxt=!isCur?`<div class="cmp-diff" style="color:${dColor}">${dSign}${d.toFixed(1)}万 / 月</div>`:'<div class="cmp-diff" style="color:var(--muted)">現在の収入</div>';return `<div class="cmp-card ${r.cls}">${badge}<div class="cmp-name">${r.label}</div><div class="cmp-val" style="color:${r.col}">${v.toFixed(1)}<span style="font-size:13px;font-weight:400">万</span></div><div class="cmp-ann">年収 約${(v*12).toFixed(0)}万円</div>${diffTxt}<div class="bar-bg"><div class="bar-fill ${r.bar}" style="width:${pct}%"></div></div></div>`;}).join('');let hlHtml='';if(diff>1){hlHtml=`<div class="diff-hl"><div><div class="diff-text"><strong>${RATE[bestKey].label}</strong>に切り替えた場合<br>月収が増える可能性</div><div class="diff-annual" style="margin-top:4px;color:var(--muted)">年収換算 +${annualUp.toFixed(0)}万円</div></div><div class="diff-num">+${diff.toFixed(1)}万円 / 月</div></div>`;}else{hlHtml=`<div class="diff-hl neutral"><div class="diff-text">現在の働き方が<strong>収入面で最適</strong>な状態です</div><div class="diff-num neutral">最適解</div></div>`;}document.getElementById('diffHl').innerHTML=hlHtml;if(curType){document.getElementById('diagBlock').style.display='block';const p=curType.pot;document.getElementById('targetGrid').innerHTML=`<div class="target-card"><div class="target-tier">STANDARD</div><div class="target-val">${p.low}<span style="font-size:13px;font-weight:400">万</span></div><div class="target-ann">年収 約${p.low*12}万円</div></div><div class="target-card mid"><div class="target-tier">TARGET</div><div class="target-val" style="color:var(--accent)">${p.mid}<span style="font-size:13px;font-weight:400">万</span></div><div class="target-ann">年収 約${p.mid*12}万円</div></div><div class="target-card high"><div class="target-tier">UPPER</div><div class="target-val" style="color:var(--green)">${p.high}<span style="font-size:13px;font-weight:400">万</span></div><div class="target-ann">年収 約${p.high*12}万円</div></div>`;document.getElementById('fitRows').innerHTML=curType.fit.map(f=>`<div class="fit-row"><div class="fit-dot" style="background:${f.col}"></div><div class="fit-text">${f.text}</div></div>`).join('');const pct=Math.min(100,Math.max(0,(cur-p.low)/(p.high-p.low)*100));document.getElementById('tickLow').textContent=p.low+'万';document.getElementById('tickHigh').textContent=p.high+'万';document.getElementById('progPct').textContent=pct.toFixed(0)+'%';document.getElementById('progLabel').textContent=`潜在レンジ内での現在地（月収 ${cur.toFixed(1)}万円）`;setTimeout(()=>{document.getElementById('progFill').style.width=pct+'%';document.getElementById('progMarker').style.left=pct+'%';},200);}document.getElementById('comment').innerHTML=genComment(cur,vals,employ,shimei,free,curType);const r=document.getElementById('result');r.classList.add('show');setTimeout(()=>r.scrollIntoView({behavior:'smooth',block:'start'}),100);}
+function genComment(cur,vals,employ,shimei,free,type){const total=shimei+free;if(total===0)return '売上を入力するとシミュレーション結果が表示されます。';const bestKey=Object.keys(vals).filter(k=>k!==employ).reduce((a,b)=>vals[a]>vals[b]?a:b);const diff=vals[bestKey]-cur;let txt='';if(diff>10){txt+=`<strong>${RATE[bestKey].label}に切り替えることで、月収が約${diff.toFixed(0)}万円アップする可能性があります。</strong>年収換算で${(diff*12).toFixed(0)}万円の差。今の売上を保ったまま働き方を変えるだけで、手元に残るお金が大きく変わります。<br><br>`;}else if(diff>3){txt+=`<strong>${RATE[bestKey].label}への切り替えで月収が${diff.toFixed(1)}万円増える可能性があります。</strong>環境や安定性とのバランスで判断してみてください。<br><br>`;}else{txt+=`<strong>現在の働き方は収入面でほぼ最適な状態です。</strong>あとは売上自体を伸ばすことが年収向上のカギになります。<br><br>`;}if(type){const p=type.pot;txt+=type.advice+'<br><br>';if(cur<p.low)txt+=`現在の月収は${type.name}の<strong>下限ラインを下回っています。</strong>環境・売上の両面から見直しが必要なタイミングです。`;else if(cur<p.mid)txt+=`現在は<strong>標準ラインに向けて成長中</strong>の段階。月収${p.mid}万（年収${p.mid*12}万円）を次の目標に設定しましょう。`;else if(cur<p.high)txt+=`<strong>標準以上のパフォーマンス</strong>を出せています。上位ライン（月${p.high}万 / 年収${p.high*12}万円）を視野に入れた戦略を考えるフェーズです。`;else txt+=`${type.name}の<strong>上位ラインに到達しています。</strong>次のステージ（独立・多店舗・外部発信）を本格的に検討するタイミングかもしれません。`;}return txt;}
+</script>
+</body>
+</html>
