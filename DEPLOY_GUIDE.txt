@@ -1,0 +1,128 @@
+================================================================
+BTI 深掘りレポート デプロイ手順書
+================================================================
+
+■ プロジェクト構成
+  bti-web/
+    ├── vercel.json          ← Vercel設定
+    ├── liff.html            ← LIFF中間ページ
+    ├── report.html          ← 深掘りレポート（80パターン入り）
+    └── api/
+        ├── register.js      ← LIFF→KV保存API
+        └── webhook.js       ← LINE Webhook（友だち追加→レポート送信）
+
+================================================================
+【STEP 1】GitHubリポジトリ作成
+================================================================
+
+1. GitHub で新規リポジトリ「bti-web」を作成
+2. bti-web/ フォルダの中身をpush
+
+  cd bti-web
+  git init
+  git add .
+  git commit -m "BTI deep report - 80 patterns"
+  git remote add origin https://github.com/YOUR_ACCOUNT/bti-web.git
+  git push -u origin main
+
+================================================================
+【STEP 2】Vercelにデプロイ
+================================================================
+
+1. https://vercel.com にログイン
+2. 「Add New Project」→ GitHubリポジトリ「bti-web」を選択
+3. Framework Preset: 「Other」
+4. Root Directory: そのまま（/）
+5. 「Deploy」
+
+================================================================
+【STEP 3】Vercel KV (Upstash Redis) セットアップ
+================================================================
+
+1. Vercelダッシュボード → プロジェクト → Storage タブ
+2. 「Create」→ 「KV (Upstash)」を選択
+3. 名前: bti-kv
+4. リージョン: ap-northeast-1 (Tokyo)
+5. 作成後、自動で環境変数が追加される:
+   - KV_REST_API_URL
+   - KV_REST_API_TOKEN
+
+================================================================
+【STEP 4】LINE Developers Console 設定
+================================================================
+
+■ LINE公式アカウント（既存 or 新規）
+  - Messaging APIを有効化
+
+■ LIFFアプリ作成
+  1. LINE Developers → チャネル → LIFF タブ
+  2. 「追加」
+     - サイズ: Full
+     - エンドポイントURL: https://bti-web.vercel.app/liff.html
+     - Scope: profile, openid
+     - 友だち追加オプション: Aggressive（強制表示）
+  3. 作成後、LIFF IDをメモ（例: 1234567890-abcdefgh）
+
+■ Webhook設定
+  1. チャネル → Messaging API タブ
+  2. Webhook URL: https://bti-web.vercel.app/api/webhook
+  3. 「Webhook利用」をオン
+  4. 「自動応答メッセージ」をオフ
+
+================================================================
+【STEP 5】LIFF ID を埋め込む
+================================================================
+
+以下2ファイルの __LIFF_ID__ を実際のLIFF IDに置換:
+
+1. liff.html (110行目付近)
+   const LIFF_ID = '__LIFF_ID__';
+   ↓
+   const LIFF_ID = '1234567890-abcdefgh';
+
+2. bti-web.html のopenLiff関数内（別途変更が必要な場合）
+   const BTI_LIFF_ID = '__LIFF_ID__';
+   ↓
+   const BTI_LIFF_ID = '1234567890-abcdefgh';
+
+================================================================
+【STEP 6】Vercel環境変数の設定
+================================================================
+
+Vercelダッシュボード → Settings → Environment Variables に追加:
+
+  LINE_CHANNEL_SECRET      = （LINE DevelopersのChannel Secret）
+  LINE_CHANNEL_ACCESS_TOKEN = （LINE DevelopersのChannel Access Token）
+  KV_REST_API_URL           = （STEP 3で自動設定済み）
+  KV_REST_API_TOKEN         = （STEP 3で自動設定済み）
+
+設定後、必ず「Redeploy」すること。
+
+================================================================
+【STEP 7】動作確認
+================================================================
+
+1. https://bti-web.vercel.app/report.html?type=CRAFTER&pattern=1
+   → CRAFTER型パターン1のレポートが表示されること
+
+2. https://bti-web.vercel.app/report.html?type=FC&pattern=5
+   → FC型パターン5のレポートが表示されること
+
+3. LINEフロー（bti-web.html改修後）:
+   - BTI診断完了 → LINEボタンタップ
+   → LIFF起動 → LINE認証 → 友だち追加
+   → LINEにレポートURL届く → レポート表示
+
+================================================================
+【レポートURLの構造】
+================================================================
+
+https://bti-web.vercel.app/report.html?type={TYPE}&pattern={PATTERN}
+
+TYPE: CONTRACT, TOP, STAR, MANAGER, EDU, MENTOR, CRAFTER,
+      FREELANCE, CREATOR, NO2, EXEC, SOLO, MICRO, MULTI, SCALE, FC
+
+PATTERN: 1（危険水域）, 2（隠れHEART）, 3（純粋型）, 
+         4（隠れCREATE）, 5（隠れEDU）
+
+================================================================
