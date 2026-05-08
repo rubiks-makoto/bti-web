@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BTI 豺ｱ謗倥ｊ繝ｬ繝昴・繝・| LINE騾｣謳ｺ</title>
+<title>BTI 深掘りレポート | LINE連携</title>
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 <style>
   :root { color-scheme: dark; }
@@ -90,110 +90,71 @@
 <body>
 <div class="container">
   <div class="logo">B T I  |  D E E P  R E P O R T</div>
-  <h1>豺ｱ謗倥ｊ繝ｬ繝昴・繝医ｒ<br>蜿励￠蜿悶ｋ</h1>
-  <p class="sub">LINE騾｣謳ｺ縺ｧ縲√≠縺ｪ縺溷ｰら畑縺ｮ<br>豺ｱ謗倥ｊ繝ｬ繝昴・繝医ｒ縺雁ｱ翫￠縺励∪縺・/p>
+  <h1>深掘りレポートを<br>受け取る</h1>
+  <p class="sub">LINE連携で、あなた専用の<br>深掘りレポートをお届けします</p>
   
   <div id="status-area">
     <div class="spinner"></div>
-    <p class="status">LINE騾｣謳ｺ荳ｭ...</p>
+    <p class="status">LINE連携中...</p>
   </div>
 </div>
 
 <script>
-// URL繝代Λ繝｡繝ｼ繧ｿ縺九ｉ險ｺ譁ｭ邨先棡繧貞叙蠕・const params = new URLSearchParams(window.location.search);
+const params = new URLSearchParams(window.location.search);
 const btiType = params.get('type') || '';
 const btiPattern = params.get('pattern') || '';
 
-// LIFF ID・・ercel迺ｰ蠅・､画焚縺九ｉ豕ｨ蜈･縺ｧ縺阪↑縺・・縺ｧ縲√ン繝ｫ繝画凾縺ｫ蝓九ａ霎ｼ繧・・// TODO: 繝・・繝ｭ繧､譎ゅ↓螳滄圀縺ｮLIFF ID縺ｫ鄂ｮ縺肴鋤縺医ｋ
 const LIFF_ID = '2010016684-jUp9eANQ';
 
 const statusArea = document.getElementById('status-area');
 
 async function initLiff() {
   try {
-    // LIFF蛻晄悄蛹・    await liff.init({ liffId: LIFF_ID });
+    await liff.init({ liffId: LIFF_ID });
     
-    // 繝ｭ繧ｰ繧､繝ｳ繝√ぉ繝・け
     if (!liff.isLoggedIn()) {
-      // 繝ｭ繧ｰ繧､繝ｳ縺励※縺・↑縺・竊・繝ｭ繧ｰ繧､繝ｳ繝壹・繧ｸ縺ｸ繝ｪ繝繧､繝ｬ繧ｯ繝・      liff.login({
-        redirectUri: window.location.href
-      });
+      liff.login({ redirectUri: window.location.href });
       return;
     }
     
-    // 繝ｦ繝ｼ繧ｶ繝ｼID繧貞叙蠕・    const profile = await liff.getProfile();
+    const profile = await liff.getProfile();
     const userId = profile.userId;
     
-    statusArea.innerHTML = `
-      <div class="spinner"></div>
-      <p class="status">繝ｬ繝昴・繝医ｒ貅門ｙ荳ｭ...</p>
-    `;
+    statusArea.innerHTML = '<div class="spinner"></div><p class="status">レポートを準備中...</p>';
     
     if (!btiType || !btiPattern) {
-      // 險ｺ譁ｭ邨先棡縺後↑縺・ｴ蜷・      statusArea.innerHTML = `
-        <p class="error">險ｺ譁ｭ邨先棡縺瑚ｦ九▽縺九ｊ縺ｾ縺帙ｓ縺ｧ縺励◆縲・/p>
-        <p class="success-sub">BTI險ｺ譁ｭ繧貞・縺ｫ蜿励￠縺ｦ縺九ｉ縲・br>縺薙■繧峨・繝壹・繧ｸ縺ｫ縺頑綾繧翫￥縺縺輔＞縲・/p>
-        <a href="https://bti-web.vercel.app/" class="btn">BTI險ｺ譁ｭ繧貞女縺代ｋ</a>
-      `;
+      statusArea.innerHTML = '<p class="error">診断結果が見つかりませんでした。</p><p class="success-sub">BTI診断を先に受けてから、こちらのページにお戻りください。</p><a href="https://bti-web.vercel.app/" class="btn">BTI診断を受ける</a>';
       return;
     }
     
-    // 險ｺ譁ｭ邨先棡繧偵し繝ｼ繝舌・縺ｫ騾∽ｿ｡
     const response = await fetch('/api/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        userId: userId,
-        type: btiType,
-        pattern: btiPattern
-      })
+      body: JSON.stringify({ userId: userId, type: btiType, pattern: btiPattern })
     });
     
     const result = await response.json();
     
     if (result.success) {
-      // 蜿九□縺｡霑ｽ蜉縺輔ｌ縺ｦ縺・ｋ縺狗｢ｺ隱・      const friendship = await liff.getFriendship();
+      const friendship = await liff.getFriendship();
       
       if (friendship.friendFlag) {
-        // 縺吶〒縺ｫ蜿九□縺｡ 竊・逶ｴ謗･繝ｬ繝昴・繝医・繝ｼ繧ｸ縺ｸ
-        statusArea.innerHTML = `
-          <p class="success">笨・貅門ｙ螳御ｺ・ｼ・/p>
-          <p class="success-sub">LINE縺ｫ繝ｬ繝昴・繝医ｒ縺企√ｊ縺励∪縺励◆縲・br>LINE繧堤｢ｺ隱阪＠縺ｦ縺上□縺輔＞縲・/p>
-          <a href="${result.reportUrl}" class="btn">繝ｬ繝昴・繝医ｒ隱ｭ繧</a>
-        `;
-        
-        // 3遘貞ｾ後↓繝ｬ繝昴・繝医・繝ｼ繧ｸ縺ｸ閾ｪ蜍暮・遘ｻ
-        setTimeout(() => {
-          window.location.href = result.reportUrl;
-        }, 3000);
-        
+        statusArea.innerHTML = '<p class="success">&#10003; 準備完了！</p><p class="success-sub">LINEにレポートをお送りしました。<br>LINEを確認してください。</p><a href="' + result.reportUrl + '" class="btn">レポートを読む</a>';
+        setTimeout(function() { window.location.href = result.reportUrl; }, 3000);
       } else {
-        // 縺ｾ縺蜿九□縺｡縺ｧ縺ｪ縺・竊・蜿九□縺｡霑ｽ蜉繧剃ｿ・☆
-        // Aggressive繝｢繝ｼ繝峨↑縺ｮ縺ｧ縲´IFF縺瑚・蜍輔〒蜿九□縺｡霑ｽ蜉逕ｻ髱｢繧貞・縺吶・縺・        statusArea.innerHTML = `
-          <p class="success">笨・逋ｻ骭ｲ螳御ｺ・ｼ・/p>
-          <p class="success-sub">LINE蜿九□縺｡霑ｽ蜉蠕後↓縲・br>縺ゅ↑縺溷ｰら畑縺ｮ繝ｬ繝昴・繝医′螻翫″縺ｾ縺吶・/p>
-          <a href="${result.reportUrl}" class="btn">繝ｬ繝昴・繝医ｒ蜈医↓隱ｭ繧</a>
-        `;
+        statusArea.innerHTML = '<p class="success">&#10003; 登録完了！</p><p class="success-sub">LINE友だち追加後に、<br>あなた専用のレポートが届きます。</p><a href="' + result.reportUrl + '" class="btn">レポートを先に読む</a>';
       }
     } else {
-      statusArea.innerHTML = `
-        <p class="error">繧ｨ繝ｩ繝ｼ縺檎匱逕溘＠縺ｾ縺励◆縲・br>繧ゅ≧荳蠎ｦ縺願ｩｦ縺励￥縺縺輔＞縲・/p>
-        <a href="https://bti-web.vercel.app/" class="btn">繝医ャ繝励↓謌ｻ繧・/a>
-      `;
+      statusArea.innerHTML = '<p class="error">エラーが発生しました。<br>もう一度お試しください。</p><a href="https://bti-web.vercel.app/" class="btn">トップに戻る</a>';
     }
     
   } catch (error) {
     console.error('LIFF error:', error);
-    statusArea.innerHTML = `
-      <p class="error">繧ｨ繝ｩ繝ｼ縺檎匱逕溘＠縺ｾ縺励◆縲・/p>
-      <p class="success-sub">${error.message || '繧ゅ≧荳蠎ｦ縺願ｩｦ縺励￥縺縺輔＞縲・}</p>
-      <a href="https://bti-web.vercel.app/" class="btn">繝医ャ繝励↓謌ｻ繧・/a>
-    `;
+    statusArea.innerHTML = '<p class="error">エラーが発生しました。</p><p class="success-sub">' + (error.message || 'もう一度お試しください。') + '</p><a href="https://bti-web.vercel.app/" class="btn">トップに戻る</a>';
   }
 }
 
-// 螳溯｡・initLiff();
+initLiff();
 </script>
 </body>
 </html>
-
