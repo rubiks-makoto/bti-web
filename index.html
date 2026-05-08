@@ -654,7 +654,7 @@ function showResult() {
           <span style="color:var(--gold)">✓</span> でも<span style="color:var(--white);font-weight:600">「このままでいいのか」</span>と<br>
           　少しでも思うなら、<span style="color:var(--gold-light);font-weight:600">今が動き時です。</span>
         </div>
-        <a class="btn-line" href="https://line.me/R/ti/p/@210mmztg" target="_blank" style="border-radius:12px;padding:20px 24px;font-size:13px;letter-spacing:0.15em;flex-direction:column;gap:6px">
+        <a class="btn-line" id="lineBtn" href="#" onclick="openLiff()" style="border-radius:12px;padding:20px 24px;font-size:13px;letter-spacing:0.15em;flex-direction:column;gap:6px;cursor:pointer">
         <div style="display:flex;align-items:center;gap:10px">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63.349 0 .631.285.631.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.281.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
           <span style="font-size:14px;font-weight:700;letter-spacing:0.1em">友だち追加して完全版を受け取る</span>
@@ -681,14 +681,29 @@ function showResult() {
     </div>
   `;
   showScreen('result');
-  // Set LINE URL with type info
-  setTimeout(() => {
-    const lineBtn = document.getElementById('lineBtn');
-    if (lineBtn) {
-      const msg = 'BTI診断結果：【' + key + '】' + type.name + 'で診断されました！詳細レポートをお願いします。';
-      lineBtn.href = 'https://line.me/R/ti/p/@210mmztg?text=' + encodeURIComponent(msg);
+  // パターン番号を算出
+  window._btiResult = { type: key, pattern: 1 }; // デフォルト
+  
+  if (scores.S1 > 0 || (scores.S2 === 0 && scores.S3 === 0 && scores.S4 === 0)) {
+    window._btiResult.pattern = 1; // 危険水域
+  } else if (scores.S2 > 0 && scores.H >= scores.L) {
+    window._btiResult.pattern = 2; // 隠れHEART
+  } else if (scores.S2 > 0) {
+    window._btiResult.pattern = 3; // 純粋型
+  } else if (scores.S3 > 0 || scores.S4 > 0) {
+    if (scores.CREATE > 0 || scores.CRAFT > 0) {
+      window._btiResult.pattern = 4;
+    } else if (scores.EDU > 0) {
+      window._btiResult.pattern = 5;
+    } else if (scores.OWNER > 0) {
+      window._btiResult.pattern = 4;
+    } else if (scores.FREE > 0) {
+      window._btiResult.pattern = 5;
+    } else {
+      window._btiResult.pattern = 4; // デフォルト上位
     }
-  }, 200);
+  }
+  console.log('BTI Result:', window._btiResult);
   setTimeout(() => {
     document.querySelectorAll('.result-axis-bar-fill').forEach(el => { el.style.width = el.style.width; });
   }, 100);
@@ -703,6 +718,18 @@ function copyResult(key, name) {
   navigator.clipboard.writeText(`BTI診断結果: 【${name}】\n美容師のための16タイプ診断`).then(() => {
     alert('コピーしました！');
   });
+}
+// LIFF連携
+const BTI_LIFF_ID = '2010016684-jUp9eANQ';
+
+function openLiff() {
+  if (!window._btiResult) {
+    alert('診断結果がありません。もう一度診断してください。');
+    return;
+  }
+  const { type, pattern } = window._btiResult;
+  const liffUrl = `https://liff.line.me/${BTI_LIFF_ID}?type=${type}&pattern=${pattern}`;
+  window.open(liffUrl, '_blank');
 }
 </script>
 </body>
