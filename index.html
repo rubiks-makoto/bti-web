@@ -17,9 +17,9 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
 .screen.active{opacity:1;pointer-events:all}
 body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(196,150,63,0.06) 0%,transparent 60%);pointer-events:none;z-index:0}
 
-#landing{justify-content:center;align-items:center;text-align:center;padding:40px 32px;z-index:1;overflow-y:auto}
+#landing{justify-content:center;align-items:center;text-align:center;padding:20px 32px;z-index:1;overflow-y:auto}
 .landing-tag{font-family:var(--sans);font-size:10px;letter-spacing:0.45em;text-transform:uppercase;color:var(--gold);margin-bottom:24px;display:flex;align-items:center;justify-content:center;gap:12px}
-.landing-tag::before,.landing-tag::after{content:"";width:24px;height:1px;background:var(--gold)}
+.landing-tag::before,.landing-tag::after{display:none}
 .landing-bti{font-family:var(--serif);font-size:clamp(80px,20vw,160px);font-weight:300;line-height:0.9;letter-spacing:-0.03em;color:var(--white);margin-bottom:8px;position:relative}
 .landing-bti::after{content:"BTI";position:absolute;top:3px;left:3px;color:var(--gold);opacity:0.12;pointer-events:none}
 .landing-en{font-family:var(--sans);font-size:clamp(9px,2vw,13px);letter-spacing:0.5em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:block}
@@ -115,30 +115,38 @@ body::before{background:none !important}
 /* 右上: scale_r */
 .char-rt{right:0%;top:3%;height:22vh;animation:charDrift 6s ease-in-out 0.5s infinite alternate}
 /* 左中段: crafter_r */
-.char-lm{left:0%;top:40%;height:20vh;animation:charDrift 6s ease-in-out 1s infinite alternate}
+.char-lm{left:0%;top:38%;height:20vh;animation:charDrift 6s ease-in-out 1s infinite alternate}
+/* 右中段: top_m */
+.char-rm{right:3%;top:42%;height:18vh;animation:charDrift 5s ease-in-out 1.5s infinite alternate}
 /* 左下: contract_m */
-.char-lb{left:2%;bottom:2%;height:26vh;animation:charDrift 4s ease-in-out 1.5s infinite alternate}
+.char-lb{left:0%;bottom:5%;height:26vh;animation:charDrift 4s ease-in-out 2s infinite alternate}
+/* 左下寄り: freelance_m */
+.char-lb2{left:18%;bottom:0%;height:20vh;animation:charDrift 5s ease-in-out 3s infinite alternate}
 /* 右下上: solo_r */
-.char-rb1{right:5%;bottom:20%;height:22vh;animation:charDrift 5s ease-in-out 2s infinite alternate}
+.char-rb1{right:0%;bottom:22%;height:22vh;animation:charDrift 5s ease-in-out 2.5s infinite alternate}
 /* 右下: star_r */
-.char-rb2{right:0%;bottom:2%;height:24vh;animation:charDrift 4s ease-in-out 2.5s infinite alternate}
+.char-rb2{right:0%;bottom:0%;height:24vh;animation:charDrift 4s ease-in-out 3.5s infinite alternate}
 
-/* スマホ 768px以下 — preview10準拠レイアウト */
+/* スマホ 768px以下 */
 @media(max-width:768px){
-  .char-lt{left:-3%;top:2%;height:18vh}
-  .char-rt{right:-3%;top:2%;height:18vh}
-  .char-lm{left:-4%;top:38%;height:16vh}
-  .char-lb{left:-2%;bottom:0%;height:24vh}
-  .char-rb1{right:2%;bottom:18%;height:20vh}
-  .char-rb2{right:-2%;bottom:0%;height:22vh}
+  .char-lt{left:-3%;top:1%;height:17vh}
+  .char-rt{right:-3%;top:1%;height:17vh}
+  .char-lm{left:-4%;top:36%;height:15vh}
+  .char-rm{right:-2%;top:40%;height:14vh}
+  .char-lb{left:-2%;bottom:3%;height:23vh}
+  .char-lb2{left:14%;bottom:0%;height:16vh}
+  .char-rb1{right:0%;bottom:20%;height:19vh}
+  .char-rb2{right:-2%;bottom:0%;height:21vh}
 }
 @media(max-width:400px){
-  .char-lt{left:-5%;top:1%;height:16vh}
-  .char-rt{right:-5%;top:1%;height:16vh}
-  .char-lm{left:-6%;top:40%;height:14vh}
-  .char-lb{left:-3%;bottom:0%;height:22vh}
-  .char-rb1{right:0%;bottom:16%;height:18vh}
-  .char-rb2{right:-4%;bottom:0%;height:20vh}
+  .char-lt{left:-5%;top:0%;height:15vh}
+  .char-rt{right:-5%;top:0%;height:15vh}
+  .char-lm{left:-6%;top:38%;height:13vh}
+  .char-rm{right:-4%;top:42%;height:12vh}
+  .char-lb{left:-3%;bottom:2%;height:21vh}
+  .char-lb2{left:12%;bottom:0%;height:14vh}
+  .char-rb1{right:-1%;bottom:18%;height:17vh}
+  .char-rb2{right:-4%;bottom:0%;height:19vh}
 }
 </style>
 </head>
@@ -151,8 +159,12 @@ body::before{background:none !important}
   <img src="/images/scale_r.png" class="char-img char-rt" alt="" loading="lazy">
   <!-- 左中段: crafter_r -->
   <img src="/images/crafter_r.png" class="char-img char-lm" alt="" loading="lazy">
+  <!-- 右中段: top_m（NEW） -->
+  <img src="/images/top_m.png" class="char-img char-rm" alt="" loading="lazy">
   <!-- 左下: contract_m -->
   <img src="/images/contract_m.png" class="char-img char-lb" alt="" loading="lazy">
+  <!-- 左下寄り: freelance_m（NEW） -->
+  <img src="/images/freelance_m.png" class="char-img char-lb2" alt="" loading="lazy">
   <!-- 右下上: solo_r -->
   <img src="/images/solo_r.png" class="char-img char-rb1" alt="" loading="lazy">
   <!-- 右下: star_r -->
@@ -164,7 +176,7 @@ body::before{background:none !important}
   <span class="landing-en">Beauty Type Indicator</span>
   <div class="landing-divider"></div>
   <div class="landing-jp" style="font-size:clamp(22px,5.5vw,30px);color:var(--white);font-weight:500;letter-spacing:0.15em;margin-bottom:4px">
-    <span style="color:var(--gold-light)">美容師</span>のための診断。
+    <span style="color:var(--gold-light);font-size:clamp(30px,7.5vw,42px);font-weight:600">美容師</span><span style="font-size:clamp(20px,5vw,28px)">のための診断。</span>
   </div>
   <div style="font-family:var(--jp);margin-bottom:8px;position:relative;z-index:2">
     <span style="font-family:var(--serif);font-size:clamp(56px,14vw,88px);font-weight:300;color:var(--gold);line-height:1">16</span><span style="font-family:var(--jp);font-size:clamp(18px,4.5vw,26px);font-weight:500;color:var(--white);letter-spacing:0.1em;margin-left:8px"> タイプ診断</span>
