@@ -116,14 +116,14 @@ export default async function handler(req, res) {
         const btiData = await getFromKV(userId);
         
         if (btiData) {
-          // 診断結果がある → レポートURLを送信
+          // 診断結果がある → 挨拶 + レポートURLを送信
           const typeName = TYPE_NAMES[btiData.type] || btiData.type;
           const reportUrl = `https://bti-web.vercel.app/report.html?type=${btiData.type}&pattern=${btiData.pattern}`;
           
           await pushMessage(userId, [
             {
               type: 'text',
-              text: `友だち追加ありがとうございます！\n\nあなたの診断結果をもとに、深掘りレポートを用意しました。`
+              text: `サロン研究所.comです！\nLINE追加ありがとうございます 🙏\n\nあなたのBTI診断結果をもとに、深掘りレポートを用意しました。\n\n下のボタンから読めます 👇`
             },
             {
               type: 'template',
@@ -131,7 +131,7 @@ export default async function handler(req, res) {
               template: {
                 type: 'buttons',
                 title: `あなたは「${typeName}」`,
-                text: 'あなたの本質と未来を読み解く、深掘りレポートです。',
+                text: 'あなただけの深掘りレポートです。',
                 actions: [
                   {
                     type: 'uri',
@@ -150,7 +150,7 @@ export default async function handler(req, res) {
           await pushMessage(userId, [
             {
               type: 'text',
-              text: `友だち追加ありがとうございます！\n\nBTI（美容師タイプ診断）の深掘りレポートをお届けします。\n\nまだ診断がお済みでない方は、下のメニューから「BTI診断もう一度」をタップしてください。`
+              text: `サロン研究所.comです！\nLINE追加ありがとうございます 🙏\n\nBTI（美容師タイプ診断）の深掘りレポートをお届けします。\n\nまだ診断がお済みでない方は、下のメニューから「BTI診断もう一度」をタップしてください。`
             }
           ], accessToken);
           
