@@ -100,11 +100,65 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 .result-inner>*:nth-child(5){animation-delay:0.5s}.result-inner>*:nth-child(6){animation-delay:0.6s}
 .result-inner>*:nth-child(7){animation-delay:0.7s}.result-inner>*:nth-child(8){animation-delay:0.8s}
 @media(max-width:400px){.landing-bti{font-size:72px}.quiz-card{padding:20px 20px 110px}}
+
+@keyframes charDrift{from{transform:translateY(0)}to{transform:translateY(-10px)}}
+#landing{position:relative;background:linear-gradient(180deg, #1e1b17 0%, #252118 40%, #1e1b17 100%) !important}
+#landing .landing-tag,#landing .landing-bti,#landing .landing-en,
+#landing .landing-divider,#landing .landing-sub,#landing .landing-stats,
+#landing .btn-start{position:relative;z-index:2}
+body::before{background:none !important}
+
+/* IPキャラ共通 */
+.char-img{position:absolute;width:auto;opacity:0.85;filter:drop-shadow(0 0 30px rgba(196,150,63,0.12))}
+/* 左上: creator_m */
+.char-lt{left:0%;top:3%;height:22vh;animation:charDrift 5s ease-in-out 0s infinite alternate}
+/* 右上: scale_r */
+.char-rt{right:0%;top:3%;height:22vh;animation:charDrift 6s ease-in-out 0.5s infinite alternate}
+/* 左中段: crafter_r */
+.char-lm{left:0%;top:40%;height:20vh;animation:charDrift 6s ease-in-out 1s infinite alternate}
+/* 左下: contract_m */
+.char-lb{left:2%;bottom:2%;height:26vh;animation:charDrift 4s ease-in-out 1.5s infinite alternate}
+/* 右下上: solo_r */
+.char-rb1{right:5%;bottom:20%;height:22vh;animation:charDrift 5s ease-in-out 2s infinite alternate}
+/* 右下: star_r */
+.char-rb2{right:0%;bottom:2%;height:24vh;animation:charDrift 4s ease-in-out 2.5s infinite alternate}
+
+/* スマホ 768px以下 — preview10準拠レイアウト */
+@media(max-width:768px){
+  .char-lt{left:-3%;top:2%;height:18vh}
+  .char-rt{right:-3%;top:2%;height:18vh}
+  .char-lm{left:-4%;top:38%;height:16vh}
+  .char-lb{left:-2%;bottom:0%;height:24vh}
+  .char-rb1{right:2%;bottom:18%;height:20vh}
+  .char-rb2{right:-2%;bottom:0%;height:22vh}
+}
+@media(max-width:400px){
+  .char-lt{left:-5%;top:1%;height:16vh}
+  .char-rt{right:-5%;top:1%;height:16vh}
+  .char-lm{left:-6%;top:40%;height:14vh}
+  .char-lb{left:-3%;bottom:0%;height:22vh}
+  .char-rb1{right:0%;bottom:16%;height:18vh}
+  .char-rb2{right:-4%;bottom:0%;height:20vh}
+}
 </style>
 </head>
 <body>
 
-<div class="screen active" id="landing">
+<div class="screen active" id="landing"><div class="char-container" style="position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden">
+  <!-- 左上: creator_m -->
+  <img src="/images/creator_m.png" class="char-img char-lt" alt="" loading="lazy">
+  <!-- 右上: scale_r -->
+  <img src="/images/scale_r.png" class="char-img char-rt" alt="" loading="lazy">
+  <!-- 左中段: crafter_r -->
+  <img src="/images/crafter_r.png" class="char-img char-lm" alt="" loading="lazy">
+  <!-- 左下: contract_m -->
+  <img src="/images/contract_m.png" class="char-img char-lb" alt="" loading="lazy">
+  <!-- 右下上: solo_r -->
+  <img src="/images/solo_r.png" class="char-img char-rb1" alt="" loading="lazy">
+  <!-- 右下: star_r -->
+  <img src="/images/star_r.png" class="char-img char-rb2" alt="" loading="lazy">
+</div>
+
   <div class="landing-tag">Stylist Personality Diagnostic</div>
   <div class="landing-bti">BTI</div>
   <span class="landing-en">Beauty Type Indicator</span>
@@ -112,7 +166,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
   <div class="landing-jp" style="font-size:clamp(22px,5.5vw,30px);color:var(--white);font-weight:500;letter-spacing:0.15em;margin-bottom:4px">
     <span style="color:var(--gold-light)">美容師</span>のための診断。
   </div>
-  <div style="font-family:var(--jp);margin-bottom:8px">
+  <div style="font-family:var(--jp);margin-bottom:8px;position:relative;z-index:2">
     <span style="font-family:var(--serif);font-size:clamp(56px,14vw,88px);font-weight:300;color:var(--gold);line-height:1">16</span><span style="font-family:var(--jp);font-size:clamp(18px,4.5vw,26px);font-weight:500;color:var(--white);letter-spacing:0.1em;margin-left:8px"> タイプ診断</span>
   </div>
   <div class="landing-sub">30の質問から、あなたの<br>「美容師としての素顔」を解き明かす。</div>
