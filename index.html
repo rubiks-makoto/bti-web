@@ -100,30 +100,11 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 .result-inner>*:nth-child(5){animation-delay:0.5s}.result-inner>*:nth-child(6){animation-delay:0.6s}
 .result-inner>*:nth-child(7){animation-delay:0.7s}.result-inner>*:nth-child(8){animation-delay:0.8s}
 @media(max-width:400px){.landing-bti{font-size:72px}.quiz-card{padding:20px 20px 110px}}
-
-@keyframes charDrift{from{transform:translateY(0)}to{transform:translateY(-10px)}}
-#landing{position:relative;background:linear-gradient(180deg, #1e1b17 0%, #252118 40%, #1e1b17 100%) !important}
-#landing .landing-tag,#landing .landing-bti,#landing .landing-en,
-#landing .landing-divider,#landing .landing-sub,#landing .landing-stats,
-#landing .btn-start{position:relative;z-index:2}
-body::before{background:none !important}
 </style>
 </head>
 <body>
 
-<div class="screen active" id="landing"><div style="position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden">
-  <img src="/images/star_m.png" style="position:absolute;left:-2%;bottom:-3%;height:52vh;width:auto;opacity:0.85;filter:drop-shadow(0 0 30px rgba(196,150,63,0.12));animation:charDrift 4s ease-in-out 0.0s infinite alternate" alt="" loading="lazy">
-  <img src="/images/star_r.png" style="position:absolute;right:-2%;bottom:-3%;height:52vh;width:auto;opacity:0.85;filter:drop-shadow(0 0 30px rgba(196,150,63,0.12));animation:charDrift 5s ease-in-out 0.5s infinite alternate" alt="" loading="lazy">
-  <img src="/images/crafter_r.png" style="position:absolute;left:8%;bottom:35%;height:32vh;width:auto;opacity:0.85;filter:drop-shadow(0 0 30px rgba(196,150,63,0.12));animation:charDrift 6s ease-in-out 1.0s infinite alternate" alt="" loading="lazy">
-  <img src="/images/contract_m.png" style="position:absolute;right:8%;bottom:35%;height:32vh;width:auto;opacity:0.85;filter:drop-shadow(0 0 30px rgba(196,150,63,0.12));animation:charDrift 4s ease-in-out 1.5s infinite alternate" alt="" loading="lazy">
-  <img src="/images/creator_m.png" style="position:absolute;left:2%;top:5%;height:30vh;width:auto;opacity:0.85;filter:drop-shadow(0 0 30px rgba(196,150,63,0.12));animation:charDrift 5s ease-in-out 2.0s infinite alternate" alt="" loading="lazy">
-  <img src="/images/scale_r.png" style="position:absolute;right:2%;top:5%;height:30vh;width:auto;opacity:0.85;filter:drop-shadow(0 0 30px rgba(196,150,63,0.12));animation:charDrift 6s ease-in-out 2.5s infinite alternate" alt="" loading="lazy">
-  <img src="/images/solo_r.png" style="position:absolute;left:22%;bottom:3%;height:36vh;width:auto;opacity:0.85;filter:drop-shadow(0 0 30px rgba(196,150,63,0.12));animation:charDrift 4s ease-in-out 3.0s infinite alternate" alt="" loading="lazy">
-  <img src="/images/top_m.png" style="position:absolute;right:22%;bottom:3%;height:36vh;width:auto;opacity:0.85;filter:drop-shadow(0 0 30px rgba(196,150,63,0.12));animation:charDrift 5s ease-in-out 3.5s infinite alternate" alt="" loading="lazy">
-  <img src="/images/multi_m.png" style="position:absolute;left:18%;top:10%;height:24vh;width:auto;opacity:0.85;filter:drop-shadow(0 0 30px rgba(196,150,63,0.12));animation:charDrift 6s ease-in-out 4.0s infinite alternate" alt="" loading="lazy">
-  <img src="/images/micro_r.png" style="position:absolute;right:18%;top:10%;height:24vh;width:auto;opacity:0.85;filter:drop-shadow(0 0 30px rgba(196,150,63,0.12));animation:charDrift 4s ease-in-out 4.5s infinite alternate" alt="" loading="lazy">
-</div>
-
+<div class="screen active" id="landing">
   <div class="landing-tag">Stylist Personality Diagnostic</div>
   <div class="landing-bti">BTI</div>
   <span class="landing-en">Beauty Type Indicator</span>
@@ -131,7 +112,7 @@ body::before{background:none !important}
   <div class="landing-jp" style="font-size:clamp(22px,5.5vw,30px);color:var(--white);font-weight:500;letter-spacing:0.15em;margin-bottom:4px">
     <span style="color:var(--gold-light)">美容師</span>のための診断。
   </div>
-  <div style="font-family:var(--jp);margin-bottom:8px;position:relative;z-index:2">
+  <div style="font-family:var(--jp);margin-bottom:8px">
     <span style="font-family:var(--serif);font-size:clamp(56px,14vw,88px);font-weight:300;color:var(--gold);line-height:1">16</span><span style="font-family:var(--jp);font-size:clamp(18px,4.5vw,26px);font-weight:500;color:var(--white);letter-spacing:0.1em;margin-left:8px"> タイプ診断</span>
   </div>
   <div class="landing-sub">30の質問から、あなたの<br>「美容師としての素顔」を解き明かす。</div>
