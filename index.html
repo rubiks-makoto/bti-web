@@ -63,13 +63,8 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 .loading-text{font-family:var(--jp);font-size:14px;letter-spacing:0.2em;color:var(--gray-light)}
 .loading-code{font-family:var(--serif);font-size:11px;letter-spacing:0.4em;color:var(--gray);text-transform:uppercase}
 
-#result{overflow-y:auto;z-index:1;-webkit-overflow-scrolling:touch;position:relative}
-.result-inner{padding:60px 28px 40px;max-width:600px;margin:0 auto;min-height:100%;position:relative;z-index:2}
-.result-chars{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden}
-.result-char{position:absolute;width:auto;opacity:0.22;filter:drop-shadow(0 0 20px rgba(196,150,63,0.08))}
-.result-char-l{left:-2%;top:18%;height:38vh}
-.result-char-r{right:-2%;top:40%;height:38vh}
-@media(max-width:768px){.result-char-l{left:-5%;top:12%;height:28vh;opacity:0.18}.result-char-r{right:-5%;top:35%;height:28vh;opacity:0.18}}
+#result{overflow-y:auto;z-index:1;-webkit-overflow-scrolling:touch}
+.result-inner{padding:60px 28px 40px;max-width:600px;margin:0 auto;min-height:100%}
 .result-eyebrow{font-family:var(--sans);font-size:9px;letter-spacing:0.45em;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:16px}
 .result-code{font-family:var(--serif);font-size:clamp(60px,15vw,110px);font-weight:300;line-height:0.9;letter-spacing:-0.02em;color:var(--white);text-align:center;margin-bottom:16px;display:block}
 .result-name{font-family:var(--jp);font-size:clamp(17px,4.2vw,22px);font-weight:600;letter-spacing:0.1em;text-align:center;margin-bottom:8px}
@@ -752,35 +747,6 @@ function showResult() {
     </div>
   `;
   showScreen('result');
-
-  // 結果ページIPキャラ追加（DOM操作、テンプレートリテラル外）
-  (function addResultChars() {
-    var typeImageMap = {
-      SOLO:'solo',MICRO:'micro',MULTI:'multi',SCALE:'scale',FC:'fc',
-      NO2:'no_2',EXEC:'exec',MANAGER:'manager',STAR:'star',TOP:'top',
-      CONTRACT:'contract',FREELANCE:'freelance',EDU:'edu',MENTOR:'mentor',
-      CREATOR:'creator',CRAFTER:'crafter'
-    };
-    var imgKey = typeImageMap[key] || key.toLowerCase();
-    var old = document.querySelector('.result-chars');
-    if (old) old.remove();
-    var d = document.createElement('div');
-    d.className = 'result-chars';
-    var imgL = document.createElement('img');
-    imgL.src = '/images/' + imgKey + '_m.png';
-    imgL.className = 'result-char result-char-l';
-    imgL.alt = '';
-    imgL.loading = 'lazy';
-    var imgR = document.createElement('img');
-    imgR.src = '/images/' + imgKey + '_r.png';
-    imgR.className = 'result-char result-char-r';
-    imgR.alt = '';
-    imgR.loading = 'lazy';
-    d.appendChild(imgL);
-    d.appendChild(imgR);
-    document.getElementById('result').appendChild(d);
-  })();
-
   // パターン番号を算出
   window._btiResult = { type: key, pattern: 1 }; // デフォルト
   
