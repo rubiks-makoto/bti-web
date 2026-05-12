@@ -148,6 +148,23 @@ body::before{background:none !important}
   .char-rb1{right:-1%;bottom:18%;height:17vh}
   .char-rb2{right:-4%;bottom:0%;height:19vh}
 }
+
+/* 結果ページIPキャラ */
+.result-char-container{position:fixed;top:0;left:0;width:100%;height:100dvh;pointer-events:none;z-index:0;overflow:hidden}
+.result-char{position:absolute;height:38vh;opacity:0.2;filter:drop-shadow(0 0 20px rgba(196,150,63,0.08));animation:charDrift 6s ease-in-out infinite alternate}
+.result-char.left{left:-2%;bottom:5%;animation-delay:0s}
+.result-char.right{right:-2%;bottom:5%;animation-delay:1.5s}
+#result .result-inner{position:relative;z-index:2}
+@media(max-width:768px){
+  .result-char{height:28vh;opacity:0.16}
+  .result-char.left{left:-5%;bottom:8%}
+  .result-char.right{right:-5%;bottom:8%}
+}
+@media(max-width:400px){
+  .result-char{height:22vh;opacity:0.14}
+  .result-char.left{left:-8%;bottom:10%}
+  .result-char.right{right:-8%;bottom:10%}
+}
 </style>
 </head>
 <body>
@@ -660,6 +677,38 @@ function determineType() {
   return 'TOP';
 }
 
+// ===== 結果ページIPキャラ追加 =====
+const TYPE_TO_IMG = {
+  SOLO:'solo',MICRO:'micro',MULTI:'multi',SCALE:'scale',FC:'fc',
+  NO2:'no_2',EXEC:'exec',MANAGER:'manager',STAR:'star',TOP:'top',
+  CONTRACT:'contract',FREELANCE:'freelance',EDU:'edu',MENTOR:'mentor',
+  CREATOR:'creator',CRAFTER:'crafter'
+};
+
+function addResultCharacters(typeKey) {
+  // 既存のキャラコンテナがあれば削除
+  var old = document.getElementById('resultCharContainer');
+  if (old) old.remove();
+  var imgName = TYPE_TO_IMG[typeKey];
+  if (!imgName) return;
+  var container = document.createElement('div');
+  container.id = 'resultCharContainer';
+  container.className = 'result-char-container';
+  var imgL = document.createElement('img');
+  imgL.src = '/images/' + imgName + '_m.png';
+  imgL.className = 'result-char left';
+  imgL.alt = '';
+  imgL.loading = 'lazy';
+  var imgR = document.createElement('img');
+  imgR.src = '/images/' + imgName + '_r.png';
+  imgR.className = 'result-char right';
+  imgR.alt = '';
+  imgR.loading = 'lazy';
+  container.appendChild(imgL);
+  container.appendChild(imgR);
+  document.getElementById('result').appendChild(container);
+}
+
 function showResult() {
   const key = determineType();
   const type = TYPES[key];
@@ -747,6 +796,7 @@ function showResult() {
     </div>
   `;
   showScreen('result');
+  addResultCharacters(key);
   // パターン番号を算出
   window._btiResult = { type: key, pattern: 1 }; // デフォルト
   
