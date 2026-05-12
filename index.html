@@ -89,9 +89,14 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 .btn-line-sub{font-family:var(--jp);font-size:10px;letter-spacing:0.1em;opacity:0.85;display:block;margin-top:3px;font-weight:400}
 .result-share{text-align:center;padding-top:20px;border-top:1px solid var(--line)}
 .result-share-label{font-family:var(--sans);font-size:8px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gray);margin-bottom:14px;display:block}
-.share-btns{display:flex;justify-content:center;gap:12px}
-.share-btn{width:40px;height:40px;border:1px solid var(--line);background:transparent;color:var(--gray-light);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.3s}
-.share-btn:hover{border-color:var(--gold);color:var(--gold)}
+.share-btns{display:flex;justify-content:center;gap:14px}
+.share-btn-wrap{display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.share-btn-ig{width:56px;height:56px;border-radius:14px;border:none;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform 0.2s,opacity 0.2s}
+.share-btn-ig:active{transform:scale(0.93);opacity:0.85}
+.share-btn-th{width:56px;height:56px;border-radius:14px;border:1px solid var(--line);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s}
+.share-btn-th:active{transform:scale(0.93)}
+.share-btn-th:hover{border-color:rgba(248,245,239,0.3)}
+.share-btn-text{font-family:var(--jp);font-size:10px;color:rgba(248,245,239,0.45);letter-spacing:0.05em}
 
 @keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 .result-inner>*{opacity:0;animation:fadeInUp 0.6s ease forwards}
@@ -792,15 +797,18 @@ function showResult() {
     <div class="result-share">
       <span class="result-share-label">Share your result</span>
       <div class="share-btns">
-        <button class="share-btn" onclick="shareInstagram('${key}','${type.name}')" title="Instagram">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
-        </button>
-        <button class="share-btn" onclick="shareX('${key}','${type.name}')" title="X">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-        </button>
-        <button class="share-btn" onclick="copyResult('${key}','${type.name}')" title="コピー">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>
-        </button>
+        <div class="share-btn-wrap" onclick="shareStory('${key}','${type.name}','${type.catch}')">
+          <button class="share-btn-ig" title="ストーリーズ">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#fff"/></svg>
+          </button>
+          <span class="share-btn-text">ストーリーズ</span>
+        </div>
+        <div class="share-btn-wrap" onclick="shareThreads('${key}','${type.name}')">
+          <button class="share-btn-th" title="Threads">
+            <svg width="22" height="22" viewBox="0 0 192 192" fill="var(--gray-light)"><path d="M141.537 88.988a66.667 66.667 0 0 0-2.518-1.143c-1.482-27.307-16.403-42.94-41.457-43.1h-.34c-14.986 0-27.449 6.396-35.12 18.036l13.779 9.452c5.73-8.695 14.724-10.548 21.348-10.548h.229c8.249.053 14.474 2.452 18.503 7.129 2.932 3.405 4.893 8.111 5.864 14.05-7.314-1.243-15.224-1.626-23.679-1.14-23.82 1.371-39.134 15.27-38.282 34.707.433 9.862 5.065 18.346 13.035 23.894 6.732 4.685 15.397 7.024 24.4 6.588 11.878-.576 21.164-5.009 27.589-13.169 4.882-6.2 7.937-14.163 9.213-24.103 5.524 3.338 9.632 7.726 12.003 13.048 4.023 9.028 4.26 23.856-3.396 31.495-6.744 6.728-14.849 9.632-27.15 9.726-13.6-.103-23.875-4.462-30.53-12.952-6.207-7.924-9.469-19.187-9.695-33.478.226-14.291 3.488-25.554 9.695-33.478 6.655-8.49 16.93-12.85 30.53-12.952 13.73.107 24.202 4.525 31.138 13.13l12.388-12.388c-9.695-11.803-23.528-17.834-41.148-17.94h-.379c-17.291.107-30.944 6.305-40.559 18.414C61.059 62.99 56.563 78.634 56.276 96c.287 17.366 4.783 33.01 13.381 46.483 9.615 12.109 23.268 18.307 40.559 18.414h.379c16.095-.112 28.138-5.476 37.861-16.862 8.476-9.921 12.916-23.28 12.916-38.81l-.028-1.94c-.772-5.42-2.124-10.191-4.084-14.297z"/></svg>
+          </button>
+          <span class="share-btn-text">Threads</span>
+        </div>
       </div>
     </div>
     <div style="margin-top:24px;padding:16px;background:rgba(255,255,255,0.04);border:1px solid var(--line);font-family:var(--sans);font-size:11px;color:var(--gray);line-height:2">
@@ -840,24 +848,117 @@ function showResult() {
   }, 100);
 }
 
-function shareX(key, name) {
-  const text = `BTI診断結果\n\n私は【${name}】でした！\n\n美容師のための16タイプ診断 #BTI #美容師`;
-  window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text), '_blank');
+function shareStory(key, name, catchText) {
+  var imgName = TYPE_TO_IMG[key] || 'solo';
+  var suffix = gender === 'B' ? '_r' : '_m';
+  var imgSrc = '/images/' + imgName + suffix + '.png';
+  
+  // Canvas生成
+  var W = 1080, H = 1920;
+  var cv = document.createElement('canvas');
+  cv.width = W; cv.height = H;
+  var cx = cv.getContext('2d');
+  
+  // 背景グラデーション
+  var bg = cx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,'#1a0e08');bg.addColorStop(0.35,'#0d0705');
+  bg.addColorStop(0.7,'#080404');bg.addColorStop(1,'#050202');
+  cx.fillStyle = bg; cx.fillRect(0,0,W,H);
+  
+  // ノイズ
+  var nc = document.createElement('canvas'); nc.width=W; nc.height=H;
+  var nx = nc.getContext('2d');
+  var nd = nx.createImageData(W,H);
+  for(var i=0;i<nd.data.length;i+=4){var v=Math.random()*10;nd.data[i]=v;nd.data[i+1]=v;nd.data[i+2]=v;nd.data[i+3]=6;}
+  nx.putImageData(nd,0,0); cx.drawImage(nc,0,0);
+  
+  // キャラ読み込み→描画→テキスト→シェア
+  var charImg = new Image();
+  charImg.crossOrigin = 'anonymous';
+  charImg.onload = function(){
+    drawStory(cx,W,H,charImg,key,name,catchText);
+    doShare(cv, key);
+  };
+  charImg.onerror = function(){
+    drawStory(cx,W,H,null,key,name,catchText);
+    doShare(cv, key);
+  };
+  charImg.src = imgSrc;
 }
 
-function shareInstagram(key, name) {
-  const text = `BTI診断結果：【${name}】\n\n#BTI診断 #わたしの美容師タイプ\nhttps://bti-web.vercel.app`;
-  navigator.clipboard.writeText(text).then(() => {
-    alert('テキストをコピーしました！\nInstagramストーリーに貼り付けてシェアしてください 📋');
-  }).catch(() => {
-    alert('コピーに失敗しました。手動でシェアしてください。');
-  });
+function drawStory(cx,W,H,charImg,key,name,catchText){
+  // キャラ描画
+  if(charImg){
+    var cH = H * 0.52;
+    var cW = cH * (charImg.width / charImg.height);
+    cx.globalAlpha = 0.92;
+    cx.drawImage(charImg, (W-cW)/2, H-cH-180, cW, cH);
+    cx.globalAlpha = 1;
+  }
+  // 上部オーバーレイ
+  var to = cx.createLinearGradient(0,0,0,H*0.45);
+  to.addColorStop(0,'rgba(10,5,3,0.9)');to.addColorStop(1,'rgba(10,5,3,0)');
+  cx.fillStyle = to; cx.fillRect(0,0,W,H*0.45);
+  // 下部オーバーレイ
+  var bo = cx.createLinearGradient(0,H*0.75,0,H);
+  bo.addColorStop(0,'rgba(5,2,2,0)');bo.addColorStop(1,'rgba(5,2,2,0.95)');
+  cx.fillStyle = bo; cx.fillRect(0,H*0.75,W,H*0.25);
+  
+  cx.textAlign = 'center';
+  // ブランドロゴ
+  cx.fillStyle = 'rgba(196,150,63,0.6)';
+  cx.font = '400 28px Georgia,serif';
+  cx.fillText('YOUR TYPE \u2014 BTI RESULT', W/2, 140);
+  // ライン
+  cx.strokeStyle = 'rgba(196,150,63,0.25)'; cx.lineWidth = 1;
+  cx.beginPath(); cx.moveTo(W/2-160,165); cx.lineTo(W/2+160,165); cx.stroke();
+  // タイプコード
+  cx.fillStyle = '#ffffff';
+  cx.font = '300 180px Georgia,serif';
+  cx.fillText(key, W/2, 370);
+  // タイプ名
+  cx.fillStyle = '#ffffff';
+  cx.font = '600 42px sans-serif';
+  cx.fillText(name, W/2, 450);
+  // キャッチ
+  cx.fillStyle = 'rgba(224,185,106,0.75)';
+  cx.font = 'italic 28px Georgia,serif';
+  cx.fillText('\u2014 ' + catchText + ' \u2014', W/2, 510);
+  // ハッシュタグ
+  cx.fillStyle = 'rgba(255,255,255,0.4)';
+  cx.font = '400 26px sans-serif';
+  cx.fillText('#BTI\u8a3a\u65ad  #\u308f\u305f\u3057\u306e\u7f8e\u5bb9\u5e2b\u30bf\u30a4\u30d7', W/2, H-120);
+  // URL
+  cx.fillStyle = 'rgba(196,150,63,0.4)';
+  cx.font = '400 22px sans-serif';
+  cx.fillText('bti-web.vercel.app', W/2, H-70);
 }
 
-function copyResult(key, name) {
-  navigator.clipboard.writeText(`BTI診断結果: 【${name}】\n美容師のための16タイプ診断`).then(() => {
-    alert('コピーしました！');
-  });
+function doShare(cv, key) {
+  cv.toBlob(function(blob){
+    if(!blob) return;
+    var file = new File([blob], 'BTI_'+key+'_story.png', {type:'image/png'});
+    if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
+      navigator.share({
+        files: [file],
+        title: 'BTI\u8a3a\u65ad\u7d50\u679c',
+        text: '#BTI\u8a3a\u65ad #\u308f\u305f\u3057\u306e\u7f8e\u5bb9\u5e2b\u30bf\u30a4\u30d7'
+      }).catch(function(){});
+    } else {
+      // PC等フォールバック：ダウンロード
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url; a.download = 'BTI_'+key+'_story.png';
+      document.body.appendChild(a); a.click();
+      document.body.removeChild(a);
+      setTimeout(function(){URL.revokeObjectURL(url)},5000);
+    }
+  },'image/png');
+}
+
+function shareThreads(key, name) {
+  var text = 'BTI\u8a3a\u65ad\u7d50\u679c\uff1a\u3010' + name + '\u3011\n\n#BTI\u8a3a\u65ad #\u308f\u305f\u3057\u306e\u7f8e\u5bb9\u5e2b\u30bf\u30a4\u30d7\nhttps://bti-web.vercel.app';
+  window.open('https://www.threads.net/intent/post?text=' + encodeURIComponent(text), '_blank');
 }
 // LIFF連携
 const BTI_LIFF_ID = '2010016684-jUp9eANQ';
