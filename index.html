@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>BTI  EBeauty Type Indicator</title>
+<title>BTI — Beauty Type Indicator</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Noto+Serif+JP:wght@300;400;500;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -17,7 +17,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
 .screen.active{opacity:1;pointer-events:all}
 body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(196,150,63,0.06) 0%,transparent 60%);pointer-events:none;z-index:0}
 
-#landing{justify-content:center;align-items:center;text-align:center;padding:120px 32px 10px;z-index:1;overflow-y:auto}
+#landing{justify-content:center;align-items:center;text-align:center;padding:80px 32px 16px;z-index:1;overflow-y:auto}
 .landing-tag{font-family:var(--sans);font-size:10px;letter-spacing:0.45em;text-transform:uppercase;color:var(--gold);margin-bottom:24px;display:flex;align-items:center;justify-content:center;gap:12px}
 .landing-tag::before,.landing-tag::after{display:none}
 .landing-bti{font-family:var(--serif);font-size:clamp(80px,20vw,160px);font-weight:300;line-height:0.9;letter-spacing:-0.03em;color:var(--white);margin-bottom:8px;position:relative}
@@ -83,7 +83,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 .result-cta-title{font-family:var(--jp);font-size:clamp(15px,3.8vw,18px);font-weight:500;letter-spacing:0.08em;line-height:1.6;margin-bottom:12px}
 .result-cta-items{display:flex;flex-direction:column;gap:6px;margin-bottom:24px;text-align:left}
 .result-cta-item{font-family:var(--jp);font-size:12px;color:rgba(248,245,239,0.7);display:flex;align-items:center;gap:8px}
-.result-cta-item::before{content:"◁E;color:var(--gold);font-size:8px;flex-shrink:0}
+.result-cta-item::before{content:"◆";color:var(--gold);font-size:8px;flex-shrink:0}
 .btn-line{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;padding:18px 24px;background:#06C755;color:#fff;border:none;cursor:pointer;font-family:var(--sans);font-size:11px;letter-spacing:0.25em;text-transform:uppercase;font-weight:600;text-decoration:none;transition:all 0.3s}
 .btn-line:hover{background:#05b34d;transform:translateY(-1px)}
 .btn-line-sub{font-family:var(--jp);font-size:10px;letter-spacing:0.1em;opacity:0.85;display:block;margin-top:3px;font-weight:400}
@@ -108,26 +108,26 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 #landing .btn-start{position:relative;z-index:2}
 body::before{background:none !important}
 
-/* IPキャラ共送E*/
+/* IPキャラ共通 */
 .char-img{position:absolute;width:auto;opacity:0.85;filter:drop-shadow(0 0 30px rgba(196,150,63,0.12))}
-/* 左丁E creator_m */
+/* 左上: creator_m */
 .char-lt{left:0%;top:3%;height:22vh;animation:charDrift 5s ease-in-out 0s infinite alternate}
-/* 右丁E scale_r */
+/* 右上: scale_r */
 .char-rt{right:0%;top:3%;height:22vh;animation:charDrift 6s ease-in-out 0.5s infinite alternate}
 /* 左中段: crafter_r */
 .char-lm{left:0%;top:38%;height:20vh;animation:charDrift 6s ease-in-out 1s infinite alternate}
 /* 右中段: top_m */
 .char-rm{right:3%;top:42%;height:18vh;animation:charDrift 5s ease-in-out 1.5s infinite alternate}
-/* 左丁E contract_m */
+/* 左下: contract_m */
 .char-lb{left:0%;bottom:5%;height:26vh;animation:charDrift 4s ease-in-out 2s infinite alternate}
-/* 左下寁E��: freelance_m */
+/* 左下寄り: freelance_m */
 .char-lb2{left:18%;bottom:0%;height:20vh;animation:charDrift 5s ease-in-out 3s infinite alternate}
-/* 右下丁E solo_r */
+/* 右下上: solo_r */
 .char-rb1{right:0%;bottom:22%;height:22vh;animation:charDrift 5s ease-in-out 2.5s infinite alternate}
-/* 右丁E star_r */
+/* 右下: star_r */
 .char-rb2{right:0%;bottom:0%;height:24vh;animation:charDrift 4s ease-in-out 3.5s infinite alternate}
 
-/* スマ�E 768px以丁E*/
+/* スマホ 768px以下 */
 @media(max-width:768px){
   .char-lt{left:-3%;top:1%;height:17vh}
   .char-rt{right:-3%;top:1%;height:17vh}
@@ -153,21 +153,21 @@ body::before{background:none !important}
 <body>
 
 <div class="screen active" id="landing"><div class="char-container" style="position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden">
-  <!-- 左丁E creator_m -->
+  <!-- 左上: creator_m -->
   <img src="/images/creator_m.png" class="char-img char-lt" alt="" loading="lazy">
-  <!-- 右丁E scale_r -->
+  <!-- 右上: scale_r -->
   <img src="/images/scale_r.png" class="char-img char-rt" alt="" loading="lazy">
   <!-- 左中段: crafter_r -->
   <img src="/images/crafter_r.png" class="char-img char-lm" alt="" loading="lazy">
-  <!-- 右中段: top_m�E�EEW�E�E-->
+  <!-- 右中段: top_m（NEW） -->
   <img src="/images/top_m.png" class="char-img char-rm" alt="" loading="lazy">
-  <!-- 左丁E contract_m -->
+  <!-- 左下: contract_m -->
   <img src="/images/contract_m.png" class="char-img char-lb" alt="" loading="lazy">
-  <!-- 左下寁E��: freelance_m�E�EEW�E�E-->
+  <!-- 左下寄り: freelance_m（NEW） -->
   <img src="/images/freelance_m.png" class="char-img char-lb2" alt="" loading="lazy">
-  <!-- 右下丁E solo_r -->
+  <!-- 右下上: solo_r -->
   <img src="/images/solo_r.png" class="char-img char-rb1" alt="" loading="lazy">
-  <!-- 右丁E star_r -->
+  <!-- 右下: star_r -->
   <img src="/images/star_r.png" class="char-img char-rb2" alt="" loading="lazy">
 </div>
 
@@ -176,12 +176,12 @@ body::before{background:none !important}
   <span class="landing-en">Beauty Type Indicator</span>
   <div class="landing-divider"></div>
   <div class="landing-jp" style="font-size:clamp(22px,5.5vw,30px);color:var(--white);font-weight:500;letter-spacing:0.15em;margin-bottom:4px">
-    <span style="color:var(--gold-light);font-size:clamp(30px,7.5vw,42px);font-weight:600">美容師</span><span style="font-size:clamp(20px,5vw,28px)">のための診断、E/span>
+    <span style="color:var(--gold-light);font-size:clamp(30px,7.5vw,42px);font-weight:600">美容師</span><span style="font-size:clamp(20px,5vw,28px)">のための診断。</span>
   </div>
   <div style="font-family:var(--jp);margin-bottom:8px;position:relative;z-index:2">
     <span style="font-family:var(--serif);font-size:clamp(56px,14vw,88px);font-weight:300;color:var(--gold);line-height:1">16</span><span style="font-family:var(--jp);font-size:clamp(18px,4.5vw,26px);font-weight:500;color:var(--white);letter-spacing:0.1em;margin-left:8px"> タイプ診断</span>
   </div>
-  <div class="landing-sub">30の質問から、あなた�E<br>「美容師としての素顔」を解き�Eかす、E/div>
+  <div class="landing-sub">30の質問から、あなたの<br>「美容師としての素顔」を解き明かす。</div>
   <div class="landing-stats">
     <div class="landing-stat">
       <span class="landing-stat-label">Questions</span>
@@ -192,11 +192,11 @@ body::before{background:none !important}
       <span class="landing-stat-val">16</span>
     </div>
     <div class="landing-stat">
-      <span class="landing-stat-label">所要時閁E/span>
-      <span class="landing-stat-val" style="font-family:var(--jp);white-space:nowrap;color:var(--gold-light)"><span style="font-size:14px">紁E/span><span style="font-size:28px">3</span><span style="font-size:14px">刁E/span></span>
+      <span class="landing-stat-label">所要時間</span>
+      <span class="landing-stat-val" style="font-family:var(--jp);white-space:nowrap;color:var(--gold-light)"><span style="font-size:14px">約</span><span style="font-size:28px">3</span><span style="font-size:14px">分</span></span>
     </div>
   </div>
-  <button class="btn-start" onclick="startQuiz()">診断を�EじめめEↁE/button>
+  <button class="btn-start" onclick="startQuiz()">診断をはじめる →</button>
 </div>
 
 <div class="screen" id="quiz">
@@ -209,7 +209,7 @@ body::before{background:none !important}
   </div>
   <div class="quiz-cards" id="quizCards"></div>
   <div class="quiz-bottom">
-    <button class="quiz-back-btn" id="backBtn" onclick="goBack()" disabled>ↁE前�E質啁E/button>
+    <button class="quiz-back-btn" id="backBtn" onclick="goBack()" disabled>← 前の質問</button>
   </div>
 </div>
 
@@ -221,7 +221,7 @@ body::before{background:none !important}
       <circle cx="32" cy="32" r="28" stroke="#c4963f" stroke-width="1.5" stroke-dasharray="44 132" stroke-linecap="round"/>
     </svg>
   </div>
-  <div class="loading-text" id="loadingText">16タイプから、あなた�E型を照合中...</div>
+  <div class="loading-text" id="loadingText">16タイプから、あなたの型を照合中...</div>
 </div>
 
 <div class="screen" id="result">
@@ -229,75 +229,76 @@ body::before{background:none !important}
 </div>
 
 <script>
-// ===== 30啁E=====
+// ===== 30問 =====
 const Q = [
   // Axis 01
-  {axis:'Axis 01 / Player ⇁EBuilder',q:'月末、売上目標に届かなかった。最初にとった行動は�E�E,opts:['自刁E�E技術や接客を見直して次月に備えぁE,'雁E��の導線や仕絁E��を洗い直した','営業日を増やすか稼働を上げぁE,'正直、そこまで深く老E��なかっぁE],sc:['P','B','P','N']},
-  {axis:'Axis 01 / Player ⇁EBuilder',q:'1,000丁E�Eが手に入ったら、まず何に使ぁE��E,opts:['高級車�Eブランド品・時計など自刁E��のご褒羁E,'自刁E�E店�Eブランド�E開業めE��大賁E��','投賁E�E貯金して封E��に備えめE,'スタチE��めE��墁E��の投賁E��使ぁE],sc:['P','B','B','B']},
-  {axis:'Axis 01 / Player ⇁EBuilder',q:'尊敬する人物に近いのは�E�E,opts:['持E��売上トチE�Eクラスのカリスマ美容師','絁E��を作って業界を変えた経営老E,'独立して成功した経営老E,'技術と人望で地域に愛されるスタイリスチE],sc:['P','B','OWNER','P']},
-  {axis:'Axis 01 / Player ⇁EBuilder',q:'スタチE��が辞めると言ぁE�Eした時、最初に頭に浮かんだのは�E�E,opts:['技術や教育面で不安があった�Eかな','評価制度めE��E��に問題があった�Eかも','人間関係で何かあった�Eかな','自刁E��何かできることはあったか'],sc:['P','B','N','H']},
-  {axis:'Axis 01 / Player ⇁EBuilder',q:'仕事終わりに老E��てること、近いのは�E�E,opts:['明日の持E��客のスタイルめE��客様�Eことを老E��てめE,'売上や雁E��の数字�E改喁E��を老E��てめE,'スタチE��のことめE��間関係を老E��てめE,'特に何も老E��ずオフにしてめE],sc:['P','B','H','St']},
+  {axis:'Axis 01 / Player ⇔ Builder',q:'月末、売上目標に届かなかった。最初にとった行動は？',opts:['自分の技術や接客を見直して次月に備えた','集客の導線や仕組みを洗い直した','営業日を増やすか稼働を上げた','正直、そこまで深く考えなかった'],sc:['P','B','P','N']},
+  {axis:'Axis 01 / Player ⇔ Builder',q:'1,000万円が手に入ったら、まず何に使う？',opts:['高級車・ブランド品・時計など自分へのご褒美','自分の店・ブランドの開業や拡大資金','投資・貯金して将来に備える','スタッフや環境への投資に使う'],sc:['P','B','B','B']},
+  {axis:'Axis 01 / Player ⇔ Builder',q:'尊敬する人物に近いのは？',opts:['指名売上トップクラスのカリスマ美容師','組織を作って業界を変えた経営者','独立して成功した経営者','技術と人望で地域に愛されるスタイリスト'],sc:['P','B','OWNER','P']},
+  {axis:'Axis 01 / Player ⇔ Builder',q:'スタッフが辞めると言い出した時、最初に頭に浮かんだのは？',opts:['技術や教育面で不安があったのかな','評価制度や待遇に問題があったのかも','人間関係で何かあったのかな','自分に何かできることはあったか'],sc:['P','B','N','H']},
+  {axis:'Axis 01 / Player ⇔ Builder',q:'仕事終わりに考えてること、近いのは？',opts:['明日の指名客のスタイルやお客様のことを考えてる','売上や集客の数字・改善策を考えてる','スタッフのことや人間関係を考えてる','特に何も考えずオフにしてる'],sc:['P','B','H','St']},
   // Axis 02
-  {axis:'Axis 02 / Solo ⇁ECrew',q:'持E��客が急増した時、本音は�E�E,opts:['ぁE��感じ、もっと伸ばしたぁE,'嬉しぁE��ど現状で満足、このくらぁE��ぁE��','嬉しぁE��どしんどぁE��誰かに振りたぁE,'後輩に回して教育のチャンスにしたぁE],sc:['S','N','C','C']},
-  {axis:'Axis 02 / Solo ⇁ECrew',q:'営業中、E��諁E��多めの先輩スタイリストを見て思うことは�E�E,opts:['楽しそぁE���E刁E��そうぁE��雰囲気が好ぁE,'場面によりけり、状況次第','仕事中はもう少し雁E��してほしい','お客様が楽しそぁE��らそれでぁE��'],sc:['C','N','S','N']},
-  {axis:'Axis 02 / Solo ⇁ECrew',q:'SNSを育てるなら、どちらを優先する！E,opts:['自刁E��人のアカウンチE,'サロン全体�EアカウンチE,'どちらも同じくらぁE,'正直、SNSはあまり�E味がなぁE],sc:['S','C','N','N']},
-  {axis:'Axis 02 / Solo ⇁ECrew',q:'一緒に働く人数、理想は�E�E,opts:['1人がいぁE���E刁E�Eペ�Eスが大亁E,'2、E人、�E刁E�E目が届く篁E��','4、E人くらぁE��ちめE��どよい規模','10人以上、大きなチ�Eムで動きたい'],sc:['S','S','N','C']},
-  {axis:'Axis 02 / Solo ⇁ECrew',q:'チ�Eムで動く時、�E刁E��一番忁E��よいポジションは�E�E,opts:['自刁E�Eペ�Eスで個人の仕事に雁E��する','リーダーとして全体をまとめる','サポ�Eトや裏方として支える','現場と経営の橋渡し役'],sc:['S','C','C','B']},
+  {axis:'Axis 02 / Solo ⇔ Crew',q:'指名客が急増した時、本音は？',opts:['いい感じ、もっと伸ばしたい','嬉しいけど現状で満足、このくらいでいい','嬉しいけどしんどい、誰かに振りたい','後輩に回して教育のチャンスにしたい'],sc:['S','N','C','C']},
+  {axis:'Axis 02 / Solo ⇔ Crew',q:'営業中、雑談が多めの先輩スタイリストを見て思うことは？',opts:['楽しそう、自分もそういう雰囲気が好き','場面によりけり、状況次第','仕事中はもう少し集中してほしい','お客様が楽しそうならそれでいい'],sc:['C','N','S','N']},
+  {axis:'Axis 02 / Solo ⇔ Crew',q:'SNSを育てるなら、どちらを優先する？',opts:['自分個人のアカウント','サロン全体のアカウント','どちらも同じくらい','正直、SNSはあまり興味がない'],sc:['S','C','N','N']},
+  {axis:'Axis 02 / Solo ⇔ Crew',q:'一緒に働く人数、理想は？',opts:['1人がいい、自分のペースが大事','2〜4人、自分の目が届く範囲','4〜7人くらい、ちょうどよい規模','10人以上、大きなチームで動きたい'],sc:['S','S','N','C']},
+  {axis:'Axis 02 / Solo ⇔ Crew',q:'チームで動く時、自分が一番心地よいポジションは？',opts:['自分のペースで個人の仕事に集中する','リーダーとして全体をまとめる','サポートや裏方として支える','現場と経営の橋渡し役'],sc:['S','C','C','B']},
   // Axis 03
-  {axis:'Axis 03 / Stable ⇁EScale',q:'年収が倍になるが休日が半刁E��なるオファー。どぁE��る！E,opts:['めE��、稼げる時に稼ぁE��おきたい','めE��なぁE���Eライベ�Eト�E時間は譲れなぁE,'冁E��と期間次第で検討すめE,'今�E状況によって変わめE],sc:['Sc','St','N','N']},
-  {axis:'Axis 03 / Stable ⇁EScale',q:'同期が独立して急成長してぁE��と聞いた。本音は�E�E,opts:['悔しぁE���E刁E��追ぁE��けたぁE,'すごぁE��、と思うが�E刁E��は関係なぁE,'どんな仕絁E��で成長してぁE��か気になめE,'自刁E�E道があるからそれでぁE��'],sc:['Sc','N','B','St']},
-  {axis:'Axis 03 / Stable ⇁EScale',q:'「現状維持」につぁE��の本音は�E�E,opts:['退化と同じ、よくなぁE,'維持できてぁE��なら十刁E��派','今が幸せならそれでぁE��','状況によって正解は変わめE],sc:['Sc','St','St','N']},
-  {axis:'Axis 03 / Stable ⇁EScale',q:'5年後もめE��てると思うことは�E�E,opts:['ハサミを握ってお客様�E髪を�Eること','絁E��やチ�Eムを�Eネジメントすること','人を育てて後輩を�E長させること','自刁E�Eブランドや事業を作ること'],sc:['P','B','EDU','OWNER']},
-  {axis:'Axis 03 / Stable ⇁EScale',q:'お��と時間、どちらが今�E自刁E��は大事！E,opts:['お��、稼げれば時間は作れめE,'時間、お金では買えなぁE��のがあめE,'今�Eお��、封E��は時間のバランスで老E��めE,'どちらも同じくらぁE��亁E],sc:['Sc','St','N','N']},
+  {axis:'Axis 03 / Stable ⇔ Scale',q:'年収が倍になるが休日が半分になるオファー。どうする？',opts:['やる、稼げる時に稼いでおきたい','やらない、プライベートの時間は譲れない','内容と期間次第で検討する','今の状況によって変わる'],sc:['Sc','St','N','N']},
+  {axis:'Axis 03 / Stable ⇔ Scale',q:'同期が独立して急成長していると聞いた。本音は？',opts:['悔しい、自分も追いかけたい','すごいな、と思うが自分には関係ない','どんな仕組みで成長しているか気になる','自分の道があるからそれでいい'],sc:['Sc','N','B','St']},
+  {axis:'Axis 03 / Stable ⇔ Scale',q:'「現状維持」についての本音は？',opts:['退化と同じ、よくない','維持できているなら十分立派','今が幸せならそれでいい','状況によって正解は変わる'],sc:['Sc','St','St','N']},
+  {axis:'Axis 03 / Stable ⇔ Scale',q:'5年後もやってると思うことは？',opts:['ハサミを握ってお客様の髪を切ること','組織やチームをマネジメントすること','人を育てて後輩を成長させること','自分のブランドや事業を作ること'],sc:['P','B','EDU','OWNER']},
+  {axis:'Axis 03 / Stable ⇔ Scale',q:'お金と時間、どちらが今の自分には大事？',opts:['お金、稼げれば時間は作れる','時間、お金では買えないものがある','今はお金、将来は時間のバランスで考える','どちらも同じくらい大事'],sc:['Sc','St','N','N']},
   // Axis 04
-  {axis:'Axis 04 / Heart ⇁ELogic',q:'後輩が�Eらかに落ち込んでぁE��。あなた�E�E�E,opts:['まず話を聞ぁE��寁E��添ぁE,'原因を�E析して解決策を一緒に老E��めE,'忁E�Eだけど、どぁE��をかければぁE��かわからなぁE,'自刁E��立ち直るだろうと様子を見る'],sc:['H','L','N','N']},
-  {axis:'Axis 04 / Heart ⇁ELogic',q:'持E��がつかなぁE��手スタチE��を見て思うことは�E�E,opts:['気持ちを支えてあげたい','何が原因か数字や行動で洗い出したぁE,'忁E�Eだけど声がかけられなぁE,'正直、�E刁E�Eことで精一杯'],sc:['H','L','N','N']},
-  {axis:'Axis 04 / Heart ⇁ELogic',q:'自刁E��一番嬉しぁE��間�E�E�E,opts:['お客様に「ありがとぁE��と言われた時','売上�E持E��数が目標を趁E��た時','後輩めE��タチE��が�E長した瞬閁E,'給料�E歩合�E利益が上がった時'],sc:['H','L','H','L']},
-  {axis:'Axis 04 / Heart ⇁ELogic',q:'クレームが�Eった時、まず動く�Eは�E�E,opts:['お客様�E気持ちを汲んで誠実に謝る','何が起きたか事実確認を急ぁE,'店長めE��司に素早く報告�E相諁E��めE,'再発しなぁE��ぁE��絁E��めE��因を老E��めE],sc:['H','L','N','L']},
-  {axis:'Axis 04 / Heart ⇁ELogic',q:'チ�Eムミ�EチE��ングでの自刁E�E発言スタイルは�E�E,opts:['雰囲気や空気感、感惁E��な話が多い','数字や具体的な改喁E���E話が多い','聞き役に回ることが多い','全体をまとめる・整琁E��る役割が多い'],sc:['H','L','N','B']},
+  {axis:'Axis 04 / Heart ⇔ Logic',q:'後輩が明らかに落ち込んでいる。あなたは？',opts:['まず話を聞いて寄り添う','原因を分析して解決策を一緒に考える','心配だけど、どう声をかければいいかわからない','自分で立ち直るだろうと様子を見る'],sc:['H','L','N','N']},
+  {axis:'Axis 04 / Heart ⇔ Logic',q:'指名がつかない若手スタッフを見て思うことは？',opts:['気持ちを支えてあげたい','何が原因か数字や行動で洗い出したい','心配だけど声がかけられない','正直、自分のことで精一杯'],sc:['H','L','N','N']},
+  {axis:'Axis 04 / Heart ⇔ Logic',q:'自分が一番嬉しい瞬間は？',opts:['お客様に「ありがとう」と言われた時','売上・指名数が目標を超えた時','後輩やスタッフが成長した瞬間','給料・歩合・利益が上がった時'],sc:['H','L','H','L']},
+  {axis:'Axis 04 / Heart ⇔ Logic',q:'クレームが入った時、まず動くのは？',opts:['お客様の気持ちを汲んで誠実に謝る','何が起きたか事実確認を急ぐ','店長や上司に素早く報告・相談する','再発しないよう仕組みや原因を考える'],sc:['H','L','N','L']},
+  {axis:'Axis 04 / Heart ⇔ Logic',q:'チームミーティングでの自分の発言スタイルは？',opts:['雰囲気や空気感、感情的な話が多い','数字や具体的な改善策の話が多い','聞き役に回ることが多い','全体をまとめる・整理する役割が多い'],sc:['H','L','N','B']},
   // Stylist Deep
   {axis:'Stylist Deep',q:'__Q21__',opts:['__A__','__B__','__C__','__D__'],sc:['S4','S3','S2','S1']},
-  {axis:'Stylist Deep',q:'お客様との関係、本音は�E�E,opts:['拁E��を趁E��た関係、友達感覚�E人もいめE,'適度な距離感が忁E��よい','施術中だけ�E関係でぁE��','お客様によって使ぁE�EけてぁE��'],sc:['H','N','L','N']},
-  {axis:'Stylist Deep',q:'自刁E�E武器はどれ！E,opts:['技術力・再現性・丁寧ぁE,'接客・会話力�E屁E��E��の良ぁE,'世界観・SNS・ビジュアルセンス','武器とぁE��るほどのも�EはまだなぁE],sc:['CRAFT','HEART','CREATE','N']},
-  {axis:'Stylist Deep',q:'絁E��やルールに縛られることへの本音は�E�E,opts:['チ�Eムの方が安忁E��ある程度縛られても構わなぁE,'ある程度の自由があれ�E大丈夫','正直しんどぁE���E刁E�Eペ�Eスで働きたい','ルールは忁E��だが、裁E��も欲しい'],sc:['C','N','S','N']},
-  {axis:'Stylist Deep',q:'5年後�E琁E��の働き方は�E�E,opts:['今�E絁E��でポジションを上げてぁE��','独立か業務委託で自刁E�E裁E��で働く','別の環墁E��移って新しい挑戦をすめE,'自刁E�EサロンめE��業を持ってぁE��'],sc:['STAY','FREE','MOVE','OWNER']},
+  {axis:'Stylist Deep',q:'お客様との関係、本音は？',opts:['担当を超えた関係、友達感覚の人もいる','適度な距離感が心地よい','施術中だけの関係でいい','お客様によって使い分けている'],sc:['H','N','L','N']},
+  {axis:'Stylist Deep',q:'自分の武器はどれ？',opts:['技術力・再現性・丁寧さ','接客・会話力・居心地の良さ','世界観・SNS・ビジュアルセンス','武器といえるほどのものはまだない'],sc:['CRAFT','HEART','CREATE','N']},
+  {axis:'Stylist Deep',q:'組織やルールに縛られることへの本音は？',opts:['チームの方が安心、ある程度縛られても構わない','ある程度の自由があれば大丈夫','正直しんどい、自分のペースで働きたい','ルールは必要だが、裁量も欲しい'],sc:['C','N','S','N']},
+  {axis:'Stylist Deep',q:'5年後の理想の働き方は？',opts:['今の組織でポジションを上げていく','独立か業務委託で自分の裁量で働く','別の環境に移って新しい挑戦をする','自分のサロンや事業を持っている'],sc:['STAY','FREE','MOVE','OWNER']},
   // Business View
-  {axis:'Business View',q:'飲み会�E幹事を頼まれたら！E,opts:['玁E�EしてめE��、仕�Eる�Eが好ぁE,'任されたらめE��、でも本音はめんどくさぁE,'サポ�Eトに回る方が得意','できれば誰かに任せたぁE],sc:['B','N','N','S']},
-  {axis:'Business View',q:'尊敬する人物のタイプに近いのは�E�E,opts:['起業家・経営老E��孫正義・堀江貴斁E���E�E,'アーチE��スト�Eクリエイター','職人・専門家�E�一つを極めた人�E�E,'リーダー・教育老E��人を育てる人�E�E],sc:['B','CREATE','CRAFT','EDU']},
-  {axis:'Business View',q:'学生時代、クラスでのポジションは�E�E,opts:['クラスの中忁E��ぁE��、友達が多かっぁE,'特定�E仲間と深く付き合うタイチE,'趣味めE��人競技に没頭してぁE��','裏方で場を支えるのが好きだっぁE],sc:['B','N','S','C']},
-  {axis:'Business View',q:'人生で一番後悔したくなぁE�Eは�E�E,opts:['挑戦しなかったこと','大刁E��人との時間を疎かにしたこと','お��に苦労したこと','自刁E��しく生きられなかったこと'],sc:['Sc','H','Sc','S']},
-  {axis:'Business View',q:'仕事で大きな失敗をした時、あなた�EどぁE��る！E,opts:['悔しぁE��、すぐ次の手を老E��て動き出ぁE,'原因を徹底的に刁E��してから次に進む','信頼できる人に相諁E��て一緒に立て直ぁE,'し�Eらく落ち込むが、時間が経てば立ち直めE],sc:['Sc','L','H','St']},
+  {axis:'Business View',q:'飲み会の幹事を頼まれたら？',opts:['率先してやる、仕切るのが好き','任されたらやる、でも本音はめんどくさい','サポートに回る方が得意','できれば誰かに任せたい'],sc:['B','N','N','S']},
+  {axis:'Business View',q:'尊敬する人物のタイプに近いのは？',opts:['起業家・経営者（孫正義・堀江貴文系）','アーティスト・クリエイター','職人・専門家（一つを極めた人）','リーダー・教育者（人を育てる人）'],sc:['B','CREATE','CRAFT','EDU']},
+  {axis:'Business View',q:'学生時代、クラスでのポジションは？',opts:['クラスの中心にいた、友達が多かった','特定の仲間と深く付き合うタイプ','趣味や個人競技に没頭していた','裏方で場を支えるのが好きだった'],sc:['B','N','S','C']},
+  {axis:'Business View',q:'人生で一番後悔したくないのは？',opts:['挑戦しなかったこと','大切な人との時間を疎かにしたこと','お金に苦労したこと','自分らしく生きられなかったこと'],sc:['Sc','H','Sc','S']},
+  {axis:'Business View',q:'仕事で大きな失敗をした時、あなたはどうする？',opts:['悔しいが、すぐ次の手を考えて動き出す','原因を徹底的に分析してから次に進む','信頼できる人に相談して一緒に立て直す','しばらく落ち込むが、時間が経てば立ち直る'],sc:['Sc','L','H','St']},
 ];
 
-// Q21はポジションによって刁E��替ぁEconst Q21_STYLIST = {
-  q:'持E��売上、正直今いくらくらぁE��E,
-  opts:['朁E00丁E��丁E,'朁E00、E00丁E,'朁E0、E00丁E,'朁E0丁E��丁E],
+// Q21はポジションによって切り替え
+const Q21_STYLIST = {
+  q:'指名売上、正直今いくらくらい？',
+  opts:['月200万以上','月100〜200万','月50〜100万','月50万以下'],
   sc:['S4','S3','S2','S1']
 };
 const Q21_OWNER = {
-  q:'今�Eサロンの月商はどのくらぁE��E,
-  opts:['朁E,000丁E��丁E,'朁E00、E,000丁E,'朁E00、E00丁E,'朁E00丁E��丁E],
+  q:'今のサロンの月商はどのくらい？',
+  opts:['月1,000万以上','月500〜1,000万','月200〜500万','月200万以下'],
   sc:['S4','S3','S2','S1']
 };
 
 // ===== 16タイプ定義 =====
 const TYPES = {
-  SOLO:{name:'孤高�E職人オーナ�E垁E,catch:'自刁E�E城を静かに構えめE,desc:'技術と接客を一人で完結させ、�E刁E�Eペ�Eスで経営するタイプ。スタチE��を抱えるリスクより完�Eな自由を重視する。本当�E数人のスタチE��と働く気持ちもあるが、やはり一人の方が楽でリスクが少なく、目の前�Eお客様に向き合えると気づぁE��ぁE��。小さくても揺るぎなぁE���E刁E�E城を築いてぁE��、E},
-  MICRO:{name:'小規模プレイングオーナ�E垁E,catch:'ハサミを握りながら経営する',desc:'自刁E��ハサミを握りながら小さなチ�Eムを動かす。いつか�Eハサミを置くタイミングを計りつつも、�E人気質でしっかり利益を出したぁE��イプ。この規模は美容業界で最も倒産リスクが高く、スタチE��の離職めE��字管琁E��ど老E��ることは多い。それでも現場感覚を手放さなぁE�Eがこのタイプ�E強さ、E},
-  MULTI:{name:'褁E��店�Eオーナ�E垁E,catch:'2、E店�Eを�E力で動かぁE,desc:'2、E店�Eを展開するハイブリチE��型、E、E店�EのぁE��は非常に危険な時期で、�E刁E��ハサミを置くと利益構造が難しくなる。それでも拡大したぁE��持ちとリスクの狭間で、スタチE��邁E�EをどこまでめE��かが常に課題。�Eレイヤーとビルダーの賁E��を�Eね備えた、拡大期�E経営老E��E},
-  SCALE:{name:'多店�E展開オーナ�E垁E,catch:'業界を動かす帝国構築タイチE,desc:'10店�E以上を目持E��、仕絁E��と人材で事業を拡大する。真面目だけではここまで来られなぁE��—少し突拍子もなぁE��変わった人じゃなぁE��成し得なぁE��域。人に好かれる才能もかなりある。美容業界でも本当に少なぁE��本物の経営老E��イプ、E},
-  FC:{name:'リスク軽減FCオーナ�E垁E,catch:'仕絁E��に乗って自刁E�E店を持つ',desc:'確立されたブランドと仕絁E��に乗って経営するタイプ。ゼロから作るリスクより証明されたモチE��で確実に成果を�Eすことを重視する。ただロイヤリチE��めE��部との関係で数年後に問題が起きやすく、本部の失脚とともに自刁E�E方向性も老E��始めることが多い。独立志向はあるが、堁E��さも�Eね備える、E},
-  NO2:{name:'最強参謀No.2垁E,catch:'トップを支える影の司令塁E,desc:'経営老E�E思老E��先読みし、絁E���E潤滑油となる。いぁE��社・伸びる会社はここがしっかりしてぁE��。表に出るより裏で支えることに喜�Eを感じる、絁E��にとって不可欠な存在、Eo.2の給料でそ�E会社の価値がわかる。いなぁE��絁E��が回らなぁE��縁�E下�E戦略家、E},
-  EXEC:{name:'絁E��幹部垁E,catch:'数字と人材で絁E��を動かぁE,desc:'褁E��店�Eを統括し、数字と人材�E両面から絁E��を強くする。本当にマネジメントができる幹部は少なく、幹部が強ぁE��社ほど忁E��伸びる。集客・マネジメント�E人の管琁E��できる人が適任。経営老E��現場の橋渡し役として絁E���E成長を支える実力老E��E},
-  MANAGER:{name:'現場店長垁E,catch:'現場を束ねるキャプテン',desc:'スタチE��の状態を察知し、現場の空気を整えながらチ�Eムを動かす。店�E冁E��人気があり売上もトップが好ましい。毎日現場で共にするので人間力がより忁E��とされる。店長でお店�E良し悪し�E決まる——それほど重要なポジション。数字も人も、バランスよく見られるリーダー、E},
-  STAR:{name:'SNSカリスマ指名無双型',catch:'SNSと技術で業界を動かぁE,desc:'発信力と技術力を掛け合わせ、�E刁E�E身がブランドになる。インスタでバズると20代で月売丁E00、E00丁E��平気で出る時代。報酬も月100丁E��E��の20代がここに該当する。SNSがずっと強ければ求人も売上も独立も全部ぁE��くいく、現代美容師の最強モチE��、E},
-  TOP:{name:'TOPスタイリスト型',catch:'根強ぁE��名客を積み上げめE,desc:'個人SNSはさほど強くなくても、地域や目の前�Eお客様�E満足度が高く、積み上げてきた根強ぁE��名客が多い。このタイプ�E絁E��にも忁E��だし独立しても�E功する可能性が高い。一度拁E��したお客様が何年も離れなぁE��究極の接客力と信頼を持つ、E},
-  CONTRACT:{name:'業務委託スタイリスト型',catch:'会社の仕絁E��を使って稼ぁE,desc:'実力がなくても稼ぎやすく、あれ�Eさらに稼げる。報酬は平坁E0丁E�E以上が多く、休みも時間も制限が少なぁE��ただ技術�EアチE�EチE�EトをされなぁE��が多いのがリスク。若ぁE��ちに移籍してしっかり稼ぁE��ぁE��、リスクを管琁E��ながら着実に稼ぐ�Eレイヤー、E},
-  FREELANCE:{name:'1人独立スタイリスト型',catch:'腕一本で自由に稼ぐ実力老E,desc:'持E��売丁E0丁E�E以上が忁E��になるが、�E裁E��がかからず売上�E紁E0%が報酬になる。ただ新規集客はなぁE��め、実力老E��独立前に移籍する�EはぁE��が、E0丁E��後で行くとそ�E先が危険。売丁E00丁E�E以上をキープできる本物の実力老E�Eための働き方、E},
-  EDU:{name:'教育老E��',catch:'体系立てて後輩を育てめE,desc:'技術を論理皁E��刁E��し、�E現性のある持E��ができる。お客様にもそこそこ人気があり、後輩教育に長けて人からも好かれ面倒見がよい。新しい教育はすぐ報酬に変わりにくいが、正しいレギュラーサロンには忁E��忁E��な存在。サロン全体�E技術レベルを底上げする、絁E���E財産、E},
-  MENTOR:{name:'メンター垁E,catch:'人を育てる温かい先輩',desc:'思いめE��があり優しい先輩。店長めE��部とぁE��役職はつかなぁE��、店�EにぁE��くれると助かる存在。後輩の悩みを受け止め、技術だけでなく人間的にも�E長させる。こぁE��った人が長く勤めてくれるサロンは強ぁE��育てた人材が長く続く、絁E���E安定を生�E存在、E},
-  CREATOR:{name:'世界観クリエイター垁E,catch:'作品とSNSで独自の世界を作る',desc:'撮影めE��ンチE��ト作品作りに長けてぁE��、こぁE��ったことが忁E�E底から好き。売上も大事だがクリエイチE��ブをしてぁE��時間が一番楽しい。もしかしたら本来美容師として一番忁E��なタイプかもしれなぁE��技術よりも表現力が武器で、�E狂的なファンを持つ唯一無二�E存在、E},
-  CRAFTER:{name:'技術一筋型',catch:'職人の道を極める求道老E,desc:'売上より技術�E深化に惁E�Eを注ぐ。技術一筋�EぁE��が、こだわりが強くお客様�E支持がぁE��ぁE��なことも。カチE��はぁE��ぁE��持E��はつかなぁE��固職人タイプ。セミナー・薬剤研究・コンチE��ト——技術面で全員から一目置かれる存在。接客よりも技術を追求し続ける純粋な職人、E},
+  SOLO:{name:'孤高の職人オーナー型',catch:'自分の城を静かに構える',desc:'技術と接客を一人で完結させ、自分のペースで経営するタイプ。スタッフを抱えるリスクより完全な自由を重視する。本当は数人のスタッフと働く気持ちもあるが、やはり一人の方が楽でリスクが少なく、目の前のお客様に向き合えると気づいている。小さくても揺るぎない、自分の城を築いていく。'},
+  MICRO:{name:'小規模プレイングオーナー型',catch:'ハサミを握りながら経営する',desc:'自分もハサミを握りながら小さなチームを動かす。いつかはハサミを置くタイミングを計りつつも、職人気質でしっかり利益を出したいタイプ。この規模は美容業界で最も倒産リスクが高く、スタッフの離職や数字管理など考えることは多い。それでも現場感覚を手放さないのがこのタイプの強さ。'},
+  MULTI:{name:'複数店舗オーナー型',catch:'2〜5店舗を自力で動かす',desc:'2〜5店舗を展開するハイブリッド型。2〜3店舗のうちは非常に危険な時期で、自分がハサミを置くと利益構造が難しくなる。それでも拡大したい気持ちとリスクの狭間で、スタッフ還元をどこまでやるかが常に課題。プレイヤーとビルダーの資質を兼ね備えた、拡大期の経営者。'},
+  SCALE:{name:'多店舗展開オーナー型',catch:'業界を動かす帝国構築タイプ',desc:'10店舗以上を目指し、仕組みと人材で事業を拡大する。真面目だけではここまで来られない——少し突拍子もない、変わった人じゃないと成し得ない領域。人に好かれる才能もかなりある。美容業界でも本当に少ない、本物の経営者タイプ。'},
+  FC:{name:'リスク軽減FCオーナー型',catch:'仕組みに乗って自分の店を持つ',desc:'確立されたブランドと仕組みに乗って経営するタイプ。ゼロから作るリスクより証明されたモデルで確実に成果を出すことを重視する。ただロイヤリティや本部との関係で数年後に問題が起きやすく、本部の失脚とともに自分の方向性も考え始めることが多い。独立志向はあるが、堅実さも兼ね備える。'},
+  NO2:{name:'最強参謀No.2型',catch:'トップを支える影の司令塔',desc:'経営者の思考を先読みし、組織の潤滑油となる。いい会社・伸びる会社はここがしっかりしている。表に出るより裏で支えることに喜びを感じる、組織にとって不可欠な存在。No.2の給料でその会社の価値がわかる。いないと組織が回らない、縁の下の戦略家。'},
+  EXEC:{name:'組織幹部型',catch:'数字と人材で組織を動かす',desc:'複数店舗を統括し、数字と人材の両面から組織を強くする。本当にマネジメントができる幹部は少なく、幹部が強い会社ほど必ず伸びる。集客・マネジメント・人の管理ができる人が適任。経営者と現場の橋渡し役として組織の成長を支える実力者。'},
+  MANAGER:{name:'現場店長型',catch:'現場を束ねるキャプテン',desc:'スタッフの状態を察知し、現場の空気を整えながらチームを動かす。店舗内で人気があり売上もトップが好ましい。毎日現場で共にするので人間力がより必要とされる。店長でお店の良し悪しは決まる——それほど重要なポジション。数字も人も、バランスよく見られるリーダー。'},
+  STAR:{name:'SNSカリスマ指名無双型',catch:'SNSと技術で業界を動かす',desc:'発信力と技術力を掛け合わせ、自分自身がブランドになる。インスタでバズると20代で月売上300〜400万が平気で出る時代。報酬も月100万超えの20代がここに該当する。SNSがずっと強ければ求人も売上も独立も全部うまくいく、現代美容師の最強モデル。'},
+  TOP:{name:'TOPスタイリスト型',catch:'根強い指名客を積み上げる',desc:'個人SNSはさほど強くなくても、地域や目の前のお客様の満足度が高く、積み上げてきた根強い指名客が多い。このタイプは組織にも必要だし独立しても成功する可能性が高い。一度担当したお客様が何年も離れない、究極の接客力と信頼を持つ。'},
+  CONTRACT:{name:'業務委託スタイリスト型',catch:'会社の仕組みを使って稼ぐ',desc:'実力がなくても稼ぎやすく、あればさらに稼げる。報酬は平均40万円以上が多く、休みも時間も制限が少ない。ただ技術のアップデートをされない方が多いのがリスク。若いうちに移籍してしっかり稼いでいる、リスクを管理しながら着実に稼ぐプレイヤー。'},
+  FREELANCE:{name:'1人独立スタイリスト型',catch:'腕一本で自由に稼ぐ実力者',desc:'指名売上70万円以上が必要になるが、内装費がかからず売上の約70%が報酬になる。ただ新規集客はないため、実力者が独立前に移籍するのはいいが、70万前後で行くとその先が危険。売上100万円以上をキープできる本物の実力者のための働き方。'},
+  EDU:{name:'教育者型',catch:'体系立てて後輩を育てる',desc:'技術を論理的に分解し、再現性のある指導ができる。お客様にもそこそこ人気があり、後輩教育に長けて人からも好かれ面倒見がよい。新しい教育はすぐ報酬に変わりにくいが、正しいレギュラーサロンには必ず必要な存在。サロン全体の技術レベルを底上げする、組織の財産。'},
+  MENTOR:{name:'メンター型',catch:'人を育てる温かい先輩',desc:'思いやりがあり優しい先輩。店長や幹部という役職はつかないが、店舗にいてくれると助かる存在。後輩の悩みを受け止め、技術だけでなく人間的にも成長させる。こういった人が長く勤めてくれるサロンは強い。育てた人材が長く続く、組織の安定を生む存在。'},
+  CREATOR:{name:'世界観クリエイター型',catch:'作品とSNSで独自の世界を作る',desc:'撮影やコンテスト作品作りに長けていて、こういったことが心の底から好き。売上も大事だがクリエイティブをしている時間が一番楽しい。もしかしたら本来美容師として一番必要なタイプかもしれない。技術よりも表現力が武器で、熱狂的なファンを持つ唯一無二の存在。'},
+  CRAFTER:{name:'技術一筋型',catch:'職人の道を極める求道者',desc:'売上より技術の深化に情熱を注ぐ。技術一筋はいいが、こだわりが強くお客様の支持がいまいちなことも。カットはうまいが指名はつかない頑固職人タイプ。セミナー・薬剤研究・コンテスト——技術面で全員から一目置かれる存在。接客よりも技術を追求し続ける純粋な職人。'},
 };
 
 // ===== STATE =====
@@ -314,9 +315,9 @@ function showPositionScreen() {
   document.getElementById('quizCards').innerHTML = `
     <div class="quiz-card active" id="card-pos">
       <div class="quiz-q-num" style="color:var(--gold);font-size:11px;letter-spacing:0.3em;text-transform:uppercase">Before We Start</div>
-      <div class="quiz-q-text">今�Eあなた�Eポジションは?</div>
+      <div class="quiz-q-text">今のあなたのポジションは?</div>
       <div class="quiz-options">
-        ${['アシスタント�E美容学甁E,'スタイリスチE,'店長・副店長','マネージャー・幹部・NO.2','オーナ�E・経営老E].map((opt,i)=>`
+        ${['アシスタント・美容学生','スタイリスト','店長・副店長','マネージャー・幹部・NO.2','オーナー・経営者'].map((opt,i)=>`
           <button class="quiz-opt" onclick="selectPosition('${'ABCDE'[i]}')">
             <span class="quiz-opt-letter">${'ABCDE'[i]}.</span>
             <span>${opt}</span>
@@ -349,9 +350,9 @@ function showSalonWorkScreen() {
   document.getElementById('quizCards').innerHTML = `
     <div class="quiz-card active" id="card-sw">
       <div class="quiz-q-num" style="color:var(--gold);font-size:11px;letter-spacing:0.3em;text-transform:uppercase">Before We Start</div>
-      <div class="quiz-q-text">サロンワークはどれくらい入ってぁE��?</div>
+      <div class="quiz-q-text">サロンワークはどれくらい入っている?</div>
       <div class="quiz-options">
-        ${['がっつり�EってぁE��','週の半�EくらぁE,'週1、E日程度','ほぼなぁE].map((opt,i)=>`
+        ${['がっつり入っている','週の半分くらい','週1〜2日程度','ほぼなし'].map((opt,i)=>`
           <button class="quiz-opt" onclick="selectSalonWork('${'ABCD'[i]}')">
             <span class="quiz-opt-letter">${'ABCD'[i]}.</span>
             <span>${opt}</span>
@@ -375,9 +376,9 @@ function showAgeScreen() {
   document.getElementById('quizCards').innerHTML = `
     <div class="quiz-card active" id="card-age">
       <div class="quiz-q-num" style="color:var(--gold);font-size:11px;letter-spacing:0.3em;text-transform:uppercase">Before We Start</div>
-      <div class="quiz-q-text">あなた�E年齢は�E�E/div>
+      <div class="quiz-q-text">あなたの年齢は？</div>
       <div class="quiz-options">
-        ${['24歳以丁E,'25、E0歳','31、E5歳','36、E0歳','41歳以丁E].map((opt,i)=>`
+        ${['24歳以下','25〜30歳','31〜35歳','36〜40歳','41歳以上'].map((opt,i)=>`
           <button class="quiz-opt" onclick="selectAge('${'ABCDE'[i]}')">
             <span class="quiz-opt-letter">${'ABCDE'[i]}.</span>
             <span>${opt}</span>
@@ -504,7 +505,7 @@ function updateProgress() {
 
 function finishQuiz() {
   showScreen('loading');
-  const msgs = ['16タイプから、あなた�E型を照合中...','4つの判定軸を�E析中...','パ�EソナリチE��を解析中...','診断結果を生成中...'];
+  const msgs = ['16タイプから、あなたの型を照合中...','4つの判定軸を分析中...','パーソナリティを解析中...','診断結果を生成中...'];
   let mi = 0;
   const codes = ['ANALYZING ·','ANALYZING ··','ANALYZING ···','PROCESSING'];
   const iv = setInterval(() => {
@@ -515,7 +516,7 @@ function finishQuiz() {
   setTimeout(() => { clearInterval(iv); showResult(); }, 3000);
 }
 
-// ===== 判定ロジチE�� =====
+// ===== 判定ロジック =====
 function determineType() {
   const isBuilder = scores.B > scores.P;
   const isCrew = scores.C > scores.S;
@@ -526,44 +527,53 @@ function determineType() {
   const isCreate = scores.CREATE >= scores.CRAFT;
   const isEdu = scores.EDU >= 1;
 
-  // 持E��売上レベル�E�年齢補正あり�E�E  // 同じ売上でも年齢によって意味が違ぁE  // A=24以丁E B=25-30, C=31-35, D=36-40, E=41以丁E  let salesLv = scores.S4>=1 ? 4 : scores.S3>=1 ? 3 : scores.S2>=1 ? 2 : 1;
-  // 年齢補正�E�若ぁE��ど同じ売上でも高評価、年齢高いほど厳しく評価
-  if (age === 'A') salesLv = Math.min(4, salesLv + 1); // 24歳以下�E+1ボ�Eナス
+  // 指名売上レベル（年齢補正あり）
+  // 同じ売上でも年齢によって意味が違う
+  // A=24以下, B=25-30, C=31-35, D=36-40, E=41以上
+  let salesLv = scores.S4>=1 ? 4 : scores.S3>=1 ? 3 : scores.S2>=1 ? 2 : 1;
+  // 年齢補正：若いほど同じ売上でも高評価、年齢高いほど厳しく評価
+  if (age === 'A') salesLv = Math.min(4, salesLv + 1); // 24歳以下は+1ボーナス
   if (age === 'D') salesLv = Math.max(1, salesLv - 1); // 36-40歳は-1
-  if (age === 'E') salesLv = Math.max(1, salesLv - 1); // 41歳以上�E-1
+  if (age === 'E') salesLv = Math.max(1, salesLv - 1); // 41歳以上は-1
   
-  // 年齢×�Eジション補正
-  // 30歳以上で売上低め ↁEEDU/MENTOR/CONTRACT寁E��に補正
-  // ただしサロンワーク少なぁE��部・オーナ�E�E�E/EでswがC/D�E��E除夁E  const ignoreSalesAge = (position === 'D' || position === 'E') && (salonWork === 'C' || salonWork === 'D');
+  // 年齢×ポジション補正
+  // 30歳以上で売上低め → EDU/MENTOR/CONTRACT寄りに補正
+  // ただしサロンワーク少ない幹部・オーナー（D/EでswがC/D）は除外
+  const ignoreSalesAge = (position === 'D' || position === 'E') && (salonWork === 'C' || salonWork === 'D');
   const isOlderLowSales = !ignoreSalesAge && (age === 'C' || age === 'D' || age === 'E') && salesLv <= 2;
-  // 24歳以下で売上高め ↁESTAR/FREELANCE適性あり
+  // 24歳以下で売上高め → STAR/FREELANCE適性あり
   const isYoungHighSales = age === 'A' && salesLv >= 3;
 
-  // サロンワーク補正�E�E/E向け�E�E  const swHeavy = salonWork === 'A' || salonWork === 'B';
+  // サロンワーク補正（D/E向け）
+  const swHeavy = salonWork === 'A' || salonWork === 'B';
   const swLight = salonWork === 'C' || salonWork === 'D';
 
-  // ===== オーナ�E・経営老EE) =====
+  // ===== オーナー・経営者(E) =====
   if (position === 'E') {
-    // よっぽどの場合�Eみ非オーナ�EタイチE    if (!isBuilder && !isScale && isHeart && isCrew && scores.H >= 4) return 'MENTOR';
+    // よっぽどの場合のみ非オーナータイプ
+    if (!isBuilder && !isScale && isHeart && isCrew && scores.H >= 4) return 'MENTOR';
     if (!isBuilder && !isScale && !isHeart && scores.L >= 4) return 'CRAFTER';
-    // オーナ�E系判宁E    if (isScale && isCrew) return 'SCALE';
+    // オーナー系判定
+    if (isScale && isCrew) return 'SCALE';
     if (isScale) return 'MULTI';
     if (isBuilder && isCrew) return 'MULTI';
     if (isBuilder) return 'FC';
-    // Solo×Stable寁E��
+    // Solo×Stable寄り
     return 'SOLO';
   }
 
   // ===== 幹部・NO.2(D) =====
   if (position === 'D') {
-    // オーナ�E志向が強ぁE��吁E    if (wantsOwner && isScale && isBuilder) return 'MULTI';
+    // オーナー志向が強い場合
+    if (wantsOwner && isScale && isBuilder) return 'MULTI';
     if (wantsOwner && isBuilder) return 'FC';
     // サロンワーク多め
     if (swHeavy) {
       if (isHeart) return 'MANAGER';
       return 'EXEC';
     }
-    // サロンワーク少なめE    if (isHeart) return 'NO2';
+    // サロンワーク少なめ
+    if (isHeart) return 'NO2';
     return 'EXEC';
   }
 
@@ -578,9 +588,10 @@ function determineType() {
     return 'MANAGER';
   }
 
-  // ===== スタイリスチEB) / アシスタンチEA) =====
+  // ===== スタイリスト(B) / アシスタント(A) =====
 
-  // Builder系�E�封E��オーナ�E・絁E��系志向�E�E  if (isBuilder) {
+  // Builder系（将来オーナー・組織系志向）
+  if (isBuilder) {
     if (wantsOwner && isScale) return 'MULTI';
     if (wantsOwner) return 'MICRO';
     if (isScale && isCrew) return 'EXEC';
@@ -592,7 +603,9 @@ function determineType() {
   }
 
   // ===== 重要ルール =====
-  // 30歳以上×サロンワーク普通以上×指名売丁E0丁E��丁E  // ↁEOWNER系・FREELANCE除外、現実的なタイプに誘封E  const isRealisticBlock = 
+  // 30歳以上×サロンワーク普通以上×指名売上50万以下
+  // → OWNER系・FREELANCE除外、現実的なタイプに誘導
+  const isRealisticBlock = 
     (age === 'C' || age === 'D' || age === 'E') &&
     (salonWork === 'A' || salonWork === 'B' || salonWork === null) &&
     scores.S1 >= 1 && scores.S2 === 0 && scores.S3 === 0 && scores.S4 === 0;
@@ -605,7 +618,7 @@ function determineType() {
   }
 
   // Player系
-  // 年齢高め×売上低め ↁECONTRACT/EDU/MENTOR寁E��
+  // 年齢高め×売上低め → CONTRACT/EDU/MENTOR寄り
   if (isOlderLowSales && !wantsOwner && !isBuilder) {
     if (isHeart) return 'MENTOR';
     if (isEdu) return 'EDU';
@@ -618,11 +631,11 @@ function determineType() {
     return 'CONTRACT';
   }
   
-  // 若ぁE�売上高め ↁESTAR適性
+  // 若い×売上高め → STAR適性
   if (isYoungHighSales && isCreate) return 'STAR';
   if (isYoungHighSales && !isCrew) return 'STAR';
 
-  // オーナ�E志向あり
+  // オーナー志向あり
   if (wantsOwner) {
     if (isScale) return 'MULTI';
     return 'MICRO';
@@ -661,10 +674,10 @@ function showResult() {
   const hlPct = Math.min(100, Math.round(Math.max(scores.H,scores.L)/5*100));
 
   document.getElementById('resultInner').innerHTML = `
-    <div class="result-eyebrow">Your Type  EBTI Result</div>
+    <div class="result-eyebrow">Your Type — BTI Result</div>
     <span class="result-code">${key}</span>
     <div class="result-name">${type.name}</div>
-    <div class="result-catch"> E${type.catch}</div>
+    <div class="result-catch">— ${type.catch}</div>
     <div class="result-axes">
       <div class="result-axis">
         <span class="result-axis-label">Axis 01</span>
@@ -692,27 +705,27 @@ function showResult() {
       <div class="result-desc">${type.desc}</div>
     </div>
     <div class="result-cta-wrap">
-      <span class="result-cta-eyebrow">Full Report  EFree</span>
-      <div class="result-cta-title" style="font-size:clamp(20px,5vw,26px);font-weight:600;letter-spacing:0.05em;margin-bottom:16px">LINEで受け取れめEbr><span style="color:var(--gold-light)">完�E版レポ�EチE/span></div>
+      <span class="result-cta-eyebrow">Full Report — Free</span>
+      <div class="result-cta-title" style="font-size:clamp(20px,5vw,26px);font-weight:600;letter-spacing:0.05em;margin-bottom:16px">LINEで受け取れる<br><span style="color:var(--gold-light)">完全版レポート</span></div>
       <div class="result-cta-items">
-        <div class="result-cta-item" style="color:var(--gold-light);font-weight:600;font-size:13px;letter-spacing:0.05em">あなた�E本質を暴くBTI深掘り診断</div>
+        <div class="result-cta-item" style="color:var(--gold-light);font-weight:600;font-size:13px;letter-spacing:0.05em">あなたの本質を暴くBTI深掘り診断</div>
         <div class="result-cta-item">タイプ別 適正年収レンジ</div>
-        <div class="result-cta-item">あなた�E隠れた適性タイチE/div>
-        <div class="result-cta-item">キャリアロード�EチE�E</div>
+        <div class="result-cta-item">あなたの隠れた適性タイプ</div>
+        <div class="result-cta-item">キャリアロードマップ</div>
         <div class="result-cta-item">あなたに合うサロン・働き方診断</div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:center;gap:16px">
         <div style="font-family:var(--jp);font-size:13px;line-height:2;color:rgba(248,245,239,0.75);text-align:left;padding:0 4px">
-          <span style="color:var(--gold)">✁E/span> 現状に満足してるなら閉じてOK、Ebr>
-          <span style="color:var(--gold)">✁E/span> でめEspan style="color:var(--white);font-weight:600">「このままでぁE��のか、E/span>と<br>
-          　少しでも思うなら、Espan style="color:var(--gold-light);font-weight:600">今が動き時です、E/span>
+          <span style="color:var(--gold)">✓</span> 現状に満足してるなら閉じてOK。<br>
+          <span style="color:var(--gold)">✓</span> でも<span style="color:var(--white);font-weight:600">「このままでいいのか」</span>と<br>
+          　少しでも思うなら、<span style="color:var(--gold-light);font-weight:600">今が動き時です。</span>
         </div>
         <a class="btn-line" id="lineBtn" href="#" onclick="openLiff()" style="border-radius:12px;padding:20px 24px;font-size:13px;letter-spacing:0.15em;flex-direction:column;gap:6px;cursor:pointer">
         <div style="display:flex;align-items:center;gap:10px">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63.349 0 .631.285.631.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.281.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
-          <span style="font-size:14px;font-weight:700;letter-spacing:0.1em">友だち追加して完�E版を受け取る</span>
+          <span style="font-size:14px;font-weight:700;letter-spacing:0.1em">友だち追加して完全版を受け取る</span>
         </div>
-        <span style="font-size:11px;opacity:0.85;font-weight:400;letter-spacing:0.05em">無斁E· 詳細レポ�Eトがすぐ届きまぁE/span>
+        <span style="font-size:11px;opacity:0.85;font-weight:400;letter-spacing:0.05em">無料 · 詳細レポートがすぐ届きます</span>
       </a>
     </div>
     <div class="result-share">
@@ -721,7 +734,7 @@ function showResult() {
         <button class="share-btn" onclick="shareX('${key}','${type.name}')" title="X">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
         </button>
-        <button class="share-btn" onclick="copyResult('${key}','${type.name}')" title="コピ�E">
+        <button class="share-btn" onclick="copyResult('${key}','${type.name}')" title="コピー">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>
         </button>
       </div>
@@ -734,10 +747,12 @@ function showResult() {
     </div>
   `;
   showScreen('result');
-  // パターン番号を算�E
-  window._btiResult = { type: key, pattern: 1 }; // チE��ォルチE  
+  // パターン番号を算出
+  window._btiResult = { type: key, pattern: 1 }; // デフォルト
+  
   if (scores.S1 > 0 || (scores.S2 === 0 && scores.S3 === 0 && scores.S4 === 0)) {
-    window._btiResult.pattern = 1; // 危険水埁E  } else if (scores.S2 > 0 && scores.H >= scores.L) {
+    window._btiResult.pattern = 1; // 危険水域
+  } else if (scores.S2 > 0 && scores.H >= scores.L) {
     window._btiResult.pattern = 2; // 隠れHEART
   } else if (scores.S2 > 0) {
     window._btiResult.pattern = 3; // 純粋型
@@ -751,7 +766,8 @@ function showResult() {
     } else if (scores.FREE > 0) {
       window._btiResult.pattern = 5;
     } else {
-      window._btiResult.pattern = 4; // チE��ォルト上佁E    }
+      window._btiResult.pattern = 4; // デフォルト上位
+    }
   }
   console.log('BTI Result:', window._btiResult);
   setTimeout(() => {
@@ -760,13 +776,13 @@ function showResult() {
 }
 
 function shareX(key, name) {
-  const text = `BTI診断結果\n\n私�E、E{name}】でした�E�\n\n美容師のための16タイプ診断 #BTI #美容師`;
+  const text = `BTI診断結果\n\n私は【${name}】でした！\n\n美容師のための16タイプ診断 #BTI #美容師`;
   window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text), '_blank');
 }
 
 function copyResult(key, name) {
-  navigator.clipboard.writeText(`BTI診断結果: 、E{name}】\n美容師のための16タイプ診断`).then(() => {
-    alert('コピ�Eしました�E�E);
+  navigator.clipboard.writeText(`BTI診断結果: 【${name}】\n美容師のための16タイプ診断`).then(() => {
+    alert('コピーしました！');
   });
 }
 // LIFF連携
@@ -774,7 +790,7 @@ const BTI_LIFF_ID = '2010016684-jUp9eANQ';
 
 function openLiff() {
   if (!window._btiResult) {
-    alert('診断結果がありません。もぁE��度診断してください、E);
+    alert('診断結果がありません。もう一度診断してください。');
     return;
   }
   const { type, pattern } = window._btiResult;
