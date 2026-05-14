@@ -112,26 +112,44 @@ export default async function handler(req, res) {
         const userId = event.source.userId;
         console.log(`New follower: ${userId}`);
         
+        // ユーザーのプロフィール取得（表示名）
+        let displayName = '';
+        try {
+          const profileRes = await fetch(`https://api.line.me/v2/bot/profile/${userId}`, {
+            headers: { 'Authorization': `Bearer ${accessToken}` }
+          });
+          if (profileRes.ok) {
+            const profile = await profileRes.json();
+            displayName = profile.displayName || '';
+          }
+        } catch (e) {
+          console.error('Profile fetch error:', e);
+        }
+        
         // KVから診断結果を取得
         const btiData = await getFromKV(userId);
         
         if (btiData) {
-          // 診断結果がある → 挨拶 + レポートURLを送信
           const typeName = TYPE_NAMES[btiData.type] || btiData.type;
           const reportUrl = `https://bti-web.vercel.app/report.html?type=${btiData.type}&pattern=${btiData.pattern}`;
           
+          // 1通目：挨拶
           await pushMessage(userId, [
             {
               type: 'text',
-              text: `サロン研究所.comです！\nLINE追加ありがとうございます 🙏\n\nあなたのBTI診断結果をもとに、深掘りレポートを用意しました。\n\n下のボタンから読めます 👇`
-            },
+              text: `${displayName}さん、診断お疲れ様でした。\n\nサロン研究所.comです！\nLINE追加ありがとうございます 🙏\n\n━━━━━━━━━━━━━\nBTI | 美容師タイプ診断\n━━━━━━━━━━━━━\n\nあなたの「素顔」、ちゃんと受け取りました。\n\n正直に言います。\nあなたのタイプ、かなり興味深い結果です。\n\n👇 まずはここから`
+            }
+          ], accessToken);
+          
+          // 2通目：深掘りレポートボタン
+          await pushMessage(userId, [
             {
               type: 'template',
-              altText: `あなたのタイプは「${typeName}」です。深掘りレポートを読む`,
+              altText: `あなたは「${typeName}」です。深掘りレポートを読む`,
               template: {
                 type: 'buttons',
                 title: `あなたは「${typeName}」`,
-                text: 'あなただけの深掘りレポートです。',
+                text: '🔍 あなたの本質を暴くBTI深掘り診断\n💰 タイプ別 適正年収レンジ',
                 actions: [
                   {
                     type: 'uri',
@@ -143,14 +161,22 @@ export default async function handler(req, res) {
             }
           ], accessToken);
           
-          console.log(`Sent report to ${userId}: ${btiData.type} pattern ${btiData.pattern}`);
-          
-        } else {
-          // 診断結果がない → 通常のあいさつ
+          // 3通目：2パターン比較＋相談誘導
           await pushMessage(userId, [
             {
               type: 'text',
-              text: `サロン研究所.comです！\nLINE追加ありがとうございます 🙏\n\nBTI（美容師タイプ診断）の深掘りレポートをお届けします。\n\nまだ診断がお済みでない方は、下のメニューから「BTI診断もう一度」をタップしてください。`
+              text: `━━━━━━━━━━━━━\n\nちなみに、「${typeName}」には\n2つのパターンがあります。\n\nA. 環境とマッチして、\n　 数字も人もどんどん動かせる人\n\nB. 同じタイプなのに、\n　 なぜか実力を発揮できない人\n\n違いは、能力ではなく\n"環境との相性"が大きいんです。\n\n━━━━━━━━━━━━━\n\n💬 美容師キャリアアドバイザー\n　 無料相談はこちらから\n\n💈 あなたのタイプが活きるサロン\n　 ご相談後にご提案させて頂きます\n\n下のメニューからどうぞ 👇`
+            }
+          ], accessToken);
+          
+          console.log(`Sent 3-message welcome to ${userId}: ${btiData.type} pattern ${btiData.pattern}`);
+          
+        } else {
+          // 診断結果がない → 診断誘導
+          await pushMessage(userId, [
+            {
+              type: 'text',
+              text: `${displayName}さん、LINE追加ありがとうございます 🙏\n\nサロン研究所.comです！\n\n━━━━━━━━━━━━━\nBTI | 美容師タイプ診断\n━━━━━━━━━━━━━\n\nまだ診断がお済みでない方は、下のメニューから「BTI診断もう一度」をタップしてください。\n\n診断後、あなた専用の深掘りレポートが届きます 👇`
             }
           ], accessToken);
           
