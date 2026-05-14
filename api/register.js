@@ -16,7 +16,7 @@ export default async function handler(req, res) {
   }
   
   try {
-    const { userId, type, pattern, gender } = req.body;
+    const { userId, type, pattern } = req.body;
     
     if (!userId || !type || !pattern) {
       return res.status(400).json({ error: 'Missing required fields: userId, type, pattern' });
@@ -31,11 +31,10 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Server configuration error' });
     }
     
-    // キー: bti:{userId}, 値: {type, pattern, gender, timestamp}
+    // キー: bti:{userId}, 値: {type, pattern, timestamp}
     const data = JSON.stringify({
       type: type.toUpperCase(),
       pattern: parseInt(pattern, 10),
-      gender: gender || 'A',
       registeredAt: new Date().toISOString()
     });
     
