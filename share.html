@@ -168,23 +168,39 @@ async function main() {
     var blob = await new Promise(function(resolve) { cv.toBlob(resolve, 'image/png'); });
     var file = new File([blob], 'BTI_' + data.type + '_story.png', { type: 'image/png' });
 
-    // Web Share API
-    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-      await navigator.share({
-        files: [file],
-        title: 'BTI\u8a3a\u65ad\u7d50\u679c',
-        text: '#BTI\u8a3a\u65ad #\u308f\u305f\u3057\u306e\u7f8e\u5bb9\u5e2b\u30bf\u30a4\u30d7'
-      });
-      showStatus('\u30b7\u30a7\u30a2\u5b8c\u4e86 \u2705', '\u3053\u306e\u30da\u30fc\u30b8\u3092\u9589\u3058\u3066OK\u3067\u3059');
-    } else {
-      // フォールバック：ダウンロード
-      var url = URL.createObjectURL(blob);
-      var a = document.createElement('a');
-      a.href = url; a.download = 'BTI_' + data.type + '_story.png';
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-      setTimeout(function() { URL.revokeObjectURL(url); }, 5000);
-      showStatus('\u753b\u50cf\u3092\u4fdd\u5b58\u3057\u307e\u3057\u305f', 'Instagram\u30b9\u30c8\u30fc\u30ea\u30fc\u30ba\u306b\u8cbc\u308a\u4ed8\u3051\u3066\u30b7\u30a7\u30a2\u3057\u3066\u304f\u3060\u3055\u3044');
-    }
+    // プレビュー表示 + シェアボタン
+    var previewUrl = URL.createObjectURL(blob);
+    document.getElementById('status').innerHTML = 
+      '<img src="' + previewUrl + '" style="width:180px;border-radius:8px;margin-bottom:16px;border:1px solid rgba(196,150,63,0.3)">' +
+      '<h2>' + typeData.name + '</h2>' +
+      '<button id="shareBtn" style="margin-top:16px;padding:16px 40px;border:none;border-radius:12px;' +
+      'background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);' +
+      'color:#fff;font-size:16px;font-weight:700;letter-spacing:0.1em;cursor:pointer;' +
+      'display:flex;align-items:center;gap:8px;margin-left:auto;margin-right:auto">' +
+      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#fff"/></svg>' +
+      '\u30b9\u30c8\u30fc\u30ea\u30fc\u30ba\u306b\u30b7\u30a7\u30a2</button>' +
+      '<p style="margin-top:12px;font-size:11px;color:rgba(255,255,255,0.3)">\u30dc\u30bf\u30f3\u3092\u62bc\u3057\u3066Instagram\u3092\u9078\u629e</p>';
+
+    document.getElementById('shareBtn').addEventListener('click', async function() {
+      try {
+        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            files: [file],
+            title: 'BTI\u8a3a\u65ad\u7d50\u679c',
+            text: '#BTI\u8a3a\u65ad #\u308f\u305f\u3057\u306e\u7f8e\u5bb9\u5e2b\u30bf\u30a4\u30d7'
+          });
+          showStatus('\u30b7\u30a7\u30a2\u5b8c\u4e86 \u2705', '\u3053\u306e\u30da\u30fc\u30b8\u3092\u9589\u3058\u3066OK\u3067\u3059');
+        } else {
+          var url = URL.createObjectURL(blob);
+          var a = document.createElement('a');
+          a.href = url; a.download = 'BTI_' + data.type + '_story.png';
+          document.body.appendChild(a); a.click(); document.body.removeChild(a);
+          showStatus('\u753b\u50cf\u3092\u4fdd\u5b58\u3057\u307e\u3057\u305f', 'Instagram\u30b9\u30c8\u30fc\u30ea\u30fc\u30ba\u306b\u8cbc\u308a\u4ed8\u3051\u3066\u304f\u3060\u3055\u3044');
+        }
+      } catch (e) {
+        showStatus('\u30b7\u30a7\u30a2\u304c\u30ad\u30e3\u30f3\u30bb\u30eb\u3055\u308c\u307e\u3057\u305f', '\u3082\u3046\u4e00\u5ea6\u30dc\u30bf\u30f3\u3092\u62bc\u3057\u3066\u304f\u3060\u3055\u3044');
+      }
+    });
   } catch (e) {
     showStatus('\u30a8\u30e9\u30fc', e.message);
   }
