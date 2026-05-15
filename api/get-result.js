@@ -1,5 +1,5 @@
 // api/get-result.js
-// KVからユーザーの診断結果を取得してレポートURLを返す
+// KVからユーザーの診断結果を取得してレポ�EチERLを返す
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -38,7 +38,7 @@ export default async function handler(req, res) {
       return res.status(404).json({ success: false, error: 'No result found' });
     }
 
-    // kvData.resultはJSON文字列
+    // kvData.resultはJSON斁E���E
     let data;
     try {
       data = typeof kvData.result === 'string' ? JSON.parse(kvData.result) : kvData.result;
@@ -52,6 +52,7 @@ export default async function handler(req, res) {
       success: true,
       type: data.type,
       pattern: data.pattern,
+      gender: data.gender || 'A',
       reportUrl: reportUrl
     });
 
