@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BTI | LINE˜AŒg</title>
+<title>BTI | LINEé€£æº</title>
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 <style>
 :root{color-scheme:dark}*{margin:0;padding:0;box-sizing:border-box}
@@ -24,14 +24,14 @@ h1{font-size:22px;font-weight:400;color:#f5e6c8;margin-bottom:12px;line-height:1
 <body>
 <div class="container">
 <div class="logo">B T I  |  D E E P  R E P O R T</div>
-<h1>[Œ@‚èƒŒƒ|[ƒg‚ğ<br>ó‚¯æ‚é</h1>
-<p class="sub">LINE˜AŒg‚ÅA‚ ‚È‚½ê—p‚Ì<br>[Œ@‚èƒŒƒ|[ƒg‚ğ‚¨“Í‚¯‚µ‚Ü‚·</p>
-<div id="status-area"><div class="spinner"></div><p class="status">LINE˜AŒg’†...</p></div>
+<h1>æ·±æ˜ã‚Šãƒ¬ãƒãƒ¼ãƒˆã‚’<br>å—ã‘å–ã‚‹</h1>
+<p class="sub">LINEé€£æºã§ã€ã‚ãªãŸå°‚ç”¨ã®<br>æ·±æ˜ã‚Šãƒ¬ãƒãƒ¼ãƒˆã‚’ãŠå±Šã‘ã—ã¾ã™</p>
+<div id="status-area"><div class="spinner"></div><p class="status">LINEé€£æºä¸­...</p></div>
 </div>
 <script>
 var params=new URLSearchParams(window.location.search);
 var btiType=params.get('type')||'';
-var btiPattern=params.get('pattern')||'';var btiGender=params.get('gender')||'A';
+var btiPattern=params.get('pattern')||'';
 var LIFF_ID='2010016684-jUp9eANQ';
 var statusArea=document.getElementById('status-area');
 async function initLiff(){
@@ -40,15 +40,15 @@ await liff.init({liffId:LIFF_ID});
 if(!liff.isLoggedIn()){liff.login({redirectUri:window.location.href});return;}
 var profile=await liff.getProfile();
 var userId=profile.userId;
-statusArea.innerHTML='<div class="spinner"></div><p class="status">“o˜^’†...</p>';
-if(!btiType||!btiPattern){statusArea.innerHTML='<p class="error">f’fŒ‹‰Ê‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñB</p><a href="https://bti-web.vercel.app/" class="btn">BTIf’f‚ğó‚¯‚é</a>';return;}
-var response=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId:userId,type:btiType,pattern:btiPattern,gender:btiGender})});
+statusArea.innerHTML='<div class="spinner"></div><p class="status">ç™»éŒ²ä¸­...</p>';
+if(!btiType||!btiPattern){statusArea.innerHTML='<p class="error">è¨ºæ–­çµæœãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã€‚</p><a href="https://bti-web.vercel.app/" class="btn">BTIè¨ºæ–­ã‚’å—ã‘ã‚‹</a>';return;}
+var response=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId:userId,type:btiType,pattern:btiPattern})});
 var result=await response.json();
 if(result.success){
-statusArea.innerHTML='<p class="success">&#10003; “o˜^Š®—¹I</p><p class="success-sub">LINE‚Ìƒg[ƒN‰æ–Ê‚É–ß‚è‚Ü‚·...<br>ƒƒjƒ…[‚Ìu[Œ@‚èƒŒƒ|[ƒgv‚ğƒ^ƒbƒv‚µ‚Ä‚­‚¾‚³‚¢</p>';
+statusArea.innerHTML='<p class="success">&#10003; ç™»éŒ²å®Œäº†ï¼</p><p class="success-sub">LINEã®ãƒˆãƒ¼ã‚¯ç”»é¢ã«æˆ»ã‚Šã¾ã™...<br>ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ã€Œæ·±æ˜ã‚Šãƒ¬ãƒãƒ¼ãƒˆã€ã‚’ã‚¿ãƒƒãƒ—ã—ã¦ãã ã•ã„</p>';
 setTimeout(function(){if(liff.isInClient()){liff.closeWindow();}else{window.location.href='https://line.me/R/ti/p/@210mmztg';}},2000);
-}else{statusArea.innerHTML='<p class="error">ƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½B</p><a href="https://bti-web.vercel.app/" class="btn">ƒgƒbƒv‚É–ß‚é</a>';}
-}catch(error){console.error('LIFF error:',error);statusArea.innerHTML='<p class="error">ƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½B</p><a href="https://bti-web.vercel.app/" class="btn">ƒgƒbƒv‚É–ß‚é</a>';}
+}else{statusArea.innerHTML='<p class="error">ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚</p><a href="https://bti-web.vercel.app/" class="btn">ãƒˆãƒƒãƒ—ã«æˆ»ã‚‹</a>';}
+}catch(error){console.error('LIFF error:',error);statusArea.innerHTML='<p class="error">ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚</p><a href="https://bti-web.vercel.app/" class="btn">ãƒˆãƒƒãƒ—ã«æˆ»ã‚‹</a>';}
 }
 initLiff();
 </script>
