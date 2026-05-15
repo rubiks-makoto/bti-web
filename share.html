@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>BTI Share</title>
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#0a0705;color:#fff;font-family:sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center}
+.msg{text-align:center;padding:40px 24px}
+.msg h2{font-size:16px;color:#c4963f;margin-bottom:12px;letter-spacing:0.1em}
+.msg p{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.8}
+.spinner{width:32px;height:32px;border:3px solid rgba(196,150,63,0.2);border-top-color:#c4963f;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="msg" id="status">
+  <div class="spinner"></div>
+  <h2>シェア画像を準備中...</h2>
+  <p>少々お待ちください</p>
+</div>
+
+<script>
+// タイプ名マッピング
+var TYPES = {
+  SOLO:{name:'孤高の職人オーナー型',catch:'誰にも頼らず、静かに自分の城を構える'},
+  MICRO:{name:'小規模プレイングオーナー型',catch:'ハサミを握りながら、経営も回す'},
+  MULTI:{name:'多店舗展開オーナー型',catch:'仕組みで店を増やし、人を活かす'},
+  SCALE:{name:'拡大志向オーナー型',catch:'業界の景色を変える規模を目指す'},
+  FC:{name:'リスク軽減FCオーナー型',catch:'仕組みに乗って自分の店を持つ'},
+  NO2:{name:'最強ストラテジスト参謀型',catch:'表に立たず、組織の頭脳として動く'},
+  EXEC:{name:'組織幹部型',catch:'数字と人材で組織を動かす'},
+  MANAGER:{name:'マネジメントリーダー型',catch:'背中で見せて、チームを引っ張る'},
+  STAR:{name:'SNS発信スター型',catch:'発信力と個性で業界を動かす'},
+  TOP:{name:'指名売上トップ型',catch:'圧倒的な技術と信頼で指名を集める'},
+  CONTRACT:{name:'業務委託バランス型',catch:'自由と安定を両立する働き方'},
+  FREELANCE:{name:'ソロ独立スタイリスト型',catch:'完全独立、自分がブランド'},
+  EDU:{name:'教育トレーナー型',catch:'人を育てることが天職'},
+  MENTOR:{name:'メンター指導型',catch:'寄り添い、才能を引き出す'},
+  CREATOR:{name:'世界観クリエイター型',catch:'作品で世界観を表現する'},
+  CRAFTER:{name:'純粋技術追求職人型',catch:'一つの技術を極限まで追求する'}
+};
+
+var TYPE_TO_IMG = {
+  SOLO:'solo',MICRO:'micro',MULTI:'multi',SCALE:'scale',FC:'fc',
+  NO2:'no_2',EXEC:'exec',MANAGER:'manager',STAR:'star',TOP:'top',
+  CONTRACT:'contract',FREELANCE:'freelance',EDU:'edu',MENTOR:'mentor',
+  CREATOR:'creator',CRAFTER:'crafter'
+};
+
+var LIFF_ID = '2010016684-yl4wiUZV';
+
+function showStatus(title, desc) {
+  document.getElementById('status').innerHTML = '<h2>' + title + '</h2><p>' + desc + '</p>';
+}
+
+function loadImage(src) {
+  return new Promise(function(resolve, reject) {
+    var img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = function() { resolve(img); };
+    img.onerror = function() { reject(new Error('Image load failed')); };
+    img.src = src;
+  });
+}
+
+function generateCanvas(key, name, catchText, genderCode) {
+  var W = 1080, H = 1920;
+  var cv = document.createElement('canvas');
+  cv.width = W; cv.height = H;
+  var cx = cv.getContext('2d');
+
+  // 背景
+  var bg = cx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,'#1a0e08');bg.addColorStop(0.35,'#0d0705');
+  bg.addColorStop(0.7,'#080404');bg.addColorStop(1,'#050202');
+  cx.fillStyle = bg; cx.fillRect(0,0,W,H);
+
+  return new Promise(function(resolve) {
+    var imgName = TYPE_TO_IMG[key] || 'solo';
+    var suffix = genderCode === 'B' ? '_r' : '_m';
+    var charImg = new Image();
+    charImg.crossOrigin = 'anonymous';
+    charImg.onload = function() { finishCanvas(cx,W,H,charImg,key,name,catchText); resolve(cv); };
+    charImg.onerror = function() { finishCanvas(cx,W,H,null,key,name,catchText); resolve(cv); };
+    charImg.src = '/images/' + imgName + suffix + '.png';
+  });
+}
+
+function finishCanvas(cx,W,H,charImg,key,name,catchText) {
+  if(charImg){
+    var cH = H * 0.52;
+    var cW = cH * (charImg.width / charImg.height);
+    cx.globalAlpha = 0.92;
+    cx.drawImage(charImg, (W-cW)/2, H-cH-180, cW, cH);
+    cx.globalAlpha = 1;
+  }
+  var to = cx.createLinearGradient(0,0,0,H*0.45);
+  to.addColorStop(0,'rgba(10,5,3,0.9)');to.addColorStop(1,'rgba(10,5,3,0)');
+  cx.fillStyle = to; cx.fillRect(0,0,W,H*0.45);
+  var bo = cx.createLinearGradient(0,H*0.75,0,H);
+  bo.addColorStop(0,'rgba(5,2,2,0)');bo.addColorStop(1,'rgba(5,2,2,0.95)');
+  cx.fillStyle = bo; cx.fillRect(0,H*0.75,W,H*0.25);
+
+  cx.textAlign = 'center';
+  cx.fillStyle = 'rgba(196,150,63,0.6)';
+  cx.font = '400 28px Georgia,serif';
+  cx.fillText('YOUR TYPE \u2014 BTI RESULT', W/2, 140);
+  cx.strokeStyle = 'rgba(196,150,63,0.25)'; cx.lineWidth = 1;
+  cx.beginPath(); cx.moveTo(W/2-160,165); cx.lineTo(W/2+160,165); cx.stroke();
+  cx.fillStyle = '#ffffff';
+  cx.font = '300 180px Georgia,serif';
+  cx.fillText(key, W/2, 370);
+  cx.fillStyle = '#ffffff';
+  cx.font = '600 42px sans-serif';
+  cx.fillText(name, W/2, 450);
+  cx.fillStyle = 'rgba(224,185,106,0.75)';
+  cx.font = 'italic 28px Georgia,serif';
+  cx.fillText('\u2014 ' + catchText + ' \u2014', W/2, 510);
+  cx.fillStyle = 'rgba(255,255,255,0.4)';
+  cx.font = '400 26px sans-serif';
+  cx.fillText('#BTI\u8a3a\u65ad  #\u308f\u305f\u3057\u306e\u7f8e\u5bb9\u5e2b\u30bf\u30a4\u30d7', W/2, H-120);
+  cx.fillStyle = 'rgba(196,150,63,0.4)';
+  cx.font = '400 22px sans-serif';
+  cx.fillText('bti-web.vercel.app', W/2, H-70);
+}
+
+async function main() {
+  try {
+    // LIFF初期化
+    await liff.init({ liffId: LIFF_ID });
+    
+    if (!liff.isLoggedIn()) {
+      liff.login({ redirectUri: window.location.href });
+      return;
+    }
+
+    // プロフィール取得
+    var profile = await liff.getProfile();
+    var userId = profile.userId;
+
+    showStatus('診断結果を取得中...', '');
+
+    // KVから結果取得
+    var res = await fetch('/api/get-result?userId=' + userId);
+    var data = await res.json();
+
+    if (!data.success || !data.type) {
+      showStatus('診断結果が見つかりません', '先にBTI診断を受けてから\nシェアしてください');
+      return;
+    }
+
+    var typeData = TYPES[data.type];
+    if (!typeData) {
+      showStatus('タイプ情報が取得できません', '');
+      return;
+    }
+
+    showStatus('シェア画像を生成中...', typeData.name);
+
+    var genderCode = data.gender || 'A';
+    var cv = await generateCanvas(data.type, typeData.name, typeData.catch, genderCode);
+
+    // Blob生成
+    var blob = await new Promise(function(resolve) { cv.toBlob(resolve, 'image/png'); });
+    var file = new File([blob], 'BTI_' + data.type + '_story.png', { type: 'image/png' });
+
+    // Web Share API
+    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({
+        files: [file],
+        title: 'BTI\u8a3a\u65ad\u7d50\u679c',
+        text: '#BTI\u8a3a\u65ad #\u308f\u305f\u3057\u306e\u7f8e\u5bb9\u5e2b\u30bf\u30a4\u30d7'
+      });
+      showStatus('\u30b7\u30a7\u30a2\u5b8c\u4e86 \u2705', '\u3053\u306e\u30da\u30fc\u30b8\u3092\u9589\u3058\u3066OK\u3067\u3059');
+    } else {
+      // フォールバック：ダウンロード
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url; a.download = 'BTI_' + data.type + '_story.png';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function() { URL.revokeObjectURL(url); }, 5000);
+      showStatus('\u753b\u50cf\u3092\u4fdd\u5b58\u3057\u307e\u3057\u305f', 'Instagram\u30b9\u30c8\u30fc\u30ea\u30fc\u30ba\u306b\u8cbc\u308a\u4ed8\u3051\u3066\u30b7\u30a7\u30a2\u3057\u3066\u304f\u3060\u3055\u3044');
+    }
+  } catch (e) {
+    showStatus('\u30a8\u30e9\u30fc', e.message);
+  }
+}
+
+window.addEventListener('load', function() {
+  if (typeof liff !== 'undefined') {
+    main();
+  } else {
+    showStatus('エラー', 'LINE SDKの読み込みに失敗しました。\nLINEアプリから開いてください。');
+  }
+});
+</script>
+</body>
+</html>
