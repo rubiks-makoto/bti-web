@@ -961,7 +961,10 @@ function shareThreads(key, name) {
   window.open('https://www.threads.net/intent/post?text=' + encodeURIComponent(text), '_blank');
 }
 // LIFF連携
-const BTI_LIFF_ID = '2010016684-jUp9eANQ';
+// LINE追加用（既存・友だち追加→診断結果送信）
+const BTI_LIFF_ID_FOLLOW = '2010016684-jUp9eANQ';
+// シェア機能用（リッチメニューから呼び出し）
+const BTI_LIFF_ID_SHARE = '2010016684-yl4wiUZV';
 
 function openLiff() {
   if (!window._btiResult) {
@@ -969,8 +972,56 @@ function openLiff() {
     return;
   }
   const { type, pattern } = window._btiResult;
-  const liffUrl = `https://liff.line.me/${BTI_LIFF_ID}?type=${type}&pattern=${pattern}`;
+  const liffUrl = `https://liff.line.me/${BTI_LIFF_ID_FOLLOW}?type=${type}&pattern=${pattern}&gender=${gender || 'A'}`;
   window.open(liffUrl, '_blank');
+}
+
+// ===== LIFF経由でアクセスされた場合の処理 =====
+// URLパラメータ ?action=share でリッチメニューから来たユーザーに自動シェアを発火
+async function handleLiffAccess() {
+  if (typeof liff === 'undefined') return;
+  
+  try {
+    await liff.init({ liffId: BTI_LIFF_ID_SHARE });
+  } catch (e) {
+    console.log('LIFF init skipped:', e.message);
+    return;
+  }
+  
+  const params = new URLSearchParams(window.location.search);
+  const action = params.get('action');
+  
+  if (action === 'share' && liff.isLoggedIn && liff.isLoggedIn()) {
+    try {
+      const profile = await liff.getProfile();
+      const userId = profile.userId;
+      
+      const res = await fetch(`/api/get-result?userId=${userId}`);
+      const data = await res.json();
+      
+      if (data.success && data.type) {
+        const typeData = TYPES[data.type];
+        if (typeData) {
+          window._btiGender = data.gender || 'A';
+          gender = window._btiGender;
+          setTimeout(() => {
+            shareStory(data.type, typeData.name, typeData.catch);
+          }, 500);
+        }
+      } else {
+        alert('診断結果が見つかりませんでした。先にBTI診断を受けてください。');
+      }
+    } catch (e) {
+      console.error('LIFF share error:', e);
+    }
+  }
+}
+
+if (window.location.search.includes('action=share')) {
+  const script = document.createElement('script');
+  script.src = 'https://static.line-scdn.net/liff/edge/2/sdk.js';
+  script.onload = handleLiffAccess;
+  document.head.appendChild(script);
 }
 </script>
 </body>
