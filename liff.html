@@ -30,17 +30,46 @@ var params=new URLSearchParams(window.location.search);
 var btiType=params.get('type')||'';
 var btiPattern=params.get('pattern')||'';
 var btiGender=params.get('gender')||'A';
+var btiExtra=params.get('x')||'';
 var LIFF_ID='2010016684-jUp9eANQ';
 var statusArea=document.getElementById('status-area');
+
+function decodeExtra(s){
+  if(!s) return {};
+  try{
+    var json=decodeURIComponent(escape(atob(decodeURIComponent(s))));
+    return JSON.parse(json);
+  }catch(e){
+    console.error('decode error',e);
+    return {};
+  }
+}
+
 async function initLiff(){
 try{
 await liff.init({liffId:LIFF_ID});
 if(!liff.isLoggedIn()){liff.login({redirectUri:window.location.href});return;}
 var profile=await liff.getProfile();
 var userId=profile.userId;
+var displayName=profile.displayName||'';
 statusArea.innerHTML='<div class="spinner"></div><p class="status">登録中...</p>';
 if(!btiType||!btiPattern){statusArea.innerHTML='<p class="error">診断結果が見つかりません。</p><a href="https://bti-web.vercel.app/" class="btn">BTI診断を受ける</a>';return;}
-var response=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId:userId,type:btiType,pattern:btiPattern,gender:btiGender})});
+
+var extra=decodeExtra(btiExtra);
+
+var payload={
+  userId:userId,
+  type:btiType,
+  pattern:btiPattern,
+  gender:btiGender,
+  displayName:displayName
+};
+if(extra.position) payload.position=extra.position;
+if(extra.age) payload.age=extra.age;
+if(extra.salonWork) payload.salonWork=extra.salonWork;
+if(extra.scores) payload.scores=extra.scores;
+
+var response=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
 var result=await response.json();
 if(result.success){
 statusArea.innerHTML='<p class="success">&#10003; 登録完了！</p><p class="success-sub">LINEのトーク画面に戻ります...<br>メニューの「深掘りレポート」をタップしてください</p>';

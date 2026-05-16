@@ -1084,7 +1084,20 @@ function openLiff() {
     return;
   }
   const { type, pattern } = window._btiResult;
-  const liffUrl = `https://liff.line.me/${BTI_LIFF_ID_FOLLOW}?type=${type}&pattern=${pattern}&gender=${gender || 'A'}`;
+  // 追加情報をbase64エンコードで圧縮して渡す（scoresも含む）
+  const extra = {
+    position: position,
+    age: age,
+    salonWork: salonWork,
+    scores: scores
+  };
+  let extraStr = '';
+  try {
+    extraStr = encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(extra)))));
+  } catch (e) {
+    extraStr = '';
+  }
+  const liffUrl = `https://liff.line.me/${BTI_LIFF_ID_FOLLOW}?type=${type}&pattern=${pattern}&gender=${gender || 'A'}&x=${extraStr}`;
   window.open(liffUrl, '_blank');
 }
 

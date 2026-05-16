@@ -160,7 +160,7 @@ body::before{content:'';position:fixed;inset:0;
       <div class="cta-label">ご質問・ご相談はお気軽に</div>
       <div class="cta-title">美容師キャリアアドバイザーに<br>無料相談</div>
       <div class="cta-sub">あなたの売上・働き方・将来像に合わせて<br>経験豊富なアドバイザーが一緒に考えます</div>
-      <a href="https://line.me/R/ti/p/@210mmztg" class="cta-btn" target="_blank" rel="noopener"><svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M12 1c6.075 0 11 4.925 11 11s-4.925 11-11 11S1 18.075 1 12 5.925 1 12 1"/></svg>LINEで無料相談</a>
+      <a href="https://lin.ee/XXXXX" class="cta-btn" target="_blank" rel="noopener"><svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M12 1c6.075 0 11 4.925 11 11s-4.925 11-11 11S1 18.075 1 12 5.925 1 12 1"/></svg>LINEで無料相談</a>
     </div>
   </div>
 
@@ -276,8 +276,42 @@ function calculate(){
   document.getElementById('riskRows').innerHTML=getRisks(bestKey,employ,shimei,free).map(r=>`<div class="insight-row"><div class="insight-icon" style="background:${r.col}"></div><div class="insight-text">${r.text}</div></div>`).join('');
   document.getElementById('comment').innerHTML=genComment(cur,vals,employ,shimei,free);
 
+  // ホットリード通知（fire-and-forget）
+  sendNotify(employ, shimei, free, diff);
+
   const res=document.getElementById('result'); res.classList.add('show');
   setTimeout(()=>res.scrollIntoView({behavior:'smooth',block:'start'}),100);
+}
+
+// 通知送信（バックグラウンド、エラーは無視）
+async function sendNotify(employ, shimei, free, diff){
+  try{
+    // URLパラメータからuserIdを取得（LIFF経由 or リッチメニュー経由）
+    const urlParams = new URLSearchParams(window.location.search);
+    let userId = urlParams.get('uid') || '';
+    // LIFF経由ならprofileから取れる
+    if (!userId && typeof liff !== 'undefined' && liff.isLoggedIn && liff.isLoggedIn()){
+      try{
+        const profile = await liff.getProfile();
+        userId = profile.userId;
+      }catch(e){}
+    }
+    if (!userId) return; // userIdなければ通知できないので終了
+
+    await fetch('/api/notify-income', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        userId,
+        employ,
+        shimei: parseFloat(shimei) || 0,
+        free: parseFloat(free) || 0,
+        diff: parseFloat(diff) || 0
+      })
+    });
+  }catch(e){
+    console.log('notify skipped:', e);
+  }
 }
 </script>
 </body>
