@@ -556,146 +556,258 @@ function finishQuiz() {
 
 // ===== 判定ロジック =====
 function determineType() {
+  // ===== 補助フラグ（参考値、強い縛りには使わない） =====
   const isBuilder = scores.B > scores.P;
-  const isCrew = scores.C > scores.S;
-  const isScale = scores.Sc > scores.St;
-  const isHeart = scores.H >= scores.L;
-  const isFree = scores.FREE > scores.STAY;
-  const wantsOwner = scores.OWNER >= 1;
-  const isCreate = scores.CREATE >= scores.CRAFT;
-  const isEdu = scores.EDU >= 1;
+  const isPlayer  = scores.P >= scores.B;
+  const isCrew    = scores.C > scores.S;
+  const isSolo    = scores.S >= scores.C;
+  const isScale   = scores.Sc > scores.St;
+  const isStable  = scores.St >= scores.Sc;
+  const isHeart   = scores.H >= scores.L;
+  const isLogic   = scores.L > scores.H;
+  const isFree    = scores.FREE > scores.STAY;
+  const isMove    = scores.MOVE > 0;
+  const wantsOwner= scores.OWNER >= 1;
+  const isCreate  = scores.CREATE > scores.CRAFT;
+  const isCraft   = scores.CRAFT >= scores.CREATE;
+  const isEdu     = scores.EDU >= 1;
 
-  // 指名売上レベル（年齢補正あり）
-  // 同じ売上でも年齢によって意味が違う
-  // A=24以下, B=25-30, C=31-35, D=36-40, E=41以上
+  // 売上レベル(年齢補正あり)
   let salesLv = scores.S4>=1 ? 4 : scores.S3>=1 ? 3 : scores.S2>=1 ? 2 : 1;
-  // 年齢補正：若いほど同じ売上でも高評価、年齢高いほど厳しく評価
-  if (age === 'A') salesLv = Math.min(4, salesLv + 1); // 24歳以下は+1ボーナス
-  if (age === 'D') salesLv = Math.max(1, salesLv - 1); // 36-40歳は-1
-  if (age === 'E') salesLv = Math.max(1, salesLv - 1); // 41歳以上は-1
-  
-  // 年齢×ポジション補正
-  // 30歳以上で売上低め → EDU/MENTOR/CONTRACT寄りに補正
-  // ただしサロンワーク少ない幹部・オーナー（D/EでswがC/D）は除外
-  const ignoreSalesAge = (position === 'D' || position === 'E') && (salonWork === 'C' || salonWork === 'D');
-  const isOlderLowSales = !ignoreSalesAge && (age === 'C' || age === 'D' || age === 'E') && salesLv <= 2;
-  // 24歳以下で売上高め → STAR/FREELANCE適性あり
-  const isYoungHighSales = age === 'A' && salesLv >= 3;
+  if (age === 'A') salesLv = Math.min(4, salesLv + 1);
+  if (age === 'D' || age === 'E') salesLv = Math.max(1, salesLv - 1);
 
-  // サロンワーク補正（D/E向け）
-  const swHeavy = salonWork === 'A' || salonWork === 'B';
-  const swLight = salonWork === 'C' || salonWork === 'D';
+  const isYoung   = age === 'A' || age === 'B';   // 30歳以下
+  const isMidAge  = age === 'C' || age === 'D';   // 31-40
+  const isOlder   = age === 'D' || age === 'E';   // 36以上
+  const swHeavy   = salonWork === 'A' || salonWork === 'B';
+  const swLight   = salonWork === 'C' || salonWork === 'D';
+  const isFemale  = gender === 'B';
 
-  // ===== オーナー・経営者(E) =====
+  // ===== 全16タイプにスコアを付ける =====
+  const t = {SOLO:0,MICRO:0,MULTI:0,SCALE:0,FC:0,NO2:0,EXEC:0,MANAGER:0,
+             STAR:0,TOP:0,CONTRACT:0,FREELANCE:0,EDU:0,MENTOR:0,CREATOR:0,CRAFTER:0};
+
+  // ----- プレイヤー系 -----
+  // STAR
+  t.STAR += salesLv * 3;
+  if (isCreate) t.STAR += 5;
+  if (isScale) t.STAR += 4;
+  if (isYoung) t.STAR += 4;
+  if (isPlayer) t.STAR += 3;
+  if (scores.S4 >= 1) t.STAR += 10;
+  if (scores.S3 >= 1) t.STAR += 5;
+  if (isFree) t.STAR += 2;
+  if (isSolo) t.STAR += 2;
+  if (isYoung && scores.CREATE >= 3) t.STAR += 6;
+
+  // TOP
+  t.TOP += salesLv * 2;
+  if (scores.S3 >= 1) t.TOP += 10;
+  if (scores.S4 >= 1) t.TOP += 6;
+  if (scores.S2 >= 1) t.TOP += 5;
+  if (isCrew) t.TOP += 6;
+  if (isStable) t.TOP += 6;
+  if (isPlayer) t.TOP += 4;
+  if (isHeart) t.TOP += 3;
+  if (isYoung && isCrew && isStable) t.TOP += 5;
+  if (scores.CRAFT >= 2 && scores.S2 >= 1) t.TOP += 3;
+
+  // CONTRACT (デフォルト枠・特徴薄い人向け)
+  t.CONTRACT += 4;                         // ベース更に控えめ
+  if (scores.S2 >= 1) t.CONTRACT += 6;
+  if (scores.S1 >= 1) t.CONTRACT += 5;
+  if (scores.S3 >= 1) t.CONTRACT += 2;
+  if (isSolo) t.CONTRACT += 3;
+  if (isStable) t.CONTRACT += 3;
+  if (isFree) t.CONTRACT += 4;
+  if (isPlayer) t.CONTRACT += 3;
+  if (isYoung) t.CONTRACT += 3;
+  if (isMove) t.CONTRACT += 3;
+  if (!wantsOwner) t.CONTRACT += 2;
+  // 「特徴が薄い」人にボーナス（どの軸も突出してない）
+  const maxAxis = Math.max(scores.CRAFT, scores.CREATE, scores.HEART, scores.EDU, scores.OWNER, scores.N);
+  if (maxAxis <= 2) t.CONTRACT += 5;
+
+  // FREELANCE (強化)
+  t.FREELANCE += 4;
+  if (scores.S3 >= 1) t.FREELANCE += 10;
+  if (scores.S4 >= 1) t.FREELANCE += 12;
+  if (scores.S2 >= 1) t.FREELANCE += 4;
+  if (isFree) t.FREELANCE += 10;
+  if (isSolo) t.FREELANCE += 6;
+  if (isStable) t.FREELANCE += 2;
+  if (wantsOwner) t.FREELANCE += 5;
+  if (isPlayer) t.FREELANCE += 4;
+  if (scores.FREE >= 2) t.FREELANCE += 4;
+  if (scores.FREE >= 3) t.FREELANCE += 6;
+  if (isYoung && isFree) t.FREELANCE += 4;
+
+  // ----- 育成・専門系 -----
+  // EDU (EDU軸明確な人を確実に拾う)
+  t.EDU += scores.EDU * 8;                 // EDU軸への加点を強める
+  if (isEdu) t.EDU += 5;
+  if (isLogic && isEdu) t.EDU += 4;
+  if (isCrew && isEdu) t.EDU += 4;
+  if (isMidAge) t.EDU += 3;
+  if (scores.S2 >= 1 && isEdu) t.EDU += 3;
+  if (scores.S3 >= 1 && isEdu) t.EDU += 3;
+  if (isPlayer && isEdu) t.EDU += 3;
+  if (!wantsOwner && isEdu) t.EDU += 3;
+
+  // MENTOR (HEART軸明確な人を拾う・強化)
+  t.MENTOR += scores.HEART * 4;            // 倍率3→4
+  if (isHeart && scores.HEART >= 2) t.MENTOR += 6;
+  if (isHeart && scores.H >= 4) t.MENTOR += 6;
+  if (isCrew && isHeart) t.MENTOR += 6;
+  if ((isMidAge || isOlder) && isHeart) t.MENTOR += 5;
+  if (scores.HEART >= 3 && isCrew) t.MENTOR += 6;
+  if (scores.HEART >= 4) t.MENTOR += 5;
+  if (isPlayer && isCrew && isHeart) t.MENTOR += 4;
+
+  // CREATOR (CREATE軸明確な人を拾う)
+  t.CREATOR += scores.CREATE * 4;
+  if (isCreate && scores.CREATE >= 2) t.CREATOR += 5;
+  if (isCreate && isSolo) t.CREATOR += 5;
+  if (isFree && isCreate) t.CREATOR += 3;
+  if (isPlayer && isCreate) t.CREATOR += 3;
+  if (scores.CREATE >= 3) t.CREATOR += 6;
+  if (scores.CREATE >= 4) t.CREATOR += 4;
+  if (isYoung && isCreate) t.CREATOR += 2;
+
+  // CRAFTER (CRAFT軸明確な人を拾う)
+  t.CRAFTER += scores.CRAFT * 4;
+  if (isCraft && scores.CRAFT >= 2) t.CRAFTER += 5;
+  if (isCraft && isSolo) t.CRAFTER += 5;
+  if (isCraft && isStable) t.CRAFTER += 4;
+  if (isLogic && isCraft) t.CRAFTER += 4;
+  if (scores.CRAFT >= 3) t.CRAFTER += 6;
+  if (scores.CRAFT >= 4) t.CRAFTER += 4;
+  if (!wantsOwner && isCraft) t.CRAFTER += 2;
+  if (isPlayer && isCraft) t.CRAFTER += 2;
+
+  // ----- 組織系 -----
+  // MANAGER
+  t.MANAGER += 3;
+  if (isCrew) t.MANAGER += 5;
+  if (isBuilder) t.MANAGER += 4;
+  if (isHeart) t.MANAGER += 4;
+  if (position === 'C') t.MANAGER += 8;
+  if (position === 'B') t.MANAGER += 2;
+  if (scores.HEART >= 2) t.MANAGER += 3;
+  if (isMidAge) t.MANAGER += 2;
+  if (isCrew && isBuilder && isHeart) t.MANAGER += 4;
+
+  // NO2
+  t.NO2 += 2;
+  if (isLogic) t.NO2 += 5;
+  if (isCrew) t.NO2 += 5;
+  if (isBuilder) t.NO2 += 4;
+  if (position === 'D') t.NO2 += 8;
+  if (position === 'C') t.NO2 += 3;
+  if (scores.N >= 1) t.NO2 += 6;
+  if (scores.N >= 2) t.NO2 += 4;
+  if (!wantsOwner) t.NO2 += 2;
+
+  // EXEC
+  t.EXEC += 2;
+  if (isBuilder) t.EXEC += 6;
+  if (isScale) t.EXEC += 5;
+  if (isCrew) t.EXEC += 4;
+  if (position === 'D') t.EXEC += 8;
+  if (position === 'E') t.EXEC += 3;
+  if (swLight) t.EXEC += 3;
+  if (wantsOwner) t.EXEC += 2;
+
+  // FC
+  t.FC += 2;
+  if (wantsOwner) t.FC += 6;
+  if (isBuilder) t.FC += 5;
+  if (isStable) t.FC += 5;
+  if (position === 'E') t.FC += 8;
+  if (position === 'D' && wantsOwner) t.FC += 5;
+  if (scores.OWNER >= 2) t.FC += 6;
+  if (wantsOwner && isStable && !isScale) t.FC += 4;
+
+  // ----- オーナー系 -----
+  // SOLO
+  if (wantsOwner) t.SOLO += 4;
+  if (isSolo) t.SOLO += 5;
+  if (isCraft) t.SOLO += 4;
+  if (isStable) t.SOLO += 4;
+  if (position === 'E') t.SOLO += 8;
+  if (!isScale) t.SOLO += 2;
+  if (!isBuilder) t.SOLO += 2;
+
+  // MICRO
+  if (wantsOwner) t.MICRO += 6;
+  if (isPlayer) t.MICRO += 4;
+  if (isBuilder) t.MICRO += 4;
+  if (position === 'E') t.MICRO += 8;
+  if (position === 'C' && wantsOwner) t.MICRO += 5;
+  if (!isScale) t.MICRO += 3;
+  if (scores.OWNER >= 1 && !isScale) t.MICRO += 4;
+  if (scores.OWNER >= 2) t.MICRO += 3;
+
+  // MULTI
+  if (wantsOwner) t.MULTI += 6;
+  if (isScale) t.MULTI += 6;
+  if (isBuilder) t.MULTI += 5;
+  if (position === 'E') t.MULTI += 7;
+  if (scores.OWNER >= 2 && scores.Sc >= 2) t.MULTI += 6;
+  if (wantsOwner && isScale && isBuilder) t.MULTI += 6;
+  if (scores.OWNER >= 2 && isScale) t.MULTI += 4;
+
+  // SCALE
+  if (scores.OWNER >= 2) t.SCALE += 6;
+  if (scores.Sc >= 3) t.SCALE += 5;
+  if (isScale && isBuilder && isCrew) t.SCALE += 8;
+  if (position === 'E') t.SCALE += 7;
+  if (scores.OWNER >= 3) t.SCALE += 6;
+  if (scores.Sc >= 4 && wantsOwner) t.SCALE += 4;
+
+  // ===== 動的重み調整 =====
+  // CONTRACT底上げ
+  t.CONTRACT *= 1.15;
+  // MANAGER底上げ
+  t.MANAGER *= 1.15;
+
+  // 女性 → オーナー系↓、プレイヤー/育成系↑
+  if (isFemale) {
+    t.SOLO *= 0.7; t.MICRO *= 0.7; t.MULTI *= 0.7; t.SCALE *= 0.7; t.FC *= 0.8;
+    t.STAR *= 1.1; t.TOP *= 1.1; t.CONTRACT *= 1.1; t.FREELANCE *= 1.1;
+    t.EDU *= 1.15; t.MENTOR *= 1.15; t.CREATOR *= 1.1; t.CRAFTER *= 1.05;
+  }
+
+  // 現役オーナー(E) → オーナー系メイン、たまに別タイプ
   if (position === 'E') {
-    // よっぽどの場合のみ非オーナータイプ
-    if (!isBuilder && !isScale && isHeart && isCrew && scores.H >= 4) return 'MENTOR';
-    if (!isBuilder && !isScale && !isHeart && scores.L >= 4) return 'CRAFTER';
-    // オーナー系判定
-    if (isScale && isCrew) return 'SCALE';
-    if (isScale) return 'MULTI';
-    if (isBuilder && isCrew) return 'MULTI';
-    if (isBuilder) return 'FC';
-    // Solo×Stable寄り
-    return 'SOLO';
+    t.SOLO *= 1.5; t.MICRO *= 1.5; t.MULTI *= 1.4; t.SCALE *= 1.5; t.FC *= 1.3;
+    // 他は0.7倍（たまに出る）
+    t.STAR *= 0.7; t.TOP *= 0.7; t.CONTRACT *= 0.7; t.FREELANCE *= 0.8;
+    t.EDU *= 0.7; t.MENTOR *= 0.7; t.CREATOR *= 0.7; t.CRAFTER *= 0.7;
+    t.NO2 *= 0.7; t.EXEC *= 0.9; t.MANAGER *= 0.7;
   }
 
-  // ===== 幹部・NO.2(D) =====
+  // 幹部(D) → 組織系・オーナー系メイン
   if (position === 'D') {
-    // オーナー志向が強い場合
-    if (wantsOwner && isScale && isBuilder) return 'MULTI';
-    if (wantsOwner && isBuilder) return 'FC';
-    // サロンワーク多め
-    if (swHeavy) {
-      if (isHeart) return 'MANAGER';
-      return 'EXEC';
-    }
-    // サロンワーク少なめ
-    if (isHeart) return 'NO2';
-    return 'EXEC';
+    t.EXEC *= 1.3; t.NO2 *= 1.3; t.FC *= 1.2;
+    t.MULTI *= 1.2; t.MICRO *= 1.1;
+    t.STAR *= 0.8; t.CONTRACT *= 0.8; t.FREELANCE *= 0.9;
+    t.CRAFTER *= 0.8; t.CREATOR *= 0.8;
   }
 
-  // ===== 店長・副店長(C) =====
-  if (position === 'C') {
-    if (wantsOwner && isBuilder && isScale) return 'MULTI';
-    if (wantsOwner && isBuilder) return 'MICRO';
-    if (isScale && isBuilder) return 'MANAGER';
-    if (isHeart && isCrew) return 'MENTOR';
-    if (!isHeart && isEdu) return 'EDU';
-    if (isHeart) return 'MENTOR';
-    return 'MANAGER';
+  // アシスタント(A)/若手 → STAR/TOP/CREATOR候補に重み
+  if (position === 'A' || (position === 'B' && age === 'A')) {
+    t.SOLO *= 0.6; t.MICRO *= 0.7; t.MULTI *= 0.6; t.SCALE *= 0.6; t.FC *= 0.7;
+    t.EXEC *= 0.7; t.NO2 *= 0.8;
   }
 
-  // ===== スタイリスト(B) / アシスタント(A) =====
-
-  // Builder系（将来オーナー・組織系志向）
-  if (isBuilder) {
-    if (wantsOwner && isScale) return 'MULTI';
-    if (wantsOwner) return 'MICRO';
-    if (isScale && isCrew) return 'EXEC';
-    if (isScale) return 'MULTI';
-    if (isCrew && isHeart) return 'MENTOR';
-    if (isCrew) return 'NO2';
-    if (isEdu) return 'EDU';
-    return 'MENTOR';
+  // 最高得点のタイプを返す
+  let bestKey = 'CONTRACT', bestVal = -1;
+  for (const k in t) {
+    if (t[k] > bestVal) { bestVal = t[k]; bestKey = k; }
   }
-
-  // ===== 重要ルール =====
-  // 30歳以上×サロンワーク普通以上×指名売上50万以下
-  // → OWNER系・FREELANCE除外、現実的なタイプに誘導
-  const isRealisticBlock = 
-    (age === 'C' || age === 'D' || age === 'E') &&
-    (salonWork === 'A' || salonWork === 'B' || salonWork === null) &&
-    scores.S1 >= 1 && scores.S2 === 0 && scores.S3 === 0 && scores.S4 === 0;
-
-  if (isRealisticBlock) {
-    if (isHeart && isCrew) return 'MENTOR';
-    if (isEdu) return 'EDU';
-    if (isCrew) return 'MANAGER';
-    return 'CONTRACT';
-  }
-
-  // Player系
-  // 年齢高め×売上低め → CONTRACT/EDU/MENTOR寄り
-  if (isOlderLowSales && !wantsOwner && !isBuilder) {
-    if (isHeart) return 'MENTOR';
-    if (isEdu) return 'EDU';
-    return 'CONTRACT';
-  }
-  
-  // フリーランス・業務委託志向
-  if (isFree) {
-    if (salesLv >= 3) return 'FREELANCE';
-    return 'CONTRACT';
-  }
-  
-  // 若い×売上高め → STAR適性
-  if (isYoungHighSales && isCreate) return 'STAR';
-  if (isYoungHighSales && !isCrew) return 'STAR';
-
-  // オーナー志向あり
-  if (wantsOwner) {
-    if (isScale) return 'MULTI';
-    return 'MICRO';
-  }
-
-  // Scale志向
-  if (isScale) {
-    if (isCreate) return 'STAR';
-    if (!isCrew) return 'STAR';
-    return 'TOP';
-  }
-
-  // Crew志向
-  if (isCrew) {
-    if (isHeart) return 'MANAGER';
-    return 'CONTRACT';
-  }
-
-  // Solo志向
-  if (isCreate) return 'CREATOR';
-  if (!isHeart) return 'CRAFTER';
-  return 'TOP';
+  return bestKey;
 }
 
 // ===== 結果ページIPキャラ追加 =====
