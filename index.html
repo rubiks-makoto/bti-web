@@ -68,7 +68,7 @@ body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellips
 .result-eyebrow{font-family:var(--sans);font-size:9px;letter-spacing:0.45em;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:16px}
 .result-code{font-family:var(--serif);font-size:clamp(60px,15vw,110px);font-weight:300;line-height:0.9;letter-spacing:-0.02em;color:var(--white);text-align:center;margin-bottom:16px;display:block}
 .result-name{font-family:var(--jp);font-size:clamp(17px,4.2vw,22px);font-weight:600;letter-spacing:0.1em;text-align:center;margin-bottom:8px}
-.result-catch{font-family:var(--jp);font-size:clamp(12px,3vw,14px);letter-spacing:0.15em;color:var(--gold-light);text-align:center;font-style:italic;margin-bottom:32px}
+.result-catch{font-family:var(--jp);font-size:clamp(12px,3vw,14px);letter-spacing:0.15em;color:var(--gold-light);text-align:center;font-style:italic;margin-bottom:8px}
 .result-axes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:32px}
 .result-axis{background:var(--bg2);border:1px solid var(--line);padding:14px 16px}
 .result-axis-label{font-family:var(--sans);font-size:8px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gray);margin-bottom:8px;display:block}
@@ -155,9 +155,9 @@ body::before{background:none !important}
 }
 
 /* 結果ページIPキャラ - 1体中央ドカン */
-.result-ip-hero{display:flex;justify-content:center;padding:12px 0 4px;position:relative}
+.result-ip-hero{display:flex;justify-content:center;padding:0 0 4px;position:relative;margin-top:-8px}
 .result-ip-hero::before{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:80%;height:120px;background:radial-gradient(ellipse,rgba(196,150,63,0.06) 0%,transparent 70%);pointer-events:none}
-.result-ip-hero img{width:min(85vw,420px);height:auto;display:block;filter:drop-shadow(0 8px 32px rgba(0,0,0,0.5));position:relative;z-index:1}
+.result-ip-hero img{width:min(96vw,560px);height:auto;display:block;filter:drop-shadow(0 8px 32px rgba(0,0,0,0.5));position:relative;z-index:1}
 #result .result-inner{position:relative;z-index:2}
 </style>
 </head>
