@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>BTI認定サロン | サロン研究所.com</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Noto+Serif+JP:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0a0705;
+  --bg2:#141210;
+  --white:#f8f5ef;
+  --gold:#c4963f;
+  --gold-light:#e0b96a;
+  --gray:#7a7670;
+  --gray-light:#a8a49b;
+  --line:rgba(248,245,239,0.1);
+  --line-strong:rgba(196,150,63,0.3);
+  --serif:'Cormorant Garamond',serif;
+  --jp:'Noto Serif JP',serif;
+  --sans:'DM Sans',sans-serif;
+}
+html,body{background:var(--bg);color:var(--white);min-height:100vh;-webkit-font-smoothing:antialiased}
+body{font-family:var(--jp);overflow-x:hidden}
+
+/* 背景の微細なノイズ感 */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background:radial-gradient(ellipse at top,rgba(196,150,63,0.04) 0%,transparent 50%),
+             radial-gradient(ellipse at bottom,rgba(196,150,63,0.02) 0%,transparent 60%);
+  pointer-events:none;
+  z-index:0;
+}
+
+.container{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 20px}
+
+/* ===== ヘッダー ===== */
+.hero{
+  padding:80px 20px 60px;
+  text-align:center;
+  position:relative;
+  border-bottom:1px solid var(--line);
+}
+.hero-eyebrow{
+  font-family:var(--sans);
+  font-size:11px;
+  letter-spacing:0.4em;
+  color:var(--gold);
+  margin-bottom:20px;
+  text-transform:uppercase;
+}
+.hero-title{
+  font-family:var(--serif);
+  font-size:clamp(42px,8vw,72px);
+  font-weight:300;
+  letter-spacing:0.02em;
+  line-height:1.1;
+  margin-bottom:16px;
+}
+.hero-title-jp{
+  font-family:var(--jp);
+  font-size:clamp(16px,3.5vw,20px);
+  font-weight:400;
+  letter-spacing:0.3em;
+  color:var(--gold-light);
+  margin-bottom:24px;
+}
+.hero-divider{
+  width:60px;
+  height:1px;
+  background:var(--gold);
+  margin:0 auto 24px;
+}
+.hero-desc{
+  font-family:var(--jp);
+  font-size:14px;
+  color:var(--gray-light);
+  line-height:1.9;
+  max-width:520px;
+  margin:0 auto;
+  font-weight:300;
+}
+
+/* ===== マッチング結果バナー（オプション・タイプ別表示） ===== */
+.match-banner{
+  margin:40px auto 0;
+  max-width:600px;
+  padding:20px 24px;
+  background:linear-gradient(135deg,rgba(196,150,63,0.08) 0%,rgba(196,150,63,0.02) 100%);
+  border:1px solid var(--line-strong);
+  border-radius:2px;
+  text-align:center;
+}
+.match-banner-label{
+  font-family:var(--sans);
+  font-size:10px;
+  letter-spacing:0.3em;
+  color:var(--gold);
+  margin-bottom:8px;
+}
+.match-banner-text{
+  font-family:var(--jp);
+  font-size:13px;
+  color:var(--white);
+  font-weight:400;
+}
+.match-banner-text em{
+  color:var(--gold-light);
+  font-style:normal;
+  font-weight:600;
+}
+.match-banner-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin-top:20px;
+  padding:11px 24px;
+  background:transparent;
+  color:var(--gold);
+  text-decoration:none;
+  border:1px solid var(--gold);
+  font-family:var(--jp);
+  font-size:13px;
+  font-weight:500;
+  letter-spacing:0.08em;
+  transition:all 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+.match-banner-btn:hover{
+  background:rgba(196,150,63,0.08);
+  color:var(--gold-light);
+  border-color:var(--gold-light);
+}
+.match-banner-btn-icon{
+  flex-shrink:0;
+  width:16px;
+  height:16px;
+}
+
+/* ===== サロングリッド ===== */
+.salons-section{padding:60px 20px 80px}
+.salons-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+}
+@media(min-width:768px){
+  .salons-grid{grid-template-columns:repeat(3,1fr);gap:24px}
+}
+@media(min-width:1024px){
+  .salons-grid{grid-template-columns:repeat(4,1fr)}
+}
+
+/* ===== サロンカード ===== */
+.salon-card{
+  background:var(--bg2);
+  border:1px solid var(--line);
+  border-radius:2px;
+  overflow:hidden;
+  text-decoration:none;
+  color:var(--white);
+  display:flex;
+  flex-direction:column;
+  transition:all 0.4s cubic-bezier(0.16,1,0.3,1);
+  position:relative;
+}
+.salon-card:hover{
+  border-color:var(--gold);
+  transform:translateY(-4px);
+  box-shadow:0 12px 40px rgba(196,150,63,0.15);
+}
+.salon-card:hover .salon-logo-wrap{background:rgba(248,245,239,0.98)}
+.salon-card:hover .salon-arrow{transform:translateX(4px);color:var(--gold)}
+
+/* ロゴ部分 */
+.salon-logo-wrap{
+  background:rgba(248,245,239,0.95);
+  aspect-ratio:1/1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  transition:background 0.4s;
+  position:relative;
+}
+.salon-logo{
+  max-width:80%;
+  max-height:80%;
+  width:auto;
+  height:auto;
+  object-fit:contain;
+}
+/* 仮ロゴ用 */
+.salon-logo-placeholder{
+  width:60%;
+  height:auto;
+  aspect-ratio:1/1;
+  background:linear-gradient(135deg,#3a3a3a,#1a1a1a);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:var(--serif);
+  font-size:clamp(20px,3vw,28px);
+  font-weight:500;
+  color:rgba(248,245,239,0.4);
+  letter-spacing:0.05em;
+}
+
+/* バッジ（プレミアム認定など、必要に応じて） */
+.salon-badge{
+  position:absolute;
+  top:10px;
+  right:10px;
+  font-family:var(--sans);
+  font-size:9px;
+  letter-spacing:0.2em;
+  padding:4px 8px;
+  background:rgba(10,7,5,0.9);
+  color:var(--gold);
+  border:1px solid var(--line-strong);
+  text-transform:uppercase;
+}
+
+/* テキスト部分 */
+.salon-info{
+  padding:18px 16px 20px;
+  flex-grow:1;
+  display:flex;
+  flex-direction:column;
+  background:var(--bg2);
+}
+.salon-name{
+  font-family:var(--serif);
+  font-size:clamp(18px,3vw,22px);
+  font-weight:400;
+  letter-spacing:0.02em;
+  margin-bottom:4px;
+  line-height:1.2;
+}
+.salon-area{
+  font-family:var(--sans);
+  font-size:10px;
+  letter-spacing:0.25em;
+  color:var(--gold);
+  margin-bottom:12px;
+  text-transform:uppercase;
+}
+.salon-catch{
+  font-family:var(--jp);
+  font-size:12px;
+  line-height:1.7;
+  color:var(--gray-light);
+  margin-bottom:16px;
+  font-weight:300;
+  flex-grow:1;
+}
+.salon-cta{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding-top:12px;
+  border-top:1px solid var(--line);
+}
+.salon-cta-label{
+  font-family:var(--sans);
+  font-size:10px;
+  letter-spacing:0.3em;
+  color:var(--white);
+  text-transform:uppercase;
+}
+.salon-arrow{
+  font-size:14px;
+  color:var(--white);
+  transition:all 0.4s;
+}
+
+/* ===== セクション仕切り ===== */
+.section-divider{
+  text-align:center;
+  margin:40px 0 30px;
+}
+.section-divider-text{
+  font-family:var(--sans);
+  font-size:10px;
+  letter-spacing:0.4em;
+  color:var(--gold);
+  display:inline-block;
+  padding:0 16px;
+  position:relative;
+}
+.section-divider-text::before,
+.section-divider-text::after{
+  content:'';
+  position:absolute;
+  top:50%;
+  width:30px;
+  height:1px;
+  background:var(--line-strong);
+}
+.section-divider-text::before{right:100%}
+.section-divider-text::after{left:100%}
+
+/* ===== フッター ===== */
+.footer{
+  padding:50px 20px 60px;
+  text-align:center;
+  border-top:1px solid var(--line);
+  margin-top:40px;
+}
+.footer-note{
+  font-family:var(--jp);
+  font-size:11px;
+  color:var(--gray);
+  line-height:1.8;
+  font-weight:300;
+  margin-bottom:16px;
+}
+.footer-brand{
+  font-family:var(--sans);
+  font-size:10px;
+  letter-spacing:0.4em;
+  color:var(--gold);
+  text-transform:uppercase;
+}
+
+/* ===== 入場アニメーション ===== */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.hero>*{animation:fadeUp 0.8s cubic-bezier(0.16,1,0.3,1) backwards}
+.hero-eyebrow{animation-delay:0.1s}
+.hero-title{animation-delay:0.2s}
+.hero-title-jp{animation-delay:0.3s}
+.hero-divider{animation-delay:0.4s}
+.hero-desc{animation-delay:0.5s}
+.match-banner{animation-delay:0.6s}
+.salon-card{animation:fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) backwards}
+.salon-card:nth-child(1){animation-delay:0.7s}
+.salon-card:nth-child(2){animation-delay:0.75s}
+.salon-card:nth-child(3){animation-delay:0.8s}
+.salon-card:nth-child(4){animation-delay:0.85s}
+.salon-card:nth-child(5){animation-delay:0.9s}
+.salon-card:nth-child(6){animation-delay:0.95s}
+.salon-card:nth-child(7){animation-delay:1.0s}
+.salon-card:nth-child(8){animation-delay:1.05s}
+.salon-card:nth-child(9){animation-delay:1.1s}
+.salon-card:nth-child(10){animation-delay:1.15s}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ===== ヘッダー ===== -->
+  <header class="hero">
+    <div class="hero-eyebrow">Salon Laboratory</div>
+    <h1 class="hero-title">Beauty Career Guide</h1>
+    <div class="hero-title-jp">BTI 認 定 サ ロ ン</div>
+    <div class="hero-divider"></div>
+    <p class="hero-desc">
+      あなたのキャリアに、新しい選択肢を。<br>
+      サロン研究所.comが厳選した認定サロンと、<br>
+      美容師キャリアアドバイザーによる無料相談。
+    </p>
+
+    <!-- BTI診断を受けた人向けマッチング誘導 + LINE相談ボタン -->
+    <div class="match-banner">
+      <div class="match-banner-label">— For You —</div>
+      <div class="match-banner-text">
+        <em>BTI診断を受けた方へ</em>のおすすめサロンをご紹介。<br>
+        最適な選択は、まず無料相談から。
+      </div>
+      <a href="https://line.me/R/ti/p/@210mmztg" class="match-banner-btn">
+        <svg class="match-banner-btn-icon" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+          <path d="M19.365 9.863c.349 0 .63.285.631.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/>
+        </svg>
+        <span>キャリアアドバイザーに無料相談</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ===== サロングリッド ===== -->
+  <section class="salons-section">
+
+    <div class="section-divider">
+      <span class="section-divider-text">10 Selected Salons</span>
+    </div>
+
+    <div class="salons-grid">
+
+      <!-- 本物のRubik's -->
+      <a href="https://rubiks-hair.com" class="salon-card" target="_blank">
+        <div class="salon-logo-wrap">
+          <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/wAALCAH0AfQBAREA/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/9oACAEBAAA/AP1ToooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooqtLqFtBOIJJ4o5iNwjZwGI9cE5qwGyMjpRn2NULjX9NtGKz39rCR2knRf5mof+Es0X/oL2H/gVH/jWhb3cN3EskEizRt0eNgyn8RUoOaWiiiiiiiiimSypDG0kjBEUFmZjgAepNef+MP2hvhh4AikfxH8QPDWilOsd3q0CSE4zgJu3E47AV8w/Fv/AIK6fBTwHHLD4Yk1P4gagvCrpluba2B77ppgP/HUavtHw/rCeINC07U44ZLdL22iuVimGHQOgYKw9RnBrQooooopNw9/ypaKoarr+m6FF5mo6ha2Ee0tvup0iGB1OWI4FeN/EH9uD4FfDKOX+2/idoBnjBJtdNuft8+cZx5cAcg/XFef/AH/AIKL+CP2lfjY/gHwZoOtGCPT5799Z1FY4EPllBhYgWbB39SQenHPH1nRRRRRXknxp/au+FP7Pkq2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FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFf/9k=" alt="Rubik's HAIR" class="salon-logo">
+        </div>
+        <div class="salon-info">
+          <div class="salon-name">Rubik's HAIR</div>
+          <div class="salon-area">Osaka・Umeda</div>
+          <div class="salon-catch">業務委託で月60万から、25店舗展開のキャリアパス。自分のスタイルで自由に働ける環境。</div>
+          <div class="salon-cta">
+            <span class="salon-cta-label">View Details</span>
+            <span class="salon-arrow">→</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 仮データ Salon 02 -->
+      <a href="#" class="salon-card">
+        <div class="salon-logo-wrap">
+          <div class="salon-logo-placeholder">SALON<br>02</div>
+        </div>
+        <div class="salon-info">
+          <div class="salon-name">Atelier Lumière</div>
+          <div class="salon-area">Tokyo・Omotesando</div>
+          <div class="salon-catch">完全歩合制、独立支援あり。プライベートサロン感覚で技術を磨ける表参道の隠れ家。</div>
+          <div class="salon-cta">
+            <span class="salon-cta-label">View Details</span>
+            <span class="salon-arrow">→</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 仮データ Salon 03 -->
+      <a href="#" class="salon-card">
+        <div class="salon-logo-wrap">
+          <div class="salon-logo-placeholder">SALON<br>03</div>
+        </div>
+        <div class="salon-info">
+          <div class="salon-name">HAIR STUDIO 88</div>
+          <div class="salon-area">Osaka・Shinsaibashi</div>
+          <div class="salon-catch">SNS発信特化、スター育成プログラム充実。フォロワー10万人超のスタイリスト多数在籍。</div>
+          <div class="salon-cta">
+            <span class="salon-cta-label">View Details</span>
+            <span class="salon-arrow">→</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 仮データ Salon 04 -->
+      <a href="#" class="salon-card">
+        <div class="salon-logo-wrap">
+          <div class="salon-logo-placeholder">SALON<br>04</div>
+        </div>
+        <div class="salon-info">
+          <div class="salon-name">FRAME hair</div>
+          <div class="salon-area">Tokyo・Daikanyama</div>
+          <div class="salon-catch">教育プログラム業界トップクラス。新卒3年で月収80万円が目指せる組織型サロン。</div>
+          <div class="salon-cta">
+            <span class="salon-cta-label">View Details</span>
+            <span class="salon-arrow">→</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 仮データ Salon 05 -->
+      <a href="#" class="salon-card">
+        <div class="salon-logo-wrap">
+          <div class="salon-logo-placeholder">SALON<br>05</div>
+        </div>
+        <div class="salon-info">
+          <div class="salon-name">SOLE</div>
+          <div class="salon-area">Kyoto・Karasuma</div>
+          <div class="salon-catch">職人気質の技術追求型。1日6客の予約制で、一人ひとりに向き合える京都の名店。</div>
+          <div class="salon-cta">
+            <span class="salon-cta-label">View Details</span>
+            <span class="salon-arrow">→</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 仮データ Salon 06 -->
+      <a href="#" class="salon-card">
+        <div class="salon-logo-wrap">
+          <div class="salon-logo-placeholder">SALON<br>06</div>
+        </div>
+        <div class="salon-info">
+          <div class="salon-name">noir.</div>
+          <div class="salon-area">Tokyo・Aoyama</div>
+          <div class="salon-catch">フリーランス受け入れ可、面貸し制度あり。場所代5万円〜で青山で開業できる。</div>
+          <div class="salon-cta">
+            <span class="salon-cta-label">View Details</span>
+            <span class="salon-arrow">→</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 仮データ Salon 07 -->
+      <a href="#" class="salon-card">
+        <div class="salon-logo-wrap">
+          <div class="salon-logo-placeholder">SALON<br>07</div>
+        </div>
+        <div class="salon-info">
+          <div class="salon-name">MOON Hair Atelier</div>
+          <div class="salon-area">Kobe・Sannomiya</div>
+          <div class="salon-catch">マネジメント育成に強い組織サロン。店長候補からエリアマネージャーまでキャリア確立。</div>
+          <div class="salon-cta">
+            <span class="salon-cta-label">View Details</span>
+            <span class="salon-arrow">→</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 仮データ Salon 08 -->
+      <a href="#" class="salon-card">
+        <div class="salon-logo-wrap">
+          <div class="salon-logo-placeholder">SALON<br>08</div>
+        </div>
+        <div class="salon-info">
+          <div class="salon-name">PAUSE</div>
+          <div class="salon-area">Fukuoka・Tenjin</div>
+          <div class="salon-catch">クリエイティブ追求型、撮影・コンテスト出場全面支援。世界観を作りたい人へ。</div>
+          <div class="salon-cta">
+            <span class="salon-cta-label">View Details</span>
+            <span class="salon-arrow">→</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 仮データ Salon 09 -->
+      <a href="#" class="salon-card">
+        <div class="salon-logo-wrap">
+          <div class="salon-logo-placeholder">SALON<br>09</div>
+        </div>
+        <div class="salon-info">
+          <div class="salon-name">Hair&Make IRIS</div>
+          <div class="salon-area">Nagoya・Sakae</div>
+          <div class="salon-catch">FC加盟制度あり、最短2年で独立可能。本部サポート充実、リスク分散型キャリア。</div>
+          <div class="salon-cta">
+            <span class="salon-cta-label">View Details</span>
+            <span class="salon-arrow">→</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 仮データ Salon 10 -->
+      <a href="#" class="salon-card">
+        <div class="salon-logo-wrap">
+          <div class="salon-logo-placeholder">SALON<br>10</div>
+        </div>
+        <div class="salon-info">
+          <div class="salon-name">KIN&CO.</div>
+          <div class="salon-area">Tokyo・Ebisu</div>
+          <div class="salon-catch">小規模プレイングオーナー型に最適。1〜2人体制で開業支援、収益最大化のノウハウ提供。</div>
+          <div class="salon-cta">
+            <span class="salon-cta-label">View Details</span>
+            <span class="salon-arrow">→</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ===== フッター ===== -->
+  <footer class="footer">
+    <p class="footer-note">
+      ※ 掲載ご希望のサロン様はお問い合わせください<br>
+      認定サロンは独自の基準で厳選しております
+    </p>
+    <div class="footer-brand">Salon Laboratory . com</div>
+  </footer>
+
+</div>
+
+</body>
+</html>
