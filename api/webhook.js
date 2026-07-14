@@ -107,7 +107,11 @@ export default async function handler(req, res) {
     const events = req.body.events || [];
     
     for (const event of events) {
-      // 友だち追加イベント
+    // LINE再送イベントはスキップ（重複送信防止）
+    if (event.deliveryContext && event.deliveryContext.isRedelivery) {
+      console.log('Skipping redelivered event');
+      continue;
+    }  // 友だち追加イベント
       if (event.type === 'follow') {
         const userId = event.source.userId;
         console.log(`New follower: ${userId}`);
